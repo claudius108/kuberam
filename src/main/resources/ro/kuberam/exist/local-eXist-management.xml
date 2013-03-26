@@ -1,0 +1,79 @@
+<project xmlns:xdb="http://exist-db.org/ant" name="Local eXist server management" basedir="." default="start-exist-local-server">
+
+	<property name="eXist.test.server.dir">/home/claudius/workspaces/eXist/eXist-2.1</property>
+	<property name="eXist.test.server.admin-username">admin</property>
+	<property name="eXist.test.server.admin-password">admin123</property>
+	<property name="kuberam.current.project.tmp.dir" value="${kuberam.current.project.dir}/../tmp" />
+	<property name="eXist-server-url">xmldb:exist://127.0.0.1:8080/exist/xmlrpc/db</property>
+
+	<typedef resource="org/exist/ant/antlib.xml" uri="http://exist-db.org/ant">
+		<classpath>
+			<fileset dir="${eXist.test.server.dir}/lib/core">
+				<include name="*.jar" />
+			</fileset>
+			<pathelement location="${eXist.test.server.dir}/exist.jar" />
+			<pathelement location="${eXist.test.server.dir}/exist-optional.jar" />
+		</classpath>
+	</typedef>
+
+	<target name="restart-exist-local-server" description="Restart eXist local server">
+		<echo>Restart eXist...</echo>
+		<exec executable="/bin/bash" newenvironment="true" dir="${eXist.test.server.dir}/tools/wrapper/bin">
+			<arg value="exist.sh" />
+			<arg value="restart" />
+		</exec>
+	</target>
+
+	<target name="start-exist-local-server" description="Start eXist local server">
+		<echo>Start eXist...</echo>
+		<exec executable="/bin/bash" newenvironment="true" dir="${eXist.test.server.dir}/tools/wrapper/bin">
+			<arg value="exist.sh" />
+			<arg value="start" />
+		</exec>
+	</target>
+
+	<target name="stop-exist-local-server" description="Stop eXist local server">
+		<echo>Stop eXist...</echo>
+		<exec executable="/bin/bash" newenvironment="true" dir="${eXist.test.server.dir}/tools/wrapper/bin">
+			<arg value="exist.sh" />
+			<arg value="stop" />
+		</exec>
+	</target>
+
+	<target name="backup-exist-local-server" description="Backup eXist local server">
+		<echo>Backup eXist...</echo>
+		<xdb:extract uri="${eXist-server-url}" user="${eXist.test.server.admin-username}" password="${eXist.test.server.admin-password}" destdir="${kuberam.local-eXist.backup.dir}" />
+	</target>
+
+	<target name="add-collection-to-db" description="Add a collection to DB">
+		<echo>Remove collection '${target-collection}'...</echo>
+		<xdb:remove user="${eXist.test.server.admin-username}" password="${eXist.test.server.admin-password}" uri="${eXist-server-url}" collection="${target-collection}" />
+
+		<echo>Copying files from '${source-folder}' to collection '${target-collection}'...</echo>
+		<xdb:store user="${eXist.test.server.admin-username}" password="${eXist.test.server.admin-password}" uri="${eXist-server-url}${target-collection}" createcollection="true" createsubcollections="true">
+			<fileset dir="${source-folder}">
+				<include name="**/*" />
+				<exclude name="**/__contents__.xml" />
+			</fileset>
+		</xdb:store>
+	</target>
+
+	<target name="deploy-module-jars-to-local-eXist-server" description="Deploy module jar and its dependencies to local eXist server">
+		<echo>Deploy module jar and its dependencies to local eXist server...</echo>
+		<!-- ${eXist.test.server.dir}/lib/extensions -->
+		<copy todir="${eXist.test.server.dir}/webapp/WEB-INF/expathrepo/${package-name}-${package-version}/${package-name}" overwrite="true">
+			<fileset dir="${source-folder}">
+				<include name="**/*.jar" />
+			</fileset>
+		</copy>
+	</target>
+
+	<target name="deploy-xars-to-local-eXist-server" description="Deploy xar-s to local eXist server">
+		<copy todir="${eXist.test.server.dir}/webapp/WEB-INF/data/fs/db/apps" overwrite="true">
+			<fileset dir="${source-folder}">
+				<include name="*.xar" />
+			</fileset>
+		</copy>
+	</target>
+
+</project>

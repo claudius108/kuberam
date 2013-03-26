@@ -1,0 +1,39 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>ro.kuberam.maven</groupId>
+		<artifactId>base</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+
+	<artifactId>sourceforge</artifactId>
+	<version>0.1-SNAPSHOT</version>
+	<packaging>pom</packaging>
+	<name>SourceForge details</name>
+
+	<properties>
+		<sourceforge-username>claudius108</sourceforge-username>
+		<sourceforge-web-credentials>${sourceforge-username},${project.artifactId}</sourceforge-web-credentials>
+
+		<sourceforge-project-web-host>web.sourceforge.net</sourceforge-project-web-host>
+		<sourceforge-frs-host>frs.sourceforge.net</sourceforge-frs-host>
+		<sourceforge-shell-host>shell.sourceforge.net</sourceforge-shell-host>
+
+		<sourceforge-project-web-htdocs-path>/home/project-web/${project.artifactId}/htdocs</sourceforge-project-web-htdocs-path>
+		<sourceforge-project-web-url>sftp://${sourceforge-web-credentials}@${sourceforge-project-web-host}${sourceforge-project-web-htdocs-path}</sourceforge-project-web-url>
+
+		<sourceforge-user-web-htdocs-path>/home/user-web/${sourceforge-username}/htdocs</sourceforge-user-web-htdocs-path>
+		<sourceforge-user-web-url>sftp://${sourceforge-username},extxsltforms@${sourceforge-frs-host}${sourceforge-user-web-htdocs-path}</sourceforge-user-web-url>
+
+		<sourceforge-frs-url>sftp://${sourceforge-web-credentials}@${sourceforge-frs-host}/home/frs/project/${project.artifactId}</sourceforge-frs-url>
+		<sourceforge-shell-arg-line>-t -i ${sourceforge-public-key-path} ${sourceforge-web-credentials}@${sourceforge-shell-host}</sourceforge-shell-arg-line>
+
+		<sourceforge-public-key-path>${workspaces-dir-path}/archive/crypto-keys/sourceforge-claudius108/sourceforge-claudius108</sourceforge-public-key-path>
+
+		<resources-excluded-from-uploading>.*,pom.xml,target/</resources-excluded-from-uploading>
+	</properties>
+
+</project>
