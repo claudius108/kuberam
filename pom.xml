@@ -11,6 +11,7 @@
 	<modules>
 		<module>junit-tests</module>
 		<module>sourceforge</module>
+		<module>js-libs</module>
 	</modules>
 
 

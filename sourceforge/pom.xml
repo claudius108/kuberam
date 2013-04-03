@@ -36,4 +36,7 @@
 		<resources-excluded-from-uploading>.*,pom.xml,target/</resources-excluded-from-uploading>
 	</properties>
 
+	<modules>
+		<module>js-libs</module>
+	</modules>
 </project>
