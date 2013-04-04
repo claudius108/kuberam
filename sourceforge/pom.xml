@@ -33,7 +33,7 @@
 
 		<sourceforge-public-key-path>${workspaces-dir-path}/archive/crypto-keys/sourceforge-claudius108/sourceforge-claudius108</sourceforge-public-key-path>
 
-		<resources-excluded-from-uploading>.*,pom.xml,target/</resources-excluded-from-uploading>
+		<resources-excluded-from-uploading>.*,pom.xml,target/,.*/</resources-excluded-from-uploading>
 	</properties>
 
 	<modules>

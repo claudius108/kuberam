@@ -1,0 +1,203 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>ro.kuberam.maven</groupId>
+		<artifactId>sourceforge</artifactId>
+		<version>0.1-SNAPSHOT</version>
+	</parent>
+
+	<artifactId>js-libs</artifactId>
+	<groupId>ro.kuberam.maven.sourceforge</groupId>
+	<version>0.2-SNAPSHOT</version>
+	<packaging>pom</packaging>
+	<name>JS libs</name>
+
+
+	<properties>
+		<project-archive-name>${project.artifactId}-${project.version}.zip</project-archive-name>
+		<project-archive-path>${project.build.directory}/${project-archive-name}</project-archive-path>
+		<js-libs-dir-path>${workspaces-dir-path}/js-libs</js-libs-dir-path>
+	</properties>
+
+	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>xml-maven-plugin</artifactId>
+					<executions>
+						<execution>
+							<id>generate-index.html</id>
+							<phase>process-test-resources</phase>
+							<goals>
+								<goal>transform</goal>
+							</goals>
+							<configuration>
+								<forceCreation>true</forceCreation>
+								<transformationSets>
+									<transformationSet>
+										<dir>../${project.artifactId}/tests</dir>
+										<includes>
+											<include>test-plan.xml</include>
+										</includes>
+										<stylesheet>http://kert.sourceforge.net/latest/resources/xsl/generate-tests-presentation.xsl</stylesheet>
+										<fileMappers>
+											<fileMapper implementation="org.codehaus.plexus.components.io.filemappers.RegExpFileMapper">
+												<pattern>^(.*)\.xml$</pattern>
+												<replacement>index.html</replacement>
+											</fileMapper>
+										</fileMappers>
+										<outputDir>tests</outputDir>
+									</transformationSet>
+								</transformationSets>
+							</configuration>
+						</execution>
+					</executions>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-antrun-plugin</artifactId>
+					<executions>
+						<execution>
+							<id>create-project-archive</id>
+							<phase>process-test-resources</phase>
+							<goals>
+								<goal>run</goal>
+							</goals>
+							<configuration>
+								<target>
+									<echo>Create project archive</echo>
+									<zip destfile="${project-archive-path}" basedir="${basedir}" excludes="${resources-excluded-from-uploading}" />
+								</target>
+							</configuration>
+						</execution>
+						<execution>
+							<id>create-project-shell</id>
+							<phase>prepare-package</phase>
+							<goals>
+								<goal>run</goal>
+							</goals>
+							<configuration>
+								<target>
+									<echo>Create project shell</echo>
+									<exec executable="ssh">
+										<arg line="${sourceforge-shell-arg-line} create" />
+									</exec>
+									<echo>Delete project's resources</echo>
+									<exec executable="ssh"
+										inputstring="rm -rf ${sourceforge-project-web-htdocs-path}/latest/* ; rm -rf ${sourceforge-project-web-htdocs-path}/stable/${project.version}/* ; exit">
+										<arg line="${sourceforge-shell-arg-line}" />
+									</exec>
+								</target>
+							</configuration>
+						</execution>
+					</executions>
+				</plugin>
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>wagon-maven-plugin</artifactId>
+					<executions>
+						<execution>
+							<id>upload-project-resources-to-latest</id>
+							<phase>prepare-package</phase>
+							<goals>
+								<goal>upload</goal>
+							</goals>
+							<configuration>
+								<excludes>${resources-excluded-from-uploading}</excludes>
+								<serverId>sourceforge</serverId>
+								<url>${sourceforge-project-web-url}/latest</url>
+							</configuration>
+						</execution>
+						<execution>
+							<id>upload-latest-project-archive-to-maven-repo</id>
+							<phase>prepare-package</phase>
+							<goals>
+								<goal>upload-single</goal>
+							</goals>
+							<configuration>
+								<serverId>sourceforge</serverId>
+								<fromFile>${project-archive-path}</fromFile>
+								<toFile>${project.artifactId}-latest.zip</toFile>
+								<url>${sourceforge-user-web-url}/maven/ro/kuberam/${project.artifactId}/latest</url>
+							</configuration>
+						</execution>
+
+						<!-- <execution> -->
+						<!-- <id>copy-project-resources-from-latest-to-stable</id> -->
+						<!-- <phase>prepare-package</phase> -->
+						<!-- <goals> -->
+						<!-- <goal>copy</goal> -->
+						<!-- </goals> -->
+						<!-- <configuration> -->
+						<!-- <sourceId>sourceforge</sourceId> -->
+						<!-- <targetId>sourceforge</targetId> -->
+						<!-- <source>${sourceforge-project-web-url}</source> -->
+						<!-- <fromDir>latest</fromDir> -->
+						<!-- <target>${sourceforge-project-web-url}</target> -->
+						<!-- <toDir>stable/${project.version}</toDir> -->
+						<!-- </configuration> -->
+						<!-- </execution> -->
+
+
+						<execution>
+							<id>upload-project-resources-to-stable</id>
+							<phase>prepare-package</phase>
+							<goals>
+								<goal>upload</goal>
+							</goals>
+							<configuration>
+								<excludes>${resources-excluded-from-uploading}</excludes>
+								<serverId>sourceforge</serverId>
+								<url>${sourceforge-project-web-url}/stable/${project.version}</url>
+							</configuration>
+						</execution>
+						<execution>
+							<id>upload-stable-project-archive-to-maven-repo</id>
+							<phase>prepare-package</phase>
+							<goals>
+								<goal>upload-single</goal>
+							</goals>
+							<configuration>
+								<serverId>sourceforge</serverId>
+								<fromFile>${project-archive-path}</fromFile>
+								<toFile>${project-archive-name}</toFile>
+								<url>${sourceforge-user-web-url}/maven/ro/kuberam/${project.artifactId}/${project.version}</url>
+							</configuration>
+						</execution>
+						<execution>
+							<id>publish-project-archive-to-frs</id>
+							<phase>package</phase>
+							<goals>
+								<goal>upload-single</goal>
+							</goals>
+							<configuration>
+								<serverId>sourceforge</serverId>
+								<fromFile>${project-archive-path}</fromFile>
+								<toFile>${project-archive-name}</toFile>
+								<url>${sourceforge-frs-url}</url>
+							</configuration>
+						</execution>
+						<execution>
+							<id>publish-project-readme-to-frs</id>
+							<phase>package</phase>
+							<goals>
+								<goal>upload-single</goal>
+							</goals>
+							<configuration>
+								<serverId>sourceforge</serverId>
+								<fromFile>${basedir}/documentation/readme</fromFile>
+								<toFile>readme</toFile>
+								<url>${sourceforge-frs-url}</url>
+							</configuration>
+						</execution>
+					</executions>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
+
+</project>
