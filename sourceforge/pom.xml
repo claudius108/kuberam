@@ -24,16 +24,9 @@
 
 		<sourceforge-project-web-htdocs-path>/home/project-web/${project.artifactId}/htdocs</sourceforge-project-web-htdocs-path>
 		<sourceforge-project-web-url>sftp://${sourceforge-web-credentials}@${sourceforge-project-web-host}${sourceforge-project-web-htdocs-path}</sourceforge-project-web-url>
-
-		<sourceforge-user-web-htdocs-path>/home/user-web/${sourceforge-username}/htdocs</sourceforge-user-web-htdocs-path>
-		<sourceforge-user-web-url>sftp://${sourceforge-username},extxsltforms@${sourceforge-frs-host}${sourceforge-user-web-htdocs-path}</sourceforge-user-web-url>
-
-
 		
-		<sourceforge-kuberam-web-htdocs-path>/home/project-web/claudius108.u/htdocs</sourceforge-kuberam-web-htdocs-path>
-		<sourceforge-kuberam-web-url>sftp://${sourceforge-username},claudius108.u@${sourceforge-frs-host}${sourceforge-kuberam-web-htdocs-path}</sourceforge-kuberam-web-url>	
-
-		
+		<sourceforge-kuberam-web-htdocs-path>/home/project-web/kuberam/htdocs</sourceforge-kuberam-web-htdocs-path>
+		<sourceforge-kuberam-web-url>sftp://${sourceforge-username},kuberam@${sourceforge-frs-host}${sourceforge-kuberam-web-htdocs-path}</sourceforge-kuberam-web-url>			
 
 		<sourceforge-frs-url>sftp://${sourceforge-web-credentials}@${sourceforge-frs-host}/home/frs/project/${project.artifactId}</sourceforge-frs-url>
 		<sourceforge-shell-arg-line>-t -i ${sourceforge-public-key-path} ${sourceforge-web-credentials}@${sourceforge-shell-host}</sourceforge-shell-arg-line>
