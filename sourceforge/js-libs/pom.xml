@@ -122,7 +122,7 @@
 								<serverId>sourceforge</serverId>
 								<fromFile>${project-archive-path}</fromFile>
 								<toFile>${project.artifactId}-latest.zip</toFile>
-								<url>${sourceforge-kuberam-web-url}/maven/ro/kuberam/${project.artifactId}/latest</url>
+								<url>${sourceforge-user-web-url}/maven/ro/kuberam/${project.artifactId}/latest</url>
 							</configuration>
 						</execution>
 
@@ -165,7 +165,7 @@
 								<serverId>sourceforge</serverId>
 								<fromFile>${project-archive-path}</fromFile>
 								<toFile>${project-archive-name}</toFile>
-								<url>${sourceforge-kuberam-web-url}/maven/ro/kuberam/${project.artifactId}/${project.version}</url>
+								<url>${sourceforge-user-web-url}/maven/ro/kuberam/${project.artifactId}/${project.version}</url>
 							</configuration>
 						</execution>
 						<execution>

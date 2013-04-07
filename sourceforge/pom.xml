@@ -25,6 +25,9 @@
 		<sourceforge-project-web-htdocs-path>/home/project-web/${project.artifactId}/htdocs</sourceforge-project-web-htdocs-path>
 		<sourceforge-project-web-url>sftp://${sourceforge-web-credentials}@${sourceforge-project-web-host}${sourceforge-project-web-htdocs-path}</sourceforge-project-web-url>
 		
+		<sourceforge-user-web-htdocs-path>/home/user-web/${sourceforge-username}/htdocs</sourceforge-user-web-htdocs-path>
+		<sourceforge-user-web-url>sftp://${sourceforge-username},kuberam@${sourceforge-frs-host}${sourceforge-user-web-htdocs-path}</sourceforge-user-web-url>		
+		
 		<sourceforge-kuberam-web-htdocs-path>/home/project-web/kuberam/htdocs</sourceforge-kuberam-web-htdocs-path>
 		<sourceforge-kuberam-web-url>sftp://${sourceforge-username},kuberam@${sourceforge-frs-host}${sourceforge-kuberam-web-htdocs-path}</sourceforge-kuberam-web-url>			
 
