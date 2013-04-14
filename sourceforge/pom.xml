@@ -24,18 +24,35 @@
 
 		<sourceforge-project-web-htdocs-path>/home/project-web/${project.artifactId}/htdocs</sourceforge-project-web-htdocs-path>
 		<sourceforge-project-web-url>sftp://${sourceforge-web-credentials}@${sourceforge-project-web-host}${sourceforge-project-web-htdocs-path}</sourceforge-project-web-url>
-		
+
 		<sourceforge-user-web-htdocs-path>/home/user-web/${sourceforge-username}/htdocs</sourceforge-user-web-htdocs-path>
-		<sourceforge-user-web-url>sftp://${sourceforge-username},kuberam@${sourceforge-frs-host}${sourceforge-user-web-htdocs-path}</sourceforge-user-web-url>		
-		
+		<sourceforge-user-web-url>sftp://${sourceforge-username},kuberam@${sourceforge-frs-host}${sourceforge-user-web-htdocs-path}</sourceforge-user-web-url>
+
 		<sourceforge-kuberam-web-htdocs-path>/home/project-web/kuberam/htdocs</sourceforge-kuberam-web-htdocs-path>
-		<sourceforge-kuberam-web-url>sftp://${sourceforge-username},kuberam@${sourceforge-frs-host}${sourceforge-kuberam-web-htdocs-path}</sourceforge-kuberam-web-url>			
+		<sourceforge-kuberam-web-url>sftp://${sourceforge-username},kuberam@${sourceforge-frs-host}${sourceforge-kuberam-web-htdocs-path}</sourceforge-kuberam-web-url>
 
 		<sourceforge-frs-url>sftp://${sourceforge-web-credentials}@${sourceforge-frs-host}/home/frs/project/${project.artifactId}</sourceforge-frs-url>
-		<sourceforge-shell-arg-line>-t -i ${sourceforge-public-key-path} ${sourceforge-web-credentials}@${sourceforge-shell-host}</sourceforge-shell-arg-line>
 
 		<sourceforge-public-key-path>${workspaces-dir-path}/archive/crypto-keys/sourceforge-claudius108/sourceforge-claudius108</sourceforge-public-key-path>
 
+		<synchronizing-host>${sourceforge-username}@${sourceforge-project-web-host}</synchronizing-host>
+		<synchronizing-project-web-htdocs-path>/home/project-web/${project.artifactId}/htdocs</synchronizing-project-web-htdocs-path>
+		<synchronizing-project-web-url>${synchronizing-host}:${synchronizing-project-web-htdocs-path}</synchronizing-project-web-url>
+		<synchronizing-user-web-htdocs-path>/home/user-web/${sourceforge-username}/htdocs</synchronizing-user-web-htdocs-path>
+		<synchronizing-user-web-url>${synchronizing-host}:${synchronizing-user-web-htdocs-path}</synchronizing-user-web-url>
+		
+		
+		<synchronizing-excluded-resources>--exclude='.*' --exclude='pom.xml' --exclude='target/*/'</synchronizing-excluded-resources>
+		<synchronizing-ssh-argument>'ssh -t -i ${sourceforge-public-key-path}'</synchronizing-ssh-argument>
+		<synchronizing-source-dir>${basedir}/</synchronizing-source-dir>
+		
+		
+		
+		
+		
+
+
+		<sourceforge-shell-arg-line>-t -i ${sourceforge-public-key-path} ${sourceforge-web-credentials}@${sourceforge-shell-host}</sourceforge-shell-arg-line>
 		<resources-excluded-from-uploading>.*,pom.xml,target/,.*/</resources-excluded-from-uploading>
 	</properties>
 

@@ -20,6 +20,15 @@
 		<project-archive-name>${project.artifactId}-${project.version}.zip</project-archive-name>
 		<project-archive-path>${project.build.directory}/${project-archive-name}</project-archive-path>
 		<js-libs-dir-path>${workspaces-dir-path}/js-libs</js-libs-dir-path>
+		<remote-ssh-input-string>
+			mkdir -p ${synchronizing-user-web-htdocs-path}/repos/maven/ro/kuberam/${project.artifactId}/{latest,${project.version}};
+			cp ${synchronizing-project-web-htdocs-path}/latest/target/${project-archive-name} ${synchronizing-user-web-htdocs-path}/repos/maven/ro/kuberam/${project.artifactId}/latest/${project.artifactId}-latest.zip;
+			cp ${synchronizing-project-web-htdocs-path}/latest/target/${project-archive-name} ${synchronizing-user-web-htdocs-path}/repos/maven/ro/kuberam/${project.artifactId}/${project.version}/${project-archive-name};
+			rm -rf ${synchronizing-project-web-htdocs-path}/latest/target;
+			mkdir -p ${synchronizing-project-web-htdocs-path}/stable/${project.version};
+			cp -r ${synchronizing-project-web-htdocs-path}/latest/* ${synchronizing-project-web-htdocs-path}/stable/${project.version};
+			exit;
+		</remote-ssh-input-string>
 	</properties>
 
 	<build>
@@ -75,7 +84,7 @@
 							</configuration>
 						</execution>
 						<execution>
-							<id>create-project-shell</id>
+							<id>deploy-project-resources-to-repos</id>
 							<phase>prepare-package</phase>
 							<goals>
 								<goal>run</goal>
@@ -86,116 +95,64 @@
 									<exec executable="ssh">
 										<arg line="${sourceforge-shell-arg-line} create" />
 									</exec>
-									<echo>Delete project's resources</echo>
-									<exec executable="ssh"
-										inputstring="rm -rf ${sourceforge-project-web-htdocs-path}/latest/* ; rm -rf ${sourceforge-project-web-htdocs-path}/stable/${project.version}/* ; exit">
-										<arg line="${sourceforge-shell-arg-line}" />
+									<echo>Synchronize project's resources with latest version</echo>
+									<exec executable="rsync">
+										<arg line=" -avP --delete ${synchronizing-excluded-resources} -e ${synchronizing-ssh-argument} ${synchronizing-source-dir} ${synchronizing-project-web-url}/latest/" />
 									</exec>
+									<exec executable="ssh"
+										inputstring="${remote-ssh-input-string}">
+										<arg line="${sourceforge-shell-arg-line}" />
+									</exec>									
 								</target>
 							</configuration>
 						</execution>
-					</executions>
-				</plugin>
-				<plugin>
-					<groupId>org.codehaus.mojo</groupId>
-					<artifactId>wagon-maven-plugin</artifactId>
-					<executions>
 						<execution>
-							<id>upload-project-resources-to-latest</id>
-							<phase>prepare-package</phase>
-							<goals>
-								<goal>upload</goal>
-							</goals>
-							<configuration>
-								<excludes>${resources-excluded-from-uploading}</excludes>
-								<serverId>sourceforge</serverId>
-								<url>${sourceforge-project-web-url}/latest</url>
-							</configuration>
-						</execution>
-						<execution>
-							<id>upload-latest-project-archive-to-maven-repo</id>
-							<phase>prepare-package</phase>
-							<goals>
-								<goal>upload-single</goal>
-							</goals>
-							<configuration>
-								<serverId>sourceforge</serverId>
-								<fromFile>${project-archive-path}</fromFile>
-								<toFile>${project.artifactId}-latest.zip</toFile>
-								<url>${sourceforge-user-web-url}/maven/ro/kuberam/${project.artifactId}/latest</url>
-							</configuration>
-						</execution>
-
-						<!-- <execution> -->
-						<!-- <id>copy-project-resources-from-latest-to-stable</id> -->
-						<!-- <phase>prepare-package</phase> -->
-						<!-- <goals> -->
-						<!-- <goal>copy</goal> -->
-						<!-- </goals> -->
-						<!-- <configuration> -->
-						<!-- <sourceId>sourceforge</sourceId> -->
-						<!-- <targetId>sourceforge</targetId> -->
-						<!-- <source>${sourceforge-project-web-url}</source> -->
-						<!-- <fromDir>latest</fromDir> -->
-						<!-- <target>${sourceforge-project-web-url}</target> -->
-						<!-- <toDir>stable/${project.version}</toDir> -->
-						<!-- </configuration> -->
-						<!-- </execution> -->
-
-
-						<execution>
-							<id>upload-project-resources-to-stable</id>
-							<phase>prepare-package</phase>
-							<goals>
-								<goal>upload</goal>
-							</goals>
-							<configuration>
-								<excludes>${resources-excluded-from-uploading}</excludes>
-								<serverId>sourceforge</serverId>
-								<url>${sourceforge-project-web-url}/stable/${project.version}</url>
-							</configuration>
-						</execution>
-						<execution>
-							<id>upload-stable-project-archive-to-maven-repo</id>
-							<phase>prepare-package</phase>
-							<goals>
-								<goal>upload-single</goal>
-							</goals>
-							<configuration>
-								<serverId>sourceforge</serverId>
-								<fromFile>${project-archive-path}</fromFile>
-								<toFile>${project-archive-name}</toFile>
-								<url>${sourceforge-user-web-url}/maven/ro/kuberam/${project.artifactId}/${project.version}</url>
-							</configuration>
-						</execution>
-						<execution>
-							<id>publish-project-archive-to-frs</id>
+							<id>deploy-project-archive-to-sourceforge-frs</id>
 							<phase>package</phase>
 							<goals>
-								<goal>upload-single</goal>
+								<goal>run</goal>
 							</goals>
 							<configuration>
-								<serverId>sourceforge</serverId>
-								<fromFile>${project-archive-path}</fromFile>
-								<toFile>${project-archive-name}</toFile>
-								<url>${sourceforge-frs-url}</url>
+								<target>
+								</target>
 							</configuration>
 						</execution>
-						<execution>
-							<id>publish-project-readme-to-frs</id>
-							<phase>package</phase>
-							<goals>
-								<goal>upload-single</goal>
-							</goals>
-							<configuration>
-								<serverId>sourceforge</serverId>
-								<fromFile>${basedir}/documentation/readme</fromFile>
-								<toFile>readme</toFile>
-								<url>${sourceforge-frs-url}</url>
-							</configuration>
-						</execution>
+						
 					</executions>
 				</plugin>
+<!-- 				<plugin> -->
+<!-- 					<groupId>org.codehaus.mojo</groupId> -->
+<!-- 					<artifactId>wagon-maven-plugin</artifactId> -->
+<!-- 					<executions> -->
+
+<!-- 						<execution> -->
+<!-- 							<id>publish-project-archive-to-frs</id> -->
+<!-- 							<phase>package</phase> -->
+<!-- 							<goals> -->
+<!-- 								<goal>upload-single</goal> -->
+<!-- 							</goals> -->
+<!-- 							<configuration> -->
+<!-- 								<serverId>sourceforge</serverId> -->
+<!-- 								<fromFile>${project-archive-path}</fromFile> -->
+<!-- 								<toFile>${project-archive-name}</toFile> -->
+<!-- 								<url>${sourceforge-frs-url}</url> -->
+<!-- 							</configuration> -->
+<!-- 						</execution> -->
+<!-- 						<execution> -->
+<!-- 							<id>publish-project-readme-to-frs</id> -->
+<!-- 							<phase>package</phase> -->
+<!-- 							<goals> -->
+<!-- 								<goal>upload-single</goal> -->
+<!-- 							</goals> -->
+<!-- 							<configuration> -->
+<!-- 								<serverId>sourceforge</serverId> -->
+<!-- 								<fromFile>${basedir}/documentation/readme</fromFile> -->
+<!-- 								<toFile>readme</toFile> -->
+<!-- 								<url>${sourceforge-frs-url}</url> -->
+<!-- 							</configuration> -->
+<!-- 						</execution> -->
+<!-- 					</executions> -->
+<!-- 				</plugin> -->
 			</plugins>
 		</pluginManagement>
 	</build>
