@@ -10,8 +10,8 @@
 	<modules>
 		<module>junit-tests</module>
 		<module>sourceforge</module>
+		<module>maven-xar-plugin</module>
 	</modules>
-
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -21,6 +21,14 @@
 		<main.basedir>${workspaces-dir-path}/a-model/models</main.basedir>
 		<local-eXist-management-build-file>${main.basedir}/src/main/resources/local-eXist-management.xml</local-eXist-management-build-file>
 	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>1.2.17</version>
+		</dependency>
+	</dependencies>
 
 	<build>
 		<extensions>
