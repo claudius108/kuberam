@@ -10,7 +10,6 @@
 	<modules>
 		<module>junit-tests</module>
 		<module>sourceforge</module>
-		<module>maven-xar-plugin</module>
 	</modules>
 
 	<properties>

@@ -1,0 +1,86 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>ro.kuberam.maven.maven-xar-plugin</groupId>
+	<artifactId>project-to-test</artifactId>
+	<version>1.0-SNAPSHOT</version>
+	<packaging>jar</packaging>
+	<name>Test  GenerateDescriptorsMojo</name>
+
+	<dependencies>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.11</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<!-- <plugin> -->
+			<!-- <groupId>ro.kuberam.maven</groupId> -->
+			<!-- <artifactId>kuberam-xar-plugin</artifactId> -->
+			<!-- <version>0.1</version> -->
+			<!-- <executions> -->
+			<!-- <execution> -->
+			<!-- <id>create-project-archive</id> -->
+			<!-- <phase>test</phase> -->
+			<!-- <goals> -->
+			<!-- <goal>generate-descriptors</goal> -->
+			<!-- </goals> -->
+			<!-- <configuration> -->
+			<!-- <descriptor>assembly.xml</descriptor> -->
+			<!-- <outputDirectory>${project.build.directory}</outputDirectory> -->
+
+
+			<!-- <finalName>${project.artifactId}-${project.version}</finalName> -->
+			<!-- </configuration> -->
+			<!-- </execution> -->
+			<!-- </executions> -->
+			<!-- </plugin> -->
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>xml-maven-plugin</artifactId>
+				<version>1.0</version>
+				<executions>
+					<execution>
+						<id>generate-lib-package</id>
+						<phase>test</phase>
+						<goals>
+							<goal>transform</goal>
+						</goals>
+						<configuration>
+							<forceCreation>true</forceCreation>
+							<basedir>${project.build.directory}/xar</basedir>
+							<transformationSets>
+								<transformationSet>
+									<dir>.</dir>
+									<includes>
+										<include>assembly.xml</include>
+									</includes>
+									<stylesheet>${basedir}/generate-descriptors.xsl</stylesheet>
+									<parameters>
+										<parameter>
+											<name>package-dir</name>
+											<value>${project.build.directory}/xar</value>
+										</parameter>
+									</parameters>
+								</transformationSet>
+							</transformationSets>
+						</configuration>
+					</execution>
+				</executions>
+				<dependencies>
+					<dependency>
+						<groupId>net.sf.saxon</groupId>
+						<artifactId>Saxon-HE</artifactId>
+						<version>9.4.0.7</version>
+					</dependency>
+				</dependencies>
+			</plugin>
+		</plugins>
+	</build>
+</project>
