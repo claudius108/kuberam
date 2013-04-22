@@ -1,5 +1,5 @@
 <package xmlns="http://expath.org/ns/pkg" xmlns:dc="http://dublincore.org/documents/dces/" xmlns:pkg="http://cxan.org/ns/package"
-	name="http://exist-db.org/ns/expath-crypto" abbrev="expath-crypto-exist-lib-demos" version="${project.version}" spec="1.0">
+	name="http://exist-db.org/ns/expath-crypto" abbrev="expath-crypto-exist-lib-demos" version="1.0-SNAPSHOT" spec="1.0">
 	<title>EXPath Cryptographic Module Demos</title>
 	<dependency processor="http://exist-db.org/" />
 	<dependency package="http://expath.org/lib/crypto" />
@@ -24,18 +24,4 @@
 		<target>expath-crypto</target>
 	</meta>
 
-	<!-- cxan -->
-	<package xmlns="http://cxan.org/ns/package">
-		<author>Claudius Teodorescu</author>
-		<category id="libs">Libraries</category>
-		<category id="exist">eXist extensions</category>
-		<tag>crypto</tag>
-		<tag>expath</tag>
-		<tag>application</tag>
-		<tag>exist</tag>
-	</package>
-
-	<!-- eXist -->
-	<package xmlns="http://exist-db.org/ns/expath-pkg">
-	</package>
 </package>

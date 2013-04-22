@@ -16,35 +16,10 @@
 	<xsl:variable name="processor-ns">
 		<xsl:text>http://exist-db.org/</xsl:text>
 	</xsl:variable>
-	<xsl:variable name="title" select="title" />
-	<xsl:variable name="author" select="dc:creator" />
+	<xsl:variable name="title" select="/*/*[local-name() = 'title']" />
+	<xsl:variable name="author" select="/*/dc:creator" />
 
 	<xsl:template match="/">
-
-		<!-- generate the expath-pkg.xml files -->
-		<xsl:call-template name="generate-expath-pkg-descriptor">
-			<xsl:with-param name="package-type" select="'library'" />
-		</xsl:call-template>
-		<xsl:call-template name="generate-expath-pkg-descriptor">
-			<xsl:with-param name="package-type" select="'application'" />
-		</xsl:call-template>
-
-		<!-- generate the repo.xml files -->
-		<xsl:call-template name="generate-repo-descriptor">
-			<xsl:with-param name="package-type" select="'library'" />
-		</xsl:call-template>
-		<xsl:call-template name="generate-repo-descriptor">
-			<xsl:with-param name="package-type" select="'application'" />
-		</xsl:call-template>
-
-		<!-- generate the cxan.xml files -->
-		<xsl:call-template name="generate-cxan-descriptor">
-			<xsl:with-param name="package-type" select="'library'" />
-		</xsl:call-template>
-		<xsl:call-template name="generate-cxan-descriptor">
-			<xsl:with-param name="package-type" select="'application'" />
-		</xsl:call-template>
-
 		<xsl:choose>
 			<xsl:when test="$package-type = 'application'">
 				<xsl:result-document href="{concat($package-dir, '/controller.xql')}" omit-xml-declaration="yes">
@@ -97,17 +72,14 @@
 		</xsl:choose>
 
 		<!-- generate exist.xml -->
-		<xsl:result-document href="exist.xml">
+		<xsl:result-document href="{concat($package-dir, '/exist.xml')}">
 			<package xmlns="http://exist-db.org/ns/expath-pkg">
 				<xsl:copy-of select="/*/*[contains('jar java', local-name())]" copy-namespaces="no" />
 			</package>
 		</xsl:result-document>
 
-	</xsl:template>
-
-	<xsl:template name="generate-cxan-descriptor">
-		<xsl:param name="package-type" />
-		<xsl:result-document href="{concat($package-dir, '/', $package-type, '-package-descriptors/cxan.xml')}">
+		<!-- generate cxan.xml -->
+		<xsl:result-document href="{concat($package-dir, '/cxan.xml')}">
 			<package xmlns="http://cxan.org/ns/package" id="{$abbrev}" name="{$name}" version="{$package-version}">
 				<author id="{$cxan.org-id}">
 					<xsl:value-of select="$author" />
@@ -121,16 +93,12 @@
 				<tag>
 					<xsl:value-of select="$package-type" />
 				</tag>
-				<tag>
-					<xsl:value-of select="//@processor" />
-				</tag>
+				<tag>exist</tag>
 			</package>
 		</xsl:result-document>
-	</xsl:template>
 
-	<xsl:template name="generate-expath-pkg-descriptor">
-		<xsl:param name="package-type" />
-		<xsl:result-document href="{concat($package-dir, '/', $package-type, '-package-descriptors/expath-pkg.xml')}">
+		<!-- generate expath-pkg.xml -->
+		<xsl:result-document href="{concat($package-dir, '/expath-pkg.xml')}">
 			<package xmlns="http://expath.org/ns/pkg" name="{$name}" abbrev="{$abbrev}" version="{$package-version}"
 				spec="1.0">
 				<title>
@@ -139,16 +107,14 @@
 				<dependency processor="{$processor-ns}" />
 				<xsl:choose>
 					<xsl:when test="$package-type = 'application'">
-						<dependency package="" />
+						<xsl:copy-of select="/*/*[local-name() = 'dependency']" copy-namespaces="no" />
 					</xsl:when>
 				</xsl:choose>
 			</package>
 		</xsl:result-document>
-	</xsl:template>
 
-	<xsl:template name="generate-repo-descriptor">
-		<xsl:param name="package-type" />
-		<xsl:result-document href="{concat($package-dir, '/', $package-type, '-package-descriptors/repo.xml')}">
+		<!-- generate repo.xml -->
+		<xsl:result-document href="{concat($package-dir, '/repo.xml')}">
 			<meta xmlns="http://exist-db.org/xquery/repo">
 				<description>
 					<xsl:value-of select="$title" />
@@ -172,6 +138,8 @@
 				</xsl:choose>
 			</meta>
 		</xsl:result-document>
+
+
 	</xsl:template>
 
 </xsl:stylesheet>
