@@ -17,6 +17,7 @@
 		<package-abbrev>expath-${module-prefix}-exist-lib-demos</package-abbrev>
 		<package-title>${spec-title} Demos</package-title>
 		<package-type>application</package-type>
+		<java-class>org.expath.exist.crypto.ExistExpathCryptoModule</java-class>
 	</properties>
 
 	<dependencies>

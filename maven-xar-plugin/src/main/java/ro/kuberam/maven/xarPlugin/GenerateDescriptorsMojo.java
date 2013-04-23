@@ -65,21 +65,20 @@ public class GenerateDescriptorsMojo extends AbstractMojo {
 	public void execute() throws MojoExecutionException {
 
 		String outputDir = outputDirectory.getAbsolutePath();
-		getLog().info("outputDir: " + outputDir);
+		String projectBuildDirectory = project.getModel().getBuild().getDirectory();
+		String descriptorName = descriptor.getName();		
 
 		Resource resource = new Resource();
 		resource.setDirectory(descriptor.getParent());
-		resource.addInclude(descriptor.getName());
-		resource.addInclude("test.xml");
+		resource.addInclude(descriptorName);
 		resource.setFiltering(true);
-		resource.setTargetPath(outputDir);
-		getLog().info("descriptor: " + descriptor.getName());
+		resource.setTargetPath(projectBuildDirectory);
 		List<Resource> listResources = new ArrayList<Resource>();
 		listResources.add(resource);
 
 		MavenResourcesExecution mavenResourcesExecution = new MavenResourcesExecution(
 				Collections.singletonList(resource), outputDirectory, project, encoding, filters,
-				Collections.EMPTY_LIST, session);
+				defaultNonFilteredFileExtensions, session);
 
 		mavenResourcesExecution.setInjectProjectBuildFilters(false);
 		mavenResourcesExecution.setOverwrite(true);
@@ -99,8 +98,8 @@ public class GenerateDescriptorsMojo extends AbstractMojo {
 						element(name("forceCreation"), "true"),
 						element(name("transformationSets"),
 								element(name("transformationSet"),
-										element(name("dir"), outputDir),
-										element(name("includes"), element(name("include"), descriptor.getName())),
+										element(name("dir"), projectBuildDirectory),
+										element(name("includes"), element(name("include"), descriptorName)),
 										element(name("stylesheet"),
 												this.getClass().getResource("generate-descriptors.xsl").toString()),
 										element(name("parameters"),

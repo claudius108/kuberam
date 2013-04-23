@@ -16,7 +16,7 @@
 	<jar xmlns="http://exist-db.org/ns/expath-pkg">expath-crypto-lib-0.2.5.jar</jar>
 	<java xmlns="http://exist-db.org/ns/expath-pkg">
 		<namespace>http://expath.org/ns/crypto</namespace>
-		<class>org.expath.exist.crypto.ExistExpathCryptoModule</class>
+		<class>${java-class}</class>
 	</java>
 	<status xmlns="http://exist-db.org/xquery/repo">stable</status>
 	<copyright xmlns="http://exist-db.org/xquery/repo">true</copyright>
