@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:dc="http://dublincore.org/documents/dces/"
-	xmlns:pkg="http://cxan.org/ns/package" exclude-result-prefixes="dc pkg" version="2.0">
+	xmlns:pkg="http://cxan.org/ns/package" xmlns:xs="http://www.w3.org/2001/XMLSchema" exclude-result-prefixes="dc pkg xs"
+	version="2.0">
 
 	<xsl:output method="xml" />
 
@@ -80,20 +81,21 @@
 
 		<!-- generate cxan.xml -->
 		<xsl:result-document href="{concat($package-dir, '/cxan.xml')}">
+			<xsl:variable name="tags" as="xs:string*" select="tokenize(/*/pkg:cxan-tags, ',')" />
 			<package xmlns="http://cxan.org/ns/package" id="{$abbrev}" name="{$name}" version="{$package-version}">
 				<author id="{$cxan.org-id}">
 					<xsl:value-of select="$author" />
 				</author>
-				<category id="libs">Libraries</category>
-				<category id="exist">eXist extensions</category>
-				<tag>
-					<xsl:value-of select="$module-prefix" />
-				</tag>
-				<tag>expath</tag>
-				<tag>
-					<xsl:value-of select="$package-type" />
-				</tag>
-				<tag>exist</tag>
+				<xsl:for-each select="/*/pkg:cxan-category">
+					<category id="{@id}">
+						<xsl:value-of select="." />
+					</category>
+				</xsl:for-each>
+				<xsl:for-each select="$tags">
+					<tag>
+						<xsl:value-of select="." />
+					</tag>
+				</xsl:for-each>
 			</package>
 		</xsl:result-document>
 
@@ -104,7 +106,6 @@
 				<title>
 					<xsl:value-of select="$title" />
 				</title>
-				<dependency processor="{$processor-ns}" />
 				<xsl:choose>
 					<xsl:when test="$package-type = 'application'">
 						<xsl:copy-of select="/*/*[local-name() = 'dependency']" copy-namespaces="no" />
@@ -122,10 +123,19 @@
 				<author>
 					<xsl:value-of select="$author" />
 				</author>
-				<website />
-				<status>stable</status>
-				<license>GNU-LGPL</license>
-				<copyright>true</copyright>
+				<website>
+					<xsl:value-of select="/*/dc:identifier" />
+				</website>				
+				<status>
+					<xsl:value-of select="/*/*[local-name() = 'status']" />
+				</status>
+				<license>
+					<xsl:value-of select="/*/dc:rights" />
+				</license>				
+				<copyright>
+					<xsl:value-of select="/*/*[local-name() = 'copyright']" />
+				</copyright>
+
 				<type>
 					<xsl:value-of select="$package-type" />
 				</type>

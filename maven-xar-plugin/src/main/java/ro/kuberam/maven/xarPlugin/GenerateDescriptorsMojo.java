@@ -16,6 +16,7 @@ import static org.twdata.maven.mojoexecutor.MojoExecutor.dependency;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import org.apache.maven.execution.MavenSession;
@@ -40,14 +41,12 @@ public class GenerateDescriptorsMojo extends AbstractMojo {
 	private MavenProject project;
 
 	@Component
-	private MavenSession mavenSession;
+	private MavenSession session;
 
 	@Component
 	private BuildPluginManager pluginManager;
 
-	@Component
-	// (role = org.apache.maven.shared.filtering.MavenResourcesFiltering, hint =
-	// "default")
+	@Component(role = MavenResourcesFiltering.class, hint = "default")
 	protected MavenResourcesFiltering mavenResourcesFiltering;
 
 	@Parameter(required = true)
@@ -68,22 +67,23 @@ public class GenerateDescriptorsMojo extends AbstractMojo {
 		String outputDir = outputDirectory.getAbsolutePath();
 		getLog().info("outputDir: " + outputDir);
 
-		Resource file = new Resource();
-		file.setDirectory(descriptor.getParent());
-		file.addInclude(descriptor.getName());
-		file.setFiltering(true);
+		Resource resource = new Resource();
+		resource.setDirectory(descriptor.getParent());
+		resource.addInclude(descriptor.getName());
+		resource.addInclude("test.xml");
+		resource.setFiltering(true);
+		resource.setTargetPath(outputDir);
+		getLog().info("descriptor: " + descriptor.getName());
 		List<Resource> listResources = new ArrayList<Resource>();
-		listResources.add(file);
+		listResources.add(resource);
 
-		MavenResourcesExecution mavenResourcesExecution = new MavenResourcesExecution(listResources, outputDirectory,
-				project, encoding, filters, defaultNonFilteredFileExtensions, mavenSession);
+		MavenResourcesExecution mavenResourcesExecution = new MavenResourcesExecution(
+				Collections.singletonList(resource), outputDirectory, project, encoding, filters,
+				Collections.EMPTY_LIST, session);
 
-		mavenResourcesExecution.setUseDefaultFilterWrappers(true);
-		mavenResourcesExecution.setInjectProjectBuildFilters(true);
-		mavenResourcesExecution.setOutputDirectory(project.getBasedir());
-		
-		//mavenResourcesExecution.setResources(listResources);
-		getLog().info("mavenResourcesExecution.getOutputDirectory(): " + mavenResourcesExecution.getOutputDirectory().getAbsolutePath());
+		mavenResourcesExecution.setInjectProjectBuildFilters(false);
+		mavenResourcesExecution.setOverwrite(true);
+		mavenResourcesExecution.setSupportMultiLineFiltering(true);
 
 		try {
 			mavenResourcesFiltering.filterResources(mavenResourcesExecution);
@@ -99,14 +99,13 @@ public class GenerateDescriptorsMojo extends AbstractMojo {
 						element(name("forceCreation"), "true"),
 						element(name("transformationSets"),
 								element(name("transformationSet"),
-										element(name("dir"), descriptor.getParent()),
+										element(name("dir"), outputDir),
 										element(name("includes"), element(name("include"), descriptor.getName())),
 										element(name("stylesheet"),
 												this.getClass().getResource("generate-descriptors.xsl").toString()),
 										element(name("parameters"),
 												element(name("parameter"), element(name("name"), "package-dir"),
-														element(name("value"), outputDir))),
-										element(name("outputDir"), outputDir)))),
-				executionEnvironment(project, mavenSession, pluginManager));
+														element(name("value"), outputDir)))))),
+				executionEnvironment(project, session, pluginManager));
 	}
 }
