@@ -40,13 +40,11 @@
 						<id>create-project-archive</id>
 						<phase>test</phase>
 						<goals>
-							<goal>generate-descriptors</goal>
+							<goal>make-xar</goal>
 						</goals>
 						<configuration>
+							<sourceDirectory>${basedir}/expath-specs</sourceDirectory>
 							<descriptor>assembly.xml</descriptor>
-							<outputDirectory>${project.build.directory}/xar</outputDirectory>
-
-
 							<finalName>${project.artifactId}-${project.version}</finalName>
 						</configuration>
 					</execution>
