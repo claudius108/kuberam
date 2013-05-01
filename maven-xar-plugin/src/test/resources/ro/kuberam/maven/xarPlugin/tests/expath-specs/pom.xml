@@ -1,0 +1,95 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>ro.kuberam.maven.maven-xar-plugin</groupId>
+	<artifactId>project-to-test</artifactId>
+	<version>0.2.6</version>
+	<packaging>jar</packaging>
+	<name>Test GenerateDescriptorsMojo</name>
+
+	<properties>
+		<module-prefix>crypto</module-prefix>
+		<module-namespace>http://expath.org/ns/crypto</module-namespace>
+		<spec-title>EXPath Cryptographic Module</spec-title>
+		<package-name>http://exist-db.org/ns/expath-${module-prefix}</package-name>
+		<package-abbrev>expath-${module-prefix}-exist-lib-demos</package-abbrev>
+		<package-title>${spec-title} Demos</package-title>
+		<package-type>application</package-type>
+		<java-class>org.expath.exist.crypto.ExistExpathCryptoModule</java-class>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.11</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>ro.kuberam.maven</groupId>
+				<artifactId>kuberam-xar-plugin</artifactId>
+				<version>0.1</version>
+				<executions>
+					<execution>
+						<id>create-project-archive</id>
+						<phase>test</phase>
+						<goals>
+							<goal>make-xar</goal>
+						</goals>
+						<configuration>
+							<sourceDirectory>${basedir}/expath-specs</sourceDirectory>
+							<descriptor>assembly.xml</descriptor>
+							<finalName>${project.artifactId}-${project.version}</finalName>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+<!-- 			<plugin> -->
+<!-- 				<groupId>org.codehaus.mojo</groupId> -->
+<!-- 				<artifactId>xml-maven-plugin</artifactId> -->
+<!-- 				<version>1.0</version> -->
+<!-- 				<executions> -->
+<!-- 					<execution> -->
+<!-- 						<id>generate-lib-package</id> -->
+<!-- 						<phase>test</phase> -->
+<!-- 						<goals> -->
+<!-- 							<goal>transform</goal> -->
+<!-- 						</goals> -->
+<!-- 						<configuration> -->
+<!-- 							<forceCreation>true</forceCreation> -->
+<!-- 							<basedir>${project.build.directory}/xar</basedir> -->
+<!-- 							<transformationSets> -->
+<!-- 								<transformationSet> -->
+<!-- 									<dir>${project.build.directory}/xar</dir> -->
+<!-- 									<includes> -->
+<!-- 										<include>assembly.xml</include> -->
+<!-- 									</includes> -->
+<!-- 									<stylesheet>${basedir}/generate-descriptors.xsl</stylesheet> -->
+<!-- 									<parameters> -->
+<!-- 										<parameter> -->
+<!-- 											<name>package-dir</name> -->
+<!-- 											<value>${project.build.directory}/xar</value> -->
+<!-- 										</parameter> -->
+<!-- 									</parameters> -->
+<!-- 								</transformationSet> -->
+<!-- 							</transformationSets> -->
+<!-- 						</configuration> -->
+<!-- 					</execution> -->
+<!-- 				</executions> -->
+<!-- 				<dependencies> -->
+<!-- 					<dependency> -->
+<!-- 						<groupId>net.sf.saxon</groupId> -->
+<!-- 						<artifactId>Saxon-HE</artifactId> -->
+<!-- 						<version>9.4.0.7</version> -->
+<!-- 					</dependency> -->
+<!-- 				</dependencies> -->
+<!-- 			</plugin> -->
+		</plugins>
+	</build>
+</project>
