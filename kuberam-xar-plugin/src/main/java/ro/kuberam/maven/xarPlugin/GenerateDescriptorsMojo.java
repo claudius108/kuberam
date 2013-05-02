@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -79,7 +80,6 @@ public class GenerateDescriptorsMojo extends AbstractMojo {
 	private final static int BUFFER = 2048;
 	private static boolean isEntry = false;
 	private static byte data[] = new byte[BUFFER];
-	private static String[] descriptorFileNames = {"controller.xql", "cxan.xml", "exist.xml", "expath-pkg.xml", "repo.xml"};
 
 	public void execute() throws MojoExecutionException {
 
@@ -87,7 +87,7 @@ public class GenerateDescriptorsMojo extends AbstractMojo {
 		String outputDirectoryPath = outputDirectory.getAbsolutePath();
 		String descriptorName = descriptor.getName();
 		String projectBuildDirectory = project.getModel().getBuild().getDirectory();
-		String descriptorsDirectoryPath = projectBuildDirectory + File.separator + "expath-descriptors";		
+		String descriptorsDirectoryPath = projectBuildDirectory + File.separator + "expath-descriptors" + UUID.randomUUID();		
 
 		Resource resource = new Resource();
 		resource.setDirectory(descriptor.getParent());
@@ -144,7 +144,8 @@ public class GenerateDescriptorsMojo extends AbstractMojo {
 
 				if (sourceDirectory.isDirectory()) {
 					// add the descriptors
-					for (String descriptorFileName : descriptorFileNames) {
+					File descriptorsDirectory = new File(descriptorsDirectoryPath);
+					for (String descriptorFileName : descriptorsDirectory.list()) {
 						addFileToXar(new FileInputStream(descriptorsDirectoryPath + File.separator + descriptorFileName), zos, descriptorFileName);
 					}
 					

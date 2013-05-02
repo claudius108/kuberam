@@ -16,7 +16,6 @@
 		<package-name>http://exist-db.org/ns/expath-${module-prefix}</package-name>
 		<package-abbrev>expath-${module-prefix}-exist-lib-demos</package-abbrev>
 		<package-title>${spec-title} Demos</package-title>
-		<package-type>application</package-type>
 		<java-class>org.expath.exist.crypto.ExistExpathCryptoModule</java-class>
 	</properties>
 
@@ -37,59 +36,71 @@
 				<version>0.1</version>
 				<executions>
 					<execution>
-						<id>create-project-archive</id>
+						<id>create-application-archive</id>
 						<phase>test</phase>
 						<goals>
 							<goal>make-xar</goal>
 						</goals>
 						<configuration>
 							<sourceDirectory>${basedir}/expath-specs</sourceDirectory>
-							<descriptor>assembly.xml</descriptor>
-							<finalName>${project.artifactId}-${project.version}</finalName>
+							<descriptor>application-assembly.xml</descriptor>
+							<finalName>${project.artifactId}-${project.version}-application</finalName>
+						</configuration>
+					</execution>
+					<execution>
+						<id>create-library-archive</id>
+						<phase>test</phase>
+						<goals>
+							<goal>make-xar</goal>
+						</goals>
+						<configuration>
+							<sourceDirectory>${basedir}/expath-specs</sourceDirectory>
+							<descriptor>library-assembly.xml</descriptor>
+							<finalName>${project.artifactId}-${project.version}-library</finalName>
 						</configuration>
 					</execution>
 				</executions>
 			</plugin>
-<!-- 			<plugin> -->
-<!-- 				<groupId>org.codehaus.mojo</groupId> -->
-<!-- 				<artifactId>xml-maven-plugin</artifactId> -->
-<!-- 				<version>1.0</version> -->
-<!-- 				<executions> -->
-<!-- 					<execution> -->
-<!-- 						<id>generate-lib-package</id> -->
-<!-- 						<phase>test</phase> -->
-<!-- 						<goals> -->
-<!-- 							<goal>transform</goal> -->
-<!-- 						</goals> -->
-<!-- 						<configuration> -->
-<!-- 							<forceCreation>true</forceCreation> -->
-<!-- 							<basedir>${project.build.directory}/xar</basedir> -->
-<!-- 							<transformationSets> -->
-<!-- 								<transformationSet> -->
-<!-- 									<dir>${project.build.directory}/xar</dir> -->
-<!-- 									<includes> -->
-<!-- 										<include>assembly.xml</include> -->
-<!-- 									</includes> -->
-<!-- 									<stylesheet>${basedir}/generate-descriptors.xsl</stylesheet> -->
-<!-- 									<parameters> -->
-<!-- 										<parameter> -->
-<!-- 											<name>package-dir</name> -->
-<!-- 											<value>${project.build.directory}/xar</value> -->
-<!-- 										</parameter> -->
-<!-- 									</parameters> -->
-<!-- 								</transformationSet> -->
-<!-- 							</transformationSets> -->
-<!-- 						</configuration> -->
-<!-- 					</execution> -->
-<!-- 				</executions> -->
-<!-- 				<dependencies> -->
-<!-- 					<dependency> -->
-<!-- 						<groupId>net.sf.saxon</groupId> -->
-<!-- 						<artifactId>Saxon-HE</artifactId> -->
-<!-- 						<version>9.4.0.7</version> -->
-<!-- 					</dependency> -->
-<!-- 				</dependencies> -->
-<!-- 			</plugin> -->
+			<!-- <plugin> -->
+			<!-- <groupId>org.codehaus.mojo</groupId> -->
+			<!-- <artifactId>xml-maven-plugin</artifactId> -->
+			<!-- <version>1.0</version> -->
+			<!-- <executions> -->
+			<!-- <execution> -->
+			<!-- <id>generate-lib-package</id> -->
+			<!-- <phase>test</phase> -->
+			<!-- <goals> -->
+			<!-- <goal>transform</goal> -->
+			<!-- </goals> -->
+			<!-- <configuration> -->
+			<!-- <forceCreation>true</forceCreation> -->
+			<!-- <basedir>${project.build.directory}/xar</basedir> -->
+			<!-- <transformationSets> -->
+			<!-- <transformationSet> -->
+			<!-- <dir>${project.build.directory}/xar</dir> -->
+			<!-- <includes> -->
+			<!-- <include>assembly.xml</include> -->
+			<!-- </includes> -->
+			<!-- <stylesheet>${basedir}/generate-descriptors.xsl</stylesheet> -->
+			<!-- <parameters> -->
+			<!-- <parameter> -->
+			<!-- <name>package-dir</name> -->
+			<!-- <value>${project.build.directory}/xar</value> -->
+			<!-- </parameter> -->
+			<!-- </parameters> -->
+			<!-- </transformationSet> -->
+			<!-- </transformationSets> -->
+			<!-- </configuration> -->
+			<!-- </execution> -->
+			<!-- </executions> -->
+			<!-- <dependencies> -->
+			<!-- <dependency> -->
+			<!-- <groupId>net.sf.saxon</groupId> -->
+			<!-- <artifactId>Saxon-HE</artifactId> -->
+			<!-- <version>9.4.0.7</version> -->
+			<!-- </dependency> -->
+			<!-- </dependencies> -->
+			<!-- </plugin> -->
 		</plugins>
 	</build>
 </project>
