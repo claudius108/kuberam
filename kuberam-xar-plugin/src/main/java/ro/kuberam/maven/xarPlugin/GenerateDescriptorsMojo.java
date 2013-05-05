@@ -2,6 +2,8 @@ package ro.kuberam.maven.xarPlugin;
 
 import static org.twdata.maven.mojoexecutor.MojoExecutor.artifactId;
 import static org.twdata.maven.mojoexecutor.MojoExecutor.configuration;
+import static org.twdata.maven.mojoexecutor.MojoExecutor.dependencies;
+import static org.twdata.maven.mojoexecutor.MojoExecutor.dependency;
 import static org.twdata.maven.mojoexecutor.MojoExecutor.element;
 import static org.twdata.maven.mojoexecutor.MojoExecutor.executeMojo;
 import static org.twdata.maven.mojoexecutor.MojoExecutor.executionEnvironment;
@@ -10,8 +12,6 @@ import static org.twdata.maven.mojoexecutor.MojoExecutor.groupId;
 import static org.twdata.maven.mojoexecutor.MojoExecutor.name;
 import static org.twdata.maven.mojoexecutor.MojoExecutor.plugin;
 import static org.twdata.maven.mojoexecutor.MojoExecutor.version;
-import static org.twdata.maven.mojoexecutor.MojoExecutor.dependencies;
-import static org.twdata.maven.mojoexecutor.MojoExecutor.dependency;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -19,9 +19,15 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.DirectoryStream;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.PathMatcher;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 import java.util.zip.ZipEntry;
@@ -33,7 +39,6 @@ import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.BuildPluginManager;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.Component;
-import org.apache.maven.plugins.annotations.Execute;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
@@ -43,7 +48,7 @@ import org.apache.maven.shared.filtering.MavenResourcesFiltering;
 
 //@Mojo(name = "generate-descriptors")
 @Mojo(name = "make-xar")
-//@Execute(goal = "generate-descriptors")
+// @Execute(goal = "generate-descriptors")
 public class GenerateDescriptorsMojo extends AbstractMojo {
 
 	@Component
@@ -59,7 +64,7 @@ public class GenerateDescriptorsMojo extends AbstractMojo {
 	protected MavenResourcesFiltering mavenResourcesFiltering;
 
 	@Parameter(required = true)
-	private static File sourceDirectory;
+	private static List<FileSet> fileSets = new ArrayList<FileSet>();
 
 	@Parameter(required = true)
 	private File descriptor;
@@ -76,19 +81,25 @@ public class GenerateDescriptorsMojo extends AbstractMojo {
 	protected List<String> filters = Arrays.asList();
 
 	private List<String> defaultNonFilteredFileExtensions = Arrays.asList("jpg", "jpeg", "gif", "bmp", "png");
-	
+
 	private final static int BUFFER = 2048;
 	private static boolean isEntry = false;
 	private static byte data[] = new byte[BUFFER];
 
 	public void execute() throws MojoExecutionException {
 
-		// filter the assembly file
+		// test if descriptor file exists
+		if (!descriptor.exists()) {
+			throw new MojoExecutionException("Descriptor file does not exist.");
+		}
+
 		String outputDirectoryPath = outputDirectory.getAbsolutePath();
 		String descriptorName = descriptor.getName();
 		String projectBuildDirectory = project.getModel().getBuild().getDirectory();
-		String descriptorsDirectoryPath = projectBuildDirectory + File.separator + "expath-descriptors" + UUID.randomUUID();		
+		String descriptorsDirectoryPath = projectBuildDirectory + File.separator + "expath-descriptors-"
+				+ UUID.randomUUID();
 
+		// filter the assembly file
 		Resource resource = new Resource();
 		resource.setDirectory(descriptor.getParent());
 		resource.addInclude(descriptorName);
@@ -128,90 +139,156 @@ public class GenerateDescriptorsMojo extends AbstractMojo {
 				executionEnvironment(project, session, pluginManager));
 
 		// make the archive
-		makeXar(sourceDirectory, finalName, outputDirectoryPath, descriptorsDirectoryPath, outputDirectoryPath);
+		makeXar(finalName, descriptorsDirectoryPath, outputDirectoryPath);
 	}
 
-	public static void makeXar(File sourceDirectory, String finalName, String outputDir, String descriptorsDirectoryPath, String outputDirectoryPath) {
-		ArrayList<String> directoryList = new ArrayList<String>();
-		String sourceDirectoryPath = sourceDirectory.getAbsolutePath() + File.separator;
+	public static void makeXar(String finalName, String descriptorsDirectoryPath, String outputDirectoryPath) {
 
-		System.out.println("sourceDirectoryPath: " + sourceDirectoryPath);
+		// start the xar
+		ZipOutputStream zos = null;
+		try {
+			FileOutputStream fos = new FileOutputStream(outputDirectoryPath + File.separator + finalName + ".xar");
+			zos = new ZipOutputStream(new BufferedOutputStream(fos));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
-		if (sourceDirectory.exists()) {
-			try {
-				FileOutputStream fos = new FileOutputStream(outputDirectoryPath + File.separator + finalName + ".xar");
-				ZipOutputStream zos = new ZipOutputStream(new BufferedOutputStream(fos));
+		try {
+			// add the descriptors
+			File descriptorsDirectory = new File(descriptorsDirectoryPath);
+			for (String descriptorFileName : descriptorsDirectory.list()) {
+				addFileToXar(zos, new FileInputStream(descriptorsDirectoryPath + File.separator + descriptorFileName),
+						descriptorFileName);
+			}
 
-				if (sourceDirectory.isDirectory()) {
-					// add the descriptors
-					File descriptorsDirectory = new File(descriptorsDirectoryPath);
-					for (String descriptorFileName : descriptorsDirectory.list()) {
-						addFileToXar(new FileInputStream(descriptorsDirectoryPath + File.separator + descriptorFileName), zos, descriptorFileName);
+			// add fileSets
+			for (final Iterator<FileSet> fsIterator = fileSets.iterator(); fsIterator.hasNext();) {
+				final FileSet fileSet = fsIterator.next();
+				String fileSetDirectoryLocation = fileSet.getDirectory();
+				String fileSetOutputDirectoryLocation = fileSet.getOutputDirectory();
+				fileSetOutputDirectoryLocation = (fileSetOutputDirectoryLocation == null) ? ""
+						: fileSetOutputDirectoryLocation + File.separator;
+				File fileSetDirectory = new File(fileSetDirectoryLocation);
+				Path fileSetDirectoryPath = FileSystems.getDefault().getPath(fileSetDirectoryLocation);
+
+				// get includes and filter the file set
+				if (!fileSet.getIncludes().isEmpty()) {
+					for (final Object include : fileSet.getIncludes()) {
+						String pattern = include.toString();
+						System.out.println("pattern: " + pattern);
+						filterFileSet(pattern, fileSetDirectoryPath, zos, fileSetDirectoryLocation,
+								fileSetOutputDirectoryLocation, fileSetDirectory);
 					}
-					
-					// This is Directory
-					do {
-						String directoryName = "";
-						if (directoryList.size() > 0) {
-							directoryName = directoryList.get(0);
-							System.out.println("Directory Name At 0: " + directoryName);
-						}
-						String fullPath = sourceDirectoryPath + directoryName;
-						File fileList = null;
-						if (directoryList.size() == 0) {
-							// Main path (Root Directory)
-							fileList = sourceDirectory;
-						} else {
-							// Child Directory
-							fileList = new File(fullPath);
-						}
-						String[] filesName = fileList.list();
-
-						int totalFiles = filesName.length;
-						for (int i = 0; i < totalFiles; i++) {
-							String name = filesName[i];
-							File filesOrDir = new File(fullPath + name);
-							if (filesOrDir.isDirectory()) {
-								System.out.println("New Directory Entry: " + directoryName + name + "/");
-								ZipEntry entry = new ZipEntry(directoryName + name + "/");
-								zos.putNextEntry(entry);
-								isEntry = true;
-								directoryList.add(directoryName + name + "/");
-							} else {
-								System.out.println("New File Entry: " + directoryName + name);
-								FileInputStream fileInputStream = new FileInputStream(filesOrDir);
-								
-								addFileToXar(fileInputStream, zos, directoryName + name);
-							}
-						}
-						if (directoryList.size() > 0 && directoryName.trim().length() > 0) {
-							System.out.println("Directory removed: " + directoryName);
-							directoryList.remove(0);
-						}
-
-					} while (directoryList.size() > 0);
 				} else {
-					// This is File
-					// Zip this file
-					System.out.println("Zip this file: " + sourceDirectory.getPath());
-					FileInputStream fis = new FileInputStream(sourceDirectory);					
-					addFileToXar(fis, zos, sourceDirectory.getName());
+					filterFileSet("**", fileSetDirectoryPath, zos, fileSetDirectoryLocation,
+							fileSetOutputDirectoryLocation, fileSetDirectory);
 				}
 
-				// CHECK IS THERE ANY ENTRY IN ZIP ? ----START
-				if (isEntry) {
-					zos.close();
+			}
+			// close the xar
+			if (isEntry) {
+				zos.close();
+			} else {
+				zos = null;
+				System.out.println("No Entry Found in Zip");
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * Filters a file set.
+	 * 
+	 * @throws IOException
+	 */
+
+	private static void filterFileSet(String pattern, Path fileSetDirectoryPath, ZipOutputStream zos,
+			String fileSetDirectoryLocation, String fileSetOutputDirectoryLocation, File fileSetDirectory) {
+
+		PathMatcher filter = FileSystems.getDefault().getPathMatcher("glob:" + pattern);
+
+		DirectoryStream<Path> ds = null;
+		try {
+			ds = Files.newDirectoryStream(fileSetDirectoryPath, pattern);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		try {
+			for (Path path : ds) {
+				String resourceLocation = path.toAbsolutePath().toString();
+				if (path.toFile().isDirectory()) {
+					addFileSetToXar(zos, fileSetDirectoryLocation, fileSetOutputDirectoryLocation);
 				} else {
-					zos = null;
-					System.out.println("No Entry Found in Zip");
+					addFileToXar(zos, new FileInputStream(resourceLocation), fileSetOutputDirectoryLocation
+							+ path.getFileName());
 				}
-				// CHECK IS THERE ANY ENTRY IN ZIP ? ----START
-			} catch (Exception e) {
+			}
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		} finally {
+			try {
+				ds.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		} else {
-			System.out.println("File or Directory not found");
 		}
+	}
+
+	/**
+	 * Adds a file set to a xar package.
+	 * 
+	 * @throws IOException
+	 */
+	private static void addFileSetToXar(ZipOutputStream zos, String fileSetDirectoryPath,
+			String fileSetOutputDirectoryPath) throws IOException {
+		ArrayList<String> directoryList = new ArrayList<String>();
+
+		isEntry = false;
+
+		do {
+			String directoryName = "";
+			if (directoryList.size() > 0) {
+				directoryName = directoryList.get(0);
+				System.out.println("Directory Name At 0: " + directoryName);
+			}
+			String fullPath = fileSetDirectoryPath + File.separator + directoryName;
+			String archiveEntryDirectory = fileSetOutputDirectoryPath + directoryName;
+
+			File fileList = null;
+			if (directoryList.size() == 0) {
+				fileList = new File(fileSetDirectoryPath);
+			} else {
+				fileList = new File(fullPath);
+			}
+
+			String[] filesName = fileList.list();
+			int totalFiles = filesName.length;
+
+			for (int i = 0; i < totalFiles; i++) {
+				String name = filesName[i];
+				File filesOrDir = new File(fullPath + name);
+				if (filesOrDir.isDirectory()) {
+					System.out.println("New Directory Entry: " + archiveEntryDirectory + name + "/");
+					ZipEntry entry = new ZipEntry(archiveEntryDirectory + name + "/");
+					zos.putNextEntry(entry);
+					isEntry = true;
+					directoryList.add(directoryName + name + "/");
+				} else {
+					System.out.println("New File Entry: " + archiveEntryDirectory + name);
+					FileInputStream fileInputStream = new FileInputStream(filesOrDir);
+					addFileToXar(zos, fileInputStream, archiveEntryDirectory + name);
+				}
+			}
+			if (directoryList.size() > 0 && directoryName.trim().length() > 0) {
+				System.out.println("Directory removed: " + directoryName);
+				directoryList.remove(0);
+			}
+
+		} while (directoryList.size() > 0);
 	}
 
 	/**
@@ -219,7 +296,7 @@ public class GenerateDescriptorsMojo extends AbstractMojo {
 	 * 
 	 * @throws IOException
 	 */
-	private static void addFileToXar(FileInputStream fis, ZipOutputStream zos, String entryFullPath) throws IOException {
+	private static void addFileToXar(ZipOutputStream zos, FileInputStream fis, String entryFullPath) throws IOException {
 		BufferedInputStream bis = new BufferedInputStream(fis, BUFFER);
 		ZipEntry entry = new ZipEntry(entryFullPath);
 		zos.putNextEntry(entry);

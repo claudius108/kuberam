@@ -3,7 +3,7 @@
 
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>ro.kuberam.maven.maven-xar-plugin</groupId>
+	<groupId>ro.kuberam.maven.plugins.maven-xar-plugin</groupId>
 	<artifactId>project-to-test</artifactId>
 	<version>0.2.6</version>
 	<packaging>jar</packaging>
@@ -31,7 +31,7 @@
 	<build>
 		<plugins>
 			<plugin>
-				<groupId>ro.kuberam.maven</groupId>
+				<groupId>ro.kuberam.maven.plugins</groupId>
 				<artifactId>kuberam-xar-plugin</artifactId>
 				<version>0.1</version>
 				<executions>
@@ -42,7 +42,19 @@
 							<goal>make-xar</goal>
 						</goals>
 						<configuration>
-							<sourceDirectory>${basedir}/expath-specs</sourceDirectory>
+							<fileSets>
+								<fileSet>
+									<directory>${basedir}/expath-specs</directory>
+									<includes>
+										<include>icon.png</include>
+									</includes>
+									<outputDirectory>i</outputDirectory>
+								</fileSet>
+								<fileSet>
+									<directory>${basedir}/expath-specs</directory>
+									<outputDirectory>expath-crypto-exist-lis</outputDirectory>
+								</fileSet>
+							</fileSets>
 							<descriptor>application-assembly.xml</descriptor>
 							<finalName>${project.artifactId}-${project.version}-application</finalName>
 						</configuration>
@@ -54,7 +66,19 @@
 							<goal>make-xar</goal>
 						</goals>
 						<configuration>
-							<sourceDirectory>${basedir}/expath-specs</sourceDirectory>
+							<fileSets>
+								<fileSet>
+									<directory>${basedir}/expath-specs</directory>
+									<includes>
+										<include>icon.png</include>
+									</includes>
+									<outputDirectory>i</outputDirectory>
+								</fileSet>
+								<fileSet>
+									<directory>${basedir}/expath-specs</directory>
+									<outputDirectory>expath-crypto-exist-lis</outputDirectory>
+								</fileSet>
+							</fileSets>
 							<descriptor>library-assembly.xml</descriptor>
 							<finalName>${project.artifactId}-${project.version}-library</finalName>
 						</configuration>

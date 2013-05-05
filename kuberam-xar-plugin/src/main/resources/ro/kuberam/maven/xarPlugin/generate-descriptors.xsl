@@ -106,11 +106,7 @@
 				<title>
 					<xsl:value-of select="$title" />
 				</title>
-				<xsl:choose>
-					<xsl:when test="$package-type = 'application'">
-						<xsl:copy-of select="/*/*[local-name() = 'dependency']" copy-namespaces="no" />
-					</xsl:when>
-				</xsl:choose>
+				<xsl:copy-of select="/*/*[local-name() = 'dependency']" copy-namespaces="no" />
 			</package>
 		</xsl:result-document>
 
@@ -125,13 +121,13 @@
 				</author>
 				<website>
 					<xsl:value-of select="/*/dc:identifier" />
-				</website>				
+				</website>
 				<status>
 					<xsl:value-of select="/*/*[local-name() = 'status']" />
 				</status>
 				<license>
 					<xsl:value-of select="/*/dc:rights" />
-				</license>				
+				</license>
 				<copyright>
 					<xsl:value-of select="/*/*[local-name() = 'copyright']" />
 				</copyright>
