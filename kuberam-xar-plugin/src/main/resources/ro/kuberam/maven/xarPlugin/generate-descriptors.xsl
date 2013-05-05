@@ -22,6 +22,16 @@
 
 	<xsl:template match="/">
 		<xsl:choose>
+			<xsl:when test="/*/*[local-name() = 'dependency' and @processor = 'http://exist-db.org/']">
+				<!-- generate exist.xml -->
+				<xsl:result-document href="{concat($package-dir, '/exist.xml')}">
+					<package xmlns="http://exist-db.org/ns/expath-pkg">
+						<xsl:copy-of select="/*/*[contains('jar java', local-name())]" copy-namespaces="no" />
+					</package>
+				</xsl:result-document>
+			</xsl:when>
+		</xsl:choose>
+		<xsl:choose>
 			<xsl:when test="$package-type = 'application'">
 				<xsl:result-document href="{concat($package-dir, '/controller.xql')}" omit-xml-declaration="yes">
 					xquery version "1.0";
@@ -71,13 +81,6 @@
 				</xsl:result-document>
 			</xsl:when>
 		</xsl:choose>
-
-		<!-- generate exist.xml -->
-		<xsl:result-document href="{concat($package-dir, '/exist.xml')}">
-			<package xmlns="http://exist-db.org/ns/expath-pkg">
-				<xsl:copy-of select="/*/*[contains('jar java', local-name())]" copy-namespaces="no" />
-			</package>
-		</xsl:result-document>
 
 		<!-- generate cxan.xml -->
 		<xsl:result-document href="{concat($package-dir, '/cxan.xml')}">
