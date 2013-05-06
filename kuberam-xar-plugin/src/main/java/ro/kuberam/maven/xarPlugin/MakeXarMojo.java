@@ -23,7 +23,6 @@ import java.nio.file.DirectoryStream;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.PathMatcher;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -49,7 +48,7 @@ import org.apache.maven.shared.filtering.MavenResourcesFiltering;
 //@Mojo(name = "generate-descriptors")
 @Mojo(name = "make-xar")
 // @Execute(goal = "generate-descriptors")
-public class GenerateDescriptorsMojo extends AbstractMojo {
+public class MakeXarMojo extends AbstractMojo {
 
 	@Component
 	private MavenProject project;
@@ -206,8 +205,6 @@ public class GenerateDescriptorsMojo extends AbstractMojo {
 
 	private static void filterFileSet(String pattern, Path fileSetDirectoryPath, ZipOutputStream zos,
 			String fileSetDirectoryLocation, String fileSetOutputDirectoryLocation, File fileSetDirectory) {
-
-		PathMatcher filter = FileSystems.getDefault().getPathMatcher("glob:" + pattern);
 
 		DirectoryStream<Path> ds = null;
 		try {
