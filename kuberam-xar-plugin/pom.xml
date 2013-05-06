@@ -3,16 +3,39 @@
 
 	<modelVersion>4.0.0</modelVersion>
 
+	<parent>
+		<groupId>ro.kuberam.maven</groupId>
+		<artifactId>sourceforge</artifactId>
+		<version>0.1-SNAPSHOT</version>
+		<relativePath>../sourceforge/pom.xml</relativePath>
+	</parent>
+
 	<groupId>ro.kuberam.maven.plugins</groupId>
 	<artifactId>kuberam-xar-plugin</artifactId>
 	<version>0.1</version>
 	<packaging>maven-plugin</packaging>
 	<name>kuberam xar plugin</name>
 	<description>Plugin for generating xar archives</description>
+	<url>http://kuberam.ro</url>
+	<licenses>
+		<license>
+			<name>GNU Lesser General Public License</name>
+			<url>http://gnu.org/copyleft/lesser.html</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
 
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-	</properties>
+	<scm>
+		<connection>scm:git:https://github.com/claudius108/kuberam.git</connection>
+		<url>http://github.com/claudius108/kuberam/tree/master/kuberam-xar-plugin</url>
+	</scm>
+
+	<distributionManagement>
+		<repository>
+			<id>sourceforge</id>
+			<url>sftp://${sourceforge-frs-host}${sourceforge-user-web-htdocs-path}</url>
+		</repository>
+	</distributionManagement>
 
 	<dependencies>
 		<dependency>
@@ -53,19 +76,11 @@
 			<artifactId>junit</artifactId>
 			<version>4.11</version>
 			<scope>test</scope>
-		</dependency>		
+		</dependency>
 	</dependencies>
 
 	<build>
 		<plugins>
-			<plugin>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.0</version>
-				<configuration>
-					<source>1.7</source>
-					<target>1.7</target>
-				</configuration>
-			</plugin>
 			<plugin>
 				<artifactId>maven-plugin-plugin</artifactId>
 				<version>3.2</version>
@@ -73,8 +88,23 @@
 					<skipErrorNoDescriptorsFound>true</skipErrorNoDescriptorsFound>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-deploy-plugin</artifactId>
+				<version>2.6</version>
+				<goals>
+					<goal>deploy</goal>
+				</goals>
+				<configuration>
+					<repositoryId>sourceforge</repositoryId>
+					<generatePom>true</generatePom>
+					<artifactId>${project.artifactId}</artifactId>
+					<groupId>${project.groupId}</groupId>
+					<version>${project.version}</version>
+					<updateReleaseInfo>true</updateReleaseInfo>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
-
 
 </project>

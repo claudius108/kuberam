@@ -7,7 +7,7 @@
 	<artifactId>project-to-test</artifactId>
 	<version>0.2.6</version>
 	<packaging>jar</packaging>
-	<name>Test GenerateDescriptorsMojo</name>
+	<name>Test GenerateglobalDescriptorsMojo</name>
 
 	<properties>
 		<module-prefix>crypto</module-prefix>
@@ -18,6 +18,27 @@
 		<package-title>${spec-title} Demos</package-title>
 		<java-class>org.expath.exist.crypto.ExistExpathCryptoModule</java-class>
 	</properties>
+
+<!-- 	<repositories> -->
+<!-- 		<repository> -->
+<!-- 			<id>sourceforge</id> -->
+<!-- 			<url>http://claudius108.users.sourceforge.net/repos/maven</url> -->
+<!-- 		</repository> -->
+<!-- 	</repositories> -->
+
+<!-- 	<pluginRepositories> -->
+<!-- 		<pluginRepository> -->
+<!-- 			<releases> -->
+<!-- 				<updatePolicy>never</updatePolicy> -->
+<!-- 			</releases> -->
+<!-- 			<snapshots> -->
+<!-- 				<enabled>false</enabled> -->
+<!-- 			</snapshots> -->
+<!-- 			<id>sourceforge</id> -->
+<!-- 			<name>Maven Plugin Repository</name> -->
+<!-- 			<url>http://claudius108.users.sourceforge.net/repos/maven</url> -->
+<!-- 		</pluginRepository> -->
+<!-- 	</pluginRepositories> -->
 
 	<dependencies>
 		<dependency>
@@ -55,7 +76,7 @@
 									<outputDirectory>expath-crypto-exist-lis</outputDirectory>
 								</fileSet>
 							</fileSets>
-							<descriptor>application-assembly.xml</descriptor>
+							<globalDescriptor>application-assembly.xml</globalDescriptor>
 							<finalName>${project.artifactId}-${project.version}-application</finalName>
 						</configuration>
 					</execution>
@@ -79,7 +100,7 @@
 									<outputDirectory>expath-crypto-exist-lis</outputDirectory>
 								</fileSet>
 							</fileSets>
-							<descriptor>library-assembly.xml</descriptor>
+							<globalDescriptor>library-assembly.xml</globalDescriptor>
 							<finalName>${project.artifactId}-${project.version}-library</finalName>
 						</configuration>
 					</execution>
@@ -105,7 +126,7 @@
 			<!-- <includes> -->
 			<!-- <include>assembly.xml</include> -->
 			<!-- </includes> -->
-			<!-- <stylesheet>${basedir}/generate-descriptors.xsl</stylesheet> -->
+			<!-- <stylesheet>${basedir}/generate-globalDescriptors.xsl</stylesheet> -->
 			<!-- <parameters> -->
 			<!-- <parameter> -->
 			<!-- <name>package-dir</name> -->

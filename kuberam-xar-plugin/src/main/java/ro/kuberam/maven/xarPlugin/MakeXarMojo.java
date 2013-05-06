@@ -65,7 +65,7 @@ public class MakeXarMojo extends AbstractMojo {
 	private static List<FileSet> fileSets = new ArrayList<FileSet>();
 
 	@Parameter(required = true)
-	private File descriptor;
+	private File globalDescriptor;
 
 	@Parameter(defaultValue = "${project.build.directory}")
 	private File outputDirectory;
@@ -87,20 +87,20 @@ public class MakeXarMojo extends AbstractMojo {
 	public void execute() throws MojoExecutionException {
 
 		// test if descriptor file exists
-		if (!descriptor.exists()) {
-			throw new MojoExecutionException("Descriptor file does not exist.");
+		if (!globalDescriptor.exists()) {
+			throw new MojoExecutionException("Global descriptor file does not exist.");
 		}
 
 		String outputDirectoryPath = outputDirectory.getAbsolutePath();
-		String descriptorName = descriptor.getName();
+		String globalDescriptorName = globalDescriptor.getName();
 		String projectBuildDirectory = project.getModel().getBuild().getDirectory();
 		String descriptorsDirectoryPath = projectBuildDirectory + File.separator + "expath-descriptors-"
 				+ UUID.randomUUID();
 
 		// filter the assembly file
 		Resource resource = new Resource();
-		resource.setDirectory(descriptor.getParent());
-		resource.addInclude(descriptorName);
+		resource.setDirectory(globalDescriptor.getParent());
+		resource.addInclude(globalDescriptorName);
 		resource.setFiltering(true);
 		resource.setTargetPath(projectBuildDirectory);
 
@@ -118,7 +118,7 @@ public class MakeXarMojo extends AbstractMojo {
 			e.printStackTrace();
 		}
 
-		// generate the descriptors
+		// generate the expath descriptors
 		executeMojo(
 				plugin(groupId("org.codehaus.mojo"), artifactId("xml-maven-plugin"), version("1.0"),
 						dependencies(dependency("net.sf.saxon", "Saxon-HE", "9.4.0.7"))),
@@ -128,7 +128,7 @@ public class MakeXarMojo extends AbstractMojo {
 						element(name("transformationSets"),
 								element(name("transformationSet"),
 										element(name("dir"), projectBuildDirectory),
-										element(name("includes"), element(name("include"), descriptorName)),
+										element(name("includes"), element(name("include"), globalDescriptorName)),
 										element(name("stylesheet"),
 												this.getClass().getResource("generate-descriptors.xsl").toString()),
 										element(name("parameters"),
@@ -152,7 +152,7 @@ public class MakeXarMojo extends AbstractMojo {
 		}
 
 		try {
-			// add the descriptors
+			// add the expath descriptors
 			File descriptorsDirectory = new File(descriptorsDirectoryPath);
 			for (String descriptorFileName : descriptorsDirectory.list()) {
 				addFileToXar(zos, new FileInputStream(descriptorsDirectoryPath + File.separator + descriptorFileName),
