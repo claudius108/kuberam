@@ -45,9 +45,8 @@ import org.apache.maven.shared.filtering.MavenFilteringException;
 import org.apache.maven.shared.filtering.MavenResourcesExecution;
 import org.apache.maven.shared.filtering.MavenResourcesFiltering;
 
-//@Mojo(name = "generate-descriptors")
+
 @Mojo(name = "make-xar")
-// @Execute(goal = "generate-descriptors")
 public class MakeXarMojo extends AbstractMojo {
 
 	@Component
