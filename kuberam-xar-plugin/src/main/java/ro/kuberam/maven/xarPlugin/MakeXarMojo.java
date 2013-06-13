@@ -20,16 +20,12 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.JarURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 import java.util.jar.Attributes;
 import java.util.zip.ZipEntry;
@@ -50,17 +46,15 @@ import org.apache.maven.shared.filtering.MavenResourcesExecution;
 import org.apache.maven.shared.filtering.MavenResourcesFiltering;
 import org.apache.maven.shared.model.fileset.FileSet;
 import org.apache.maven.shared.model.fileset.util.FileSetManager;
-
 import org.sonatype.aether.RepositorySystem;
 import org.sonatype.aether.RepositorySystemSession;
-import org.sonatype.aether.repository.LocalRepository;
+import org.sonatype.aether.artifact.Artifact;
 import org.sonatype.aether.repository.RemoteRepository;
 import org.sonatype.aether.resolution.ArtifactRequest;
 import org.sonatype.aether.resolution.ArtifactResolutionException;
 import org.sonatype.aether.resolution.ArtifactResult;
 import org.sonatype.aether.util.artifact.DefaultArtifact;
 
-@SuppressWarnings("deprecation")
 @Mojo(name = "make-xar")
 public class MakeXarMojo extends AbstractMojo {
 
@@ -100,18 +94,15 @@ public class MakeXarMojo extends AbstractMojo {
 	@Parameter(defaultValue = "${project.remotePluginRepositories}", readonly = true)
 	private List<RemoteRepository> remoteRepos;
 
+	@Parameter
+	private List<Dependency> dependencies;
+
 	protected List<String> filters = Arrays.asList();
 
 	private List<String> defaultNonFilteredFileExtensions = Arrays.asList("jpg", "jpeg", "gif", "bmp", "png");
-
 	private final static int BUFFER = 2048;
 	private static boolean isEntry = false;
 	private static byte data[] = new byte[BUFFER];
-
-	final static List<String> nonElligibleScopes = Arrays.asList("test");
-
-	@Parameter
-	private Set<Dependency> dependencies;
 
 	public void execute() throws MojoExecutionException {
 
@@ -120,49 +111,42 @@ public class MakeXarMojo extends AbstractMojo {
 			throw new MojoExecutionException("Global descriptor file does not exist.");
 		}
 
-		Set<ArtifactRequest> requests = new HashSet<ArtifactRequest>();
-
-		for (Dependency dependency : dependencies) {
+		for (int i = 0, il = dependencies.size(); i < il; i++) {
+			Dependency dependency = dependencies.get(i);
 			ArtifactRequest request = new ArtifactRequest();
-			DefaultArtifact artifact = new DefaultArtifact(dependency.getGroupId() + ":" + dependency.getArtifactId()
+			DefaultArtifact artifactDefinition = new DefaultArtifact(dependency.getGroupId() + ":" + dependency.getArtifactId()
 					+ ":" + dependency.getVersion());
-			request.setArtifact(artifact);
+			String artifactIdentifier = artifactDefinition.toString();
+			request.setArtifact(artifactDefinition);
 			request.setRepositories(remoteRepos);
-			requests.add(request);
-			getLog().info("Resolving artifact " + artifact + " from " + remoteRepos);
-		}
-
-		List<ArtifactResult> artifactResults;
-		try {
-			artifactResults = repoSystem.resolveArtifacts(repoSession, requests);
-		} catch (ArtifactResolutionException e) {
-			throw new MojoExecutionException(e.getMessage(), e);
-		}
-
-		// set the main entry point to xar
-		File firstDependency = artifactResults.get(0).getArtifact().getFile();
-
-		if (firstDependency.getName().endsWith(".jar")) {
-			String firstDependencyAbsolutePath = firstDependency.getAbsolutePath();
-			getLog().info("firstDependencyAbsolutePath: " + firstDependencyAbsolutePath);
-			URL u;
-			JarURLConnection uc;
-			Attributes attr = null;
+			getLog().info("Resolving artifact " + artifactIdentifier + " from " + remoteRepos);
+			
+			ArtifactResult artifactResult;
 			try {
-				u = new URL("jar", "", "file://" + firstDependencyAbsolutePath + "!/");
-				uc = (JarURLConnection) u.openConnection();
-				attr = uc.getMainAttributes();
-			} catch (Exception e1) {
-				e1.printStackTrace();
+				artifactResult = repoSystem.resolveArtifact(repoSession, request);
+			} catch (ArtifactResolutionException e) {
+				throw new MojoExecutionException(e.getMessage(), e);
 			}
-			getLog().info("main class: " + attr.getValue(Attributes.Name.MAIN_CLASS));
+			
+			Artifact artifact = artifactResult.getArtifact();
+			File artifactFile = artifact.getFile();
+			String artifactFileAbsolutePath = artifactFile.getAbsolutePath();
+
+			getLog().info(
+					"Resolved artifact " + artifact + " to "
+							+ artifactFile + " from " + artifactResult.getRepository());
+			
+			if (i == 0 && artifactIdentifier.contains(":jar:")) {
+				project.getModel().addProperty("xar-main-class", getMainClass(artifactFileAbsolutePath));
+			}
 		}
 
-		for (ArtifactResult artifactResult : artifactResults) {
-			getLog().info(
-					"Resolved artifact " + artifactResult.getArtifact() + " to "
-							+ artifactResult.getArtifact().getFile() + " from " + artifactResult.getRepository());
-		}
+
+
+		
+		
+		
+		
 
 		String outputDirectoryPath = outputDirectory.getAbsolutePath();
 		String globalDescriptorName = globalDescriptor.getName();
@@ -424,5 +408,19 @@ public class MakeXarMojo extends AbstractMojo {
 			zos.write(data, 0, size);
 		}
 		bis.close();
+	}
+	
+	private static String getMainClass(String firstDependencyAbsolutePath) {
+		URL u;
+		JarURLConnection uc;
+		Attributes attr = null;
+		try {
+			u = new URL("jar", "", "file://" + firstDependencyAbsolutePath + "!/");
+			uc = (JarURLConnection) u.openConnection();
+			attr = uc.getMainAttributes();
+		} catch (Exception e1) {
+			e1.printStackTrace();
+		}
+		return attr.getValue(Attributes.Name.MAIN_CLASS);
 	}
 }
