@@ -14,7 +14,7 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<java-version>1.7</java-version>
+		<java-version>1.6</java-version>
 		<workspaces-dir-path>/home/claudius/workspaces</workspaces-dir-path>
 		<main.basedir>${workspaces-dir-path}/a-model/models</main.basedir>
 		<local-eXist-management-build-file>${main.basedir}/src/main/resources/local-eXist-management.xml</local-eXist-management-build-file>
@@ -41,7 +41,7 @@
 			<plugins>
 				<plugin>
 					<artifactId>maven-compiler-plugin</artifactId>
-					<version>3.0</version>
+					<version>3.1</version>
 					<configuration>
 						<source>${java-version}</source>
 						<target>${java-version}</target>
