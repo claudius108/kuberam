@@ -1,5 +1,10 @@
 package ro.kuberam.maven.xarPlugin.tests;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.maven.shared.model.fileset.FileSet;
+import org.apache.maven.shared.model.fileset.util.FileSetManager;
 import org.junit.Test;
 
 public class GenerateDescriptorsMojoTest {
@@ -18,6 +23,17 @@ public class GenerateDescriptorsMojoTest {
 
 	@Test
 	public void makeXarTest() throws Exception {
+
+		FileSet fileSet = new FileSet();
+		fileSet.setDirectory("/home/claudius");
+		fileSet.addInclude("*");
+
+		FileSetManager fsm = new FileSetManager();
+		String[] files = fsm.getIncludedDirectories(fileSet);
+		
+		for (String file : files) {
+			System.out.println(file);
+		}
 
 		// File sourceDirectory = new
 		// File("/home/claudius/workspaces/expath/expath-exist/expath-crypto-exist-lib/target/package-files");
