@@ -19,20 +19,24 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.file.DirectoryStream;
-import java.nio.file.FileSystems;
-import java.nio.file.Files;
-import java.nio.file.Path;
+import java.net.JarURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
+import java.util.jar.Attributes;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 import org.apache.maven.execution.MavenSession;
+import org.apache.maven.model.Dependency;
 import org.apache.maven.model.Resource;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.BuildPluginManager;
@@ -44,13 +48,24 @@ import org.apache.maven.project.MavenProject;
 import org.apache.maven.shared.filtering.MavenFilteringException;
 import org.apache.maven.shared.filtering.MavenResourcesExecution;
 import org.apache.maven.shared.filtering.MavenResourcesFiltering;
+import org.apache.maven.shared.model.fileset.FileSet;
+import org.apache.maven.shared.model.fileset.util.FileSetManager;
 
+import org.sonatype.aether.RepositorySystem;
+import org.sonatype.aether.RepositorySystemSession;
+import org.sonatype.aether.repository.LocalRepository;
+import org.sonatype.aether.repository.RemoteRepository;
+import org.sonatype.aether.resolution.ArtifactRequest;
+import org.sonatype.aether.resolution.ArtifactResolutionException;
+import org.sonatype.aether.resolution.ArtifactResult;
+import org.sonatype.aether.util.artifact.DefaultArtifact;
 
+@SuppressWarnings("deprecation")
 @Mojo(name = "make-xar")
 public class MakeXarMojo extends AbstractMojo {
 
 	@Component
-	private MavenProject project;
+	private static MavenProject project;
 
 	@Component
 	private MavenSession session;
@@ -76,6 +91,15 @@ public class MakeXarMojo extends AbstractMojo {
 	@Parameter(property = "project.build.sourceEncoding", defaultValue = "UTF-8")
 	private String encoding;
 
+	@Component
+	private RepositorySystem repoSystem;
+
+	@Parameter(defaultValue = "${repositorySystemSession}", readonly = true)
+	private RepositorySystemSession repoSession;
+
+	@Parameter(defaultValue = "${project.remotePluginRepositories}", readonly = true)
+	private List<RemoteRepository> remoteRepos;
+
 	protected List<String> filters = Arrays.asList();
 
 	private List<String> defaultNonFilteredFileExtensions = Arrays.asList("jpg", "jpeg", "gif", "bmp", "png");
@@ -84,11 +108,60 @@ public class MakeXarMojo extends AbstractMojo {
 	private static boolean isEntry = false;
 	private static byte data[] = new byte[BUFFER];
 
+	final static List<String> nonElligibleScopes = Arrays.asList("test");
+
+	@Parameter
+	private Set<Dependency> dependencies;
+
 	public void execute() throws MojoExecutionException {
 
 		// test if descriptor file exists
 		if (!globalDescriptor.exists()) {
 			throw new MojoExecutionException("Global descriptor file does not exist.");
+		}
+
+		Set<ArtifactRequest> requests = new HashSet<ArtifactRequest>();
+
+		for (Dependency dependency : dependencies) {
+			ArtifactRequest request = new ArtifactRequest();
+			DefaultArtifact artifact = new DefaultArtifact(dependency.getGroupId() + ":" + dependency.getArtifactId()
+					+ ":" + dependency.getVersion());
+			request.setArtifact(artifact);
+			request.setRepositories(remoteRepos);
+			requests.add(request);
+			getLog().info("Resolving artifact " + artifact + " from " + remoteRepos);
+		}
+
+		List<ArtifactResult> artifactResults;
+		try {
+			artifactResults = repoSystem.resolveArtifacts(repoSession, requests);
+		} catch (ArtifactResolutionException e) {
+			throw new MojoExecutionException(e.getMessage(), e);
+		}
+
+		// set the main entry point to xar
+		File firstDependency = artifactResults.get(0).getArtifact().getFile();
+
+		if (firstDependency.getName().endsWith(".jar")) {
+			String firstDependencyAbsolutePath = firstDependency.getAbsolutePath();
+			getLog().info("firstDependencyAbsolutePath: " + firstDependencyAbsolutePath);
+			URL u;
+			JarURLConnection uc;
+			Attributes attr = null;
+			try {
+				u = new URL("jar", "", "file://" + firstDependencyAbsolutePath + "!/");
+				uc = (JarURLConnection) u.openConnection();
+				attr = uc.getMainAttributes();
+			} catch (Exception e1) {
+				e1.printStackTrace();
+			}
+			getLog().info("main class: " + attr.getValue(Attributes.Name.MAIN_CLASS));
+		}
+
+		for (ArtifactResult artifactResult : artifactResults) {
+			getLog().info(
+					"Resolved artifact " + artifactResult.getArtifact() + " to "
+							+ artifactResult.getArtifact().getFile() + " from " + artifactResult.getRepository());
 		}
 
 		String outputDirectoryPath = outputDirectory.getAbsolutePath();
@@ -140,7 +213,8 @@ public class MakeXarMojo extends AbstractMojo {
 		makeXar(finalName, descriptorsDirectoryPath, outputDirectoryPath);
 	}
 
-	public static void makeXar(String finalName, String descriptorsDirectoryPath, String outputDirectoryPath) {
+	public static void makeXar(String finalName, String descriptorsDirectoryPath, String outputDirectoryPath)
+			throws MojoExecutionException {
 
 		// start the xar
 		ZipOutputStream zos = null;
@@ -163,23 +237,37 @@ public class MakeXarMojo extends AbstractMojo {
 			for (final Iterator<FileSet> fsIterator = fileSets.iterator(); fsIterator.hasNext();) {
 				final FileSet fileSet = fsIterator.next();
 				String fileSetDirectoryLocation = fileSet.getDirectory();
+				File fileSetDirectory = new File(fileSetDirectoryLocation);
+				if (!fileSetDirectory.exists()) {
+					throw new MojoExecutionException("The directory '" + fileSetDirectoryLocation + "' does not exist.");
+				}
+
 				String fileSetOutputDirectoryLocation = fileSet.getOutputDirectory();
 				fileSetOutputDirectoryLocation = (fileSetOutputDirectoryLocation == null) ? ""
 						: fileSetOutputDirectoryLocation + File.separator;
-				File fileSetDirectory = new File(fileSetDirectoryLocation);
-				Path fileSetDirectoryPath = FileSystems.getDefault().getPath(fileSetDirectoryLocation);
+
+				// TODO: solution for Java 7
+				// Path fileSetDirectoryPath =
+				// FileSystems.getDefault().getPath(fileSetDirectoryLocation);
 
 				// get includes and filter the file set
 				if (!fileSet.getIncludes().isEmpty()) {
 					for (final Object include : fileSet.getIncludes()) {
 						String pattern = include.toString();
-						System.out.println("pattern: " + pattern);
-						filterFileSet(pattern, fileSetDirectoryPath, zos, fileSetDirectoryLocation,
-								fileSetOutputDirectoryLocation, fileSetDirectory);
+						filterFileSet(pattern, zos, fileSetDirectoryLocation, fileSetOutputDirectoryLocation);
+
+						// TODO: solution for Java 7
+						// filterFileSet(pattern, fileSetDirectoryPath, zos,
+						// fileSetDirectoryLocation,
+						// fileSetOutputDirectoryLocation, fileSetDirectory);
 					}
 				} else {
-					filterFileSet("**", fileSetDirectoryPath, zos, fileSetDirectoryLocation,
-							fileSetOutputDirectoryLocation, fileSetDirectory);
+					filterFileSet("*", zos, fileSetDirectoryLocation, fileSetOutputDirectoryLocation);
+
+					// TODO: solution for Java 7
+					// filterFileSet("**", fileSetDirectoryPath, zos,
+					// fileSetDirectoryLocation,
+					// fileSetOutputDirectoryLocation, fileSetDirectory);
 				}
 
 			}
@@ -202,45 +290,79 @@ public class MakeXarMojo extends AbstractMojo {
 	 * @throws IOException
 	 */
 
-	private static void filterFileSet(String pattern, Path fileSetDirectoryPath, ZipOutputStream zos,
-			String fileSetDirectoryLocation, String fileSetOutputDirectoryLocation, File fileSetDirectory) {
+	private static void filterFileSet(String pattern, ZipOutputStream zos, String fileSetDirectoryLocation,
+			String fileSetOutputDirectoryLocation) throws Exception {
 
-		DirectoryStream<Path> ds = null;
-		try {
-			ds = Files.newDirectoryStream(fileSetDirectoryPath, pattern);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		FileSet inputFileSet = new FileSet();
+		inputFileSet.setDirectory(fileSetDirectoryLocation);
+		inputFileSet.addInclude(pattern);
+
+		FileSetManager fsm1 = new FileSetManager();
+		String[] fileSets = fsm1.getIncludedDirectories(inputFileSet);
+
+		for (String fileSet : fileSets) {
+			if (fileSet.equals("")) {
+				continue;
+			}
+			addFileSetToXar(zos, fileSetDirectoryLocation + File.separator + fileSet, fileSet,
+					fileSetOutputDirectoryLocation);
 		}
-		try {
-			for (Path path : ds) {
-				String resourceLocation = path.toAbsolutePath().toString();
-				if (path.toFile().isDirectory()) {
-					addFileSetToXar(zos, fileSetDirectoryLocation, fileSetOutputDirectoryLocation);
-				} else {
-					addFileToXar(zos, new FileInputStream(resourceLocation), fileSetOutputDirectoryLocation
-							+ path.getFileName());
-				}
-			}
-		} catch (IOException ex) {
-			ex.printStackTrace();
-		} finally {
-			try {
-				ds.close();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+
+		// fsm.delete(inputFileSet);
+
+		FileSetManager fsm2 = new FileSetManager();
+		String[] files = fsm2.getIncludedFiles(inputFileSet);
+
+		for (String file : files) {
+			String resourceLocation = fileSetDirectoryLocation + File.separator + file;
+			addFileToXar(zos, new FileInputStream(resourceLocation), fileSetOutputDirectoryLocation + file);
 		}
 	}
+
+	// TODO: this is the solution for Java 7
+	// private static void filterFileSetJava7(String pattern, Path
+	// fileSetDirectoryPath, ZipOutputStream zos,
+	// String fileSetDirectoryLocation, String fileSetOutputDirectoryLocation,
+	// File fileSetDirectory) {
+	//
+	// DirectoryStream<Path> ds = null;
+	// try {
+	// ds = Files.newDirectoryStream(fileSetDirectoryPath, pattern);
+	// } catch (IOException e) {
+	// // TODO Auto-generated catch block
+	// e.printStackTrace();
+	// }
+	// try {
+	// for (Path path : ds) {
+	// String resourceLocation = path.toAbsolutePath().toString();
+	// if (path.toFile().isDirectory()) {
+	// addFileSetToXar(zos, fileSetDirectoryLocation,
+	// fileSetOutputDirectoryLocation);
+	// } else {
+	// addFileToXar(zos, new FileInputStream(resourceLocation),
+	// fileSetOutputDirectoryLocation + path.getFileName());
+	// }
+	// }
+	// } catch (IOException ex) {
+	// ex.printStackTrace();
+	// } finally {
+	// try {
+	// ds.close();
+	// } catch (IOException e) {
+	// // TODO Auto-generated catch block
+	// e.printStackTrace();
+	// }
+	// }
+	// }
 
 	/**
 	 * Adds a file set to a xar package.
 	 * 
 	 * @throws IOException
 	 */
-	private static void addFileSetToXar(ZipOutputStream zos, String fileSetDirectoryPath,
+	private static void addFileSetToXar(ZipOutputStream zos, String fileSetDirectoryPath, String fileSetName,
 			String fileSetOutputDirectoryPath) throws IOException {
+
 		ArrayList<String> directoryList = new ArrayList<String>();
 
 		isEntry = false;
@@ -252,7 +374,7 @@ public class MakeXarMojo extends AbstractMojo {
 				System.out.println("Directory Name At 0: " + directoryName);
 			}
 			String fullPath = fileSetDirectoryPath + File.separator + directoryName;
-			String archiveEntryDirectory = fileSetOutputDirectoryPath + directoryName;
+			String archiveEntryDirectory = fileSetOutputDirectoryPath + fileSetName + File.separator + directoryName;
 
 			File fileList = null;
 			if (directoryList.size() == 0) {
