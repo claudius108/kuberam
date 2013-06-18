@@ -33,7 +33,7 @@
 
 		<sourceforge-frs-url>sftp://${sourceforge-web-credentials}@${sourceforge-frs-host}/home/frs/project/${project.artifactId}</sourceforge-frs-url>
 
-		<sourceforge-public-key-path>${workspaces-dir-path}/archive/crypto-keys/sourceforge-claudius108/sourceforge-claudius108</sourceforge-public-key-path>
+		<sourceforge-public-key-path>${workspaces-dir-path}/archive/cryptographic-materials/sourceforge-claudius108/sourceforge-claudius108</sourceforge-public-key-path>
 
 		<synchronizing-host>${sourceforge-username}@${sourceforge-project-web-host}</synchronizing-host>
 		<synchronizing-project-web-htdocs-path>/home/project-web/${project.artifactId}/htdocs</synchronizing-project-web-htdocs-path>
