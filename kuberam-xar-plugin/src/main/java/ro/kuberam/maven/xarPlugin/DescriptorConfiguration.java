@@ -1,9 +1,9 @@
 package ro.kuberam.maven.xarPlugin;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.maven.shared.model.fileset.FileSet;
 import org.codehaus.plexus.util.xml.Xpp3Dom;
 
 public class DescriptorConfiguration extends Xpp3Dom {
@@ -17,15 +17,25 @@ public class DescriptorConfiguration extends Xpp3Dom {
 	 */
 	private static final long serialVersionUID = -8323628485538303936L;
 
-	public List<FileSet> getFileSets() {
-		List<FileSet> fileSets = new ArrayList<FileSet>();
+	public List<DefaultFileSet> getFileSets() {
+		List<DefaultFileSet> fileSets = new ArrayList<DefaultFileSet>();
 		Xpp3Dom fileSetsElement = this.getChild("fileSets");
 		if (null != fileSetsElement) {
 			Xpp3Dom[] fileSetChildren = fileSetsElement.getChildren("fileSet");
 			for (Xpp3Dom fileSetChild : fileSetChildren) {
-				FileSet fileSet = new FileSet();
-				fileSet.setDirectory(fileSetChild.getChild("directory").getValue());
-				fileSet.setOutputDirectory(fileSetChild.getChild("outputDirectory").getValue());
+				DefaultFileSet fileSet = new DefaultFileSet();
+				fileSet.setDirectory(new File(fileSetChild.getChild("directory").getValue()));
+				fileSet.setPrefix(fileSetChild.getChild("outputDirectory").getValue() + "/");
+				fileSet.setIncludes("**/*.*");
+				Xpp3Dom includesElement = fileSetChild.getChild("includes");
+				if (null != includesElement) {
+					String includesString = "";
+					Xpp3Dom[] includeElements = includesElement.getChildren("include");
+					for (Xpp3Dom includeElement : includeElements) {
+						includesString += includeElement.getValue() + ",";
+					}
+					fileSet.setIncludes(includesString.substring(0, includesString.length() - 1));
+				}
 				fileSets.add(fileSet);
 			}
 		}
