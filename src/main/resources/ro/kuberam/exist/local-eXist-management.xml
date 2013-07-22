@@ -48,7 +48,6 @@
 	<target name="add-collection-to-db" description="Add a collection to DB">
 		<echo>Remove collection '${target-collection}'...</echo>
 		<xdb:remove user="${eXist.test.server.admin-username}" password="${eXist.test.server.admin-password}" uri="${eXist-server-url}" collection="${target-collection}" />
-
 		<echo>Copying files from '${source-folder}' to collection '${target-collection}'...</echo>
 		<xdb:store user="${eXist.test.server.admin-username}" password="${eXist.test.server.admin-password}" uri="${eXist-server-url}${target-collection}" createcollection="true" createsubcollections="true">
 			<fileset dir="${source-folder}">
@@ -57,6 +56,13 @@
 			</fileset>
 		</xdb:store>
 	</target>
+	
+	<target name="add-file-to-db" description="Add a file to DB">
+		<echo>Copying file from '${source-file}' to collection '${target-collection}'...</echo>
+		<xdb:store user="${eXist.test.server.admin-username}" password="${eXist.test.server.admin-password}" uri="${eXist-server-url}${target-collection}" createcollection="true" createsubcollections="true">
+			<fileset file="${source-file}"/>
+		</xdb:store>
+	</target>	
 
 	<target name="deploy-module-jars-to-local-eXist-server" description="Deploy module jar and its dependencies to local eXist server">
 		<echo>Deploy module jar and its dependencies to local eXist server...</echo>
