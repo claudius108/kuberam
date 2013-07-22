@@ -17,7 +17,7 @@
 	<target xmlns="http://exist-db.org/xquery/repo">expath-${module-prefix}</target>
 	<fileSets>
 		<fileSet>
-			<directory>${basedir}/expath-libs-library</directory>
+			<directory>${basedir}/expath-specs</directory>
 			<outputDirectory>i</outputDirectory>
 		</fileSet>
 		<fileSet>
@@ -28,19 +28,19 @@
 			<outputDirectory>i</outputDirectory>
 			<!-- <filtered>true</filtered> -->
 		</fileSet>
-		<dependencySets>
-			<dependencySet>
-				<groupId>org.expath.libs</groupId>
-				<artifactId>crypto</artifactId>
-				<version>0.2.5</version>
-				<outputDirectory>${artifactId}</outputDirectory>
-			</dependencySet>
-			<dependencySet>
-				<groupId>org.apache.maven.plugin-testing</groupId>
-				<artifactId>maven-plugin-testing-harness</artifactId>
-				<version>2.1</version>
-				<outputDirectory>${artifactId}</outputDirectory>
-			</dependencySet>
-		</dependencySets>
 	</fileSets>
+	<dependencySets>
+		<dependencySet>
+			<groupId>org.expath.libs</groupId>
+			<artifactId>crypto</artifactId>
+			<version>0.2.5</version>
+			<outputDirectory>${artifactId}</outputDirectory>
+		</dependencySet>
+		<dependencySet>
+			<groupId>org.apache.maven.plugin-testing</groupId>
+			<artifactId>maven-plugin-testing-harness</artifactId>
+			<version>2.1</version>
+			<outputDirectory>${artifactId}</outputDirectory>
+		</dependencySet>
+	</dependencySets>
 </package>

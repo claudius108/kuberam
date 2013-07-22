@@ -17,7 +17,7 @@
 	<target xmlns="http://exist-db.org/xquery/repo">expath-${module-prefix}</target>
 	<fileSets>
 		<fileSet>
-			<directory>${basedir}/expath-libs-application</directory>
+			<directory>${basedir}/expath-specs</directory>
 			<outputDirectory>expath-crypto-exist-lis</outputDirectory>
 		</fileSet>
 		<fileSet>

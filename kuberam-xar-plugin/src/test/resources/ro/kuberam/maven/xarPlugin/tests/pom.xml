@@ -7,52 +7,17 @@
 	<artifactId>project-to-test</artifactId>
 	<version>0.2.6</version>
 	<packaging>jar</packaging>
-	<name>Test GenerateglobalDescriptorsMojo</name>
+	<name>Test GenerateGlobalDescriptorsMojo</name>
 
 	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<module-prefix>crypto</module-prefix>
 		<module-namespace>http://expath.org/ns/crypto</module-namespace>
 		<spec-title>EXPath Cryptographic Module</spec-title>
 		<package-name>http://exist-db.org/ns/expath-${module-prefix}</package-name>
 		<package-abbrev>expath-${module-prefix}-exist-lib-demos</package-abbrev>
 		<package-title>${spec-title} Demos</package-title>
-		<java-class>org.expath.exist.crypto.ExistExpathCryptoModule</java-class>
 	</properties>
-
-	<!-- <repositories> -->
-	<!-- <repository> -->
-	<!-- <id>sourceforge</id> -->
-	<!-- <url>http://claudius108.users.sourceforge.net/repos/maven</url> -->
-	<!-- </repository> -->
-	<!-- </repositories> -->
-
-	<!-- <pluginRepositories> -->
-	<!-- <pluginRepository> -->
-	<!-- <releases> -->
-	<!-- <updatePolicy>never</updatePolicy> -->
-	<!-- </releases> -->
-	<!-- <snapshots> -->
-	<!-- <enabled>false</enabled> -->
-	<!-- </snapshots> -->
-	<!-- <id>sourceforge</id> -->
-	<!-- <name>Maven Plugin Repository</name> -->
-	<!-- <url>http://claudius108.users.sourceforge.net/repos/maven</url> -->
-	<!-- </pluginRepository> -->
-	<!-- </pluginRepositories> -->
-
-	<dependencies>
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>4.11</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.exist-db</groupId>
-			<artifactId>exist-modules</artifactId>
-			<version>2.0-tech-preview</version>
-		</dependency>
-	</dependencies>
 
 	<build>
 		<plugins>
@@ -68,101 +33,23 @@
 							<goal>make-xar</goal>
 						</goals>
 						<configuration>
-							<fileSets>
-								<fileSet>
-									<directory>${basedir}/expath-specs</directory>
-									<includes>
-										<include>icon.png</include>
-									</includes>
-									<outputDirectory>i</outputDirectory>
-								</fileSet>
-								<fileSet>
-									<directory>${basedir}/expath-specs</directory>
-									<outputDirectory>expath-crypto-exist-lis</outputDirectory>
-								</fileSet>
-							</fileSets>
-							<globalDescriptor>application-assembly.xml</globalDescriptor>
+							<descriptor>application-assembly.xml</descriptor>
 							<finalName>${project.artifactId}-${project.version}-application</finalName>
-							<dependencies>
-								<dependency>
-									<groupId>org.expath.libs</groupId>
-									<artifactId>crypto</artifactId>
-									<version>0.2.5</version>
-								</dependency>
-								<dependency>
-									<groupId>org.exist-db</groupId>
-									<artifactId>exist-modules</artifactId>
-									<version>2.0-tech-preview</version>
-								</dependency>
-							</dependencies>
 						</configuration>
 					</execution>
-					<!-- <execution> -->
-					<!-- <id>create-library-archive</id> -->
-					<!-- <phase>test</phase> -->
-					<!-- <goals> -->
-					<!-- <goal>make-xar</goal> -->
-					<!-- </goals> -->
-					<!-- <configuration> -->
-					<!-- <fileSets> -->
-					<!-- <fileSet> -->
-					<!-- <directory>${basedir}/expath-specs</directory> -->
-					<!-- <includes> -->
-					<!-- <include>icon.png</include> -->
-					<!-- </includes> -->
-					<!-- <outputDirectory>i</outputDirectory> -->
-					<!-- </fileSet> -->
-					<!-- <fileSet> -->
-					<!-- <directory>${basedir}/expath-specs</directory> -->
-					<!-- <outputDirectory>expath-crypto-exist-lis</outputDirectory> -->
-					<!-- </fileSet> -->
-					<!-- </fileSets> -->
-					<!-- <globalDescriptor>library-assembly.xml</globalDescriptor> -->
-					<!-- <finalName>${project.artifactId}-${project.version}-library</finalName> -->
-					<!-- </configuration> -->
-					<!-- </execution> -->
+					<execution>
+						<id>create-library-archive</id>
+						<phase>test</phase>
+						<goals>
+							<goal>make-xar</goal>
+						</goals>
+						<configuration>
+							<descriptor>library-assembly.xml</descriptor>
+							<finalName>${project.artifactId}-${project.version}-library</finalName>
+						</configuration>
+					</execution>
 				</executions>
 			</plugin>
-			<!-- <plugin> -->
-			<!-- <groupId>org.codehaus.mojo</groupId> -->
-			<!-- <artifactId>xml-maven-plugin</artifactId> -->
-			<!-- <version>1.0</version> -->
-			<!-- <executions> -->
-			<!-- <execution> -->
-			<!-- <id>generate-lib-package</id> -->
-			<!-- <phase>test</phase> -->
-			<!-- <goals> -->
-			<!-- <goal>transform</goal> -->
-			<!-- </goals> -->
-			<!-- <configuration> -->
-			<!-- <forceCreation>true</forceCreation> -->
-			<!-- <basedir>${project.build.directory}/xar</basedir> -->
-			<!-- <transformationSets> -->
-			<!-- <transformationSet> -->
-			<!-- <dir>${project.build.directory}/xar</dir> -->
-			<!-- <includes> -->
-			<!-- <include>assembly.xml</include> -->
-			<!-- </includes> -->
-			<!-- <stylesheet>${basedir}/generate-globalDescriptors.xsl</stylesheet> -->
-			<!-- <parameters> -->
-			<!-- <parameter> -->
-			<!-- <name>package-dir</name> -->
-			<!-- <value>${project.build.directory}/xar</value> -->
-			<!-- </parameter> -->
-			<!-- </parameters> -->
-			<!-- </transformationSet> -->
-			<!-- </transformationSets> -->
-			<!-- </configuration> -->
-			<!-- </execution> -->
-			<!-- </executions> -->
-			<!-- <dependencies> -->
-			<!-- <dependency> -->
-			<!-- <groupId>net.sf.saxon</groupId> -->
-			<!-- <artifactId>Saxon-HE</artifactId> -->
-			<!-- <version>9.4.0.7</version> -->
-			<!-- </dependency> -->
-			<!-- </dependencies> -->
-			<!-- </plugin> -->
 		</plugins>
 	</build>
 </project>
