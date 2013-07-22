@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:dc="http://dublincore.org/documents/dces/"
+<xsl:stylesheet xmlns="http://expath.org/ns/pkg" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:dc="http://dublincore.org/documents/dces/"
 	xmlns:pkg="http://cxan.org/ns/package" xmlns:xs="http://www.w3.org/2001/XMLSchema" exclude-result-prefixes="dc pkg xs"
 	version="2.0">
 
@@ -9,7 +9,7 @@
 	<xsl:variable name="package-type" select="/*/dc:type" />
 	<xsl:variable name="cxan.org-id" select="/*/dc:creator/@id" />
 	<xsl:variable name="module-prefix" select="/*/pkg:module-prefix" />
-	<xsl:variable name="module-namespace" select="/*/pkg:module-namespace" />
+	<xsl:variable name="module-namespace" select="/*/*[local-name() = 'module-namespace']" />
 	<xsl:variable name="package-version" select="/*/@version" />
 
 	<xsl:variable name="abbrev" select="/*/@abbrev" />
@@ -19,6 +19,7 @@
 	</xsl:variable>
 	<xsl:variable name="title" select="/*/*[local-name() = 'title']" />
 	<xsl:variable name="author" select="/*/dc:creator" />
+	<xsl:variable name="components" select="collection(concat('file://', $package-dir, '?select=components.xml'))/element()" />
 
 	<xsl:template match="/">
 		<xsl:choose>
@@ -81,6 +82,31 @@
 				</xsl:result-document>
 			</xsl:when>
 		</xsl:choose>
+
+		<!-- generate exist.xml -->
+		<xsl:result-document href="{concat($package-dir, '/exist.xml')}">
+			<package xmlns="http://exist-db.org/ns/expath-pkg">
+				<xsl:for-each select="$components/element()">
+					<xsl:choose>
+						<xsl:when test="element()[1] = 'http://exist-db.org/ns/expath-pkg/module-main-class'">
+							<java>
+								<namespace>
+									<xsl:value-of select="$module-namespace" />
+								</namespace>
+								<class>
+									<xsl:value-of select="element()[2]" />
+								</class>
+							</java>
+						</xsl:when>
+						<xsl:otherwise>
+							<jar>
+								<xsl:value-of select="element()[2]" />
+							</jar>
+						</xsl:otherwise>
+					</xsl:choose>
+				</xsl:for-each>
+			</package>
+		</xsl:result-document>
 
 		<!-- generate cxan.xml -->
 		<xsl:result-document href="{concat($package-dir, '/cxan.xml')}">
