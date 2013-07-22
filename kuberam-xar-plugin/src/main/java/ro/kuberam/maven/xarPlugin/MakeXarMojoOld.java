@@ -18,7 +18,6 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
 import java.net.JarURLConnection;
 import java.net.URL;
@@ -26,7 +25,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 import java.util.jar.Attributes;
@@ -34,12 +32,10 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 import org.apache.maven.execution.MavenSession;
-import org.apache.maven.model.Plugin;
 import org.apache.maven.model.Resource;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.BuildPluginManager;
 import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.Component;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
@@ -51,9 +47,6 @@ import org.apache.maven.shared.model.fileset.FileSet;
 import org.apache.maven.shared.model.fileset.util.FileSetManager;
 import org.codehaus.plexus.archiver.ArchiverException;
 import org.codehaus.plexus.archiver.zip.ZipArchiver;
-import org.codehaus.plexus.util.FileUtils;
-import org.codehaus.plexus.util.xml.Xpp3Dom;
-import org.codehaus.plexus.util.xml.Xpp3DomBuilder;
 import org.sonatype.aether.RepositorySystem;
 import org.sonatype.aether.RepositorySystemSession;
 import org.sonatype.aether.artifact.Artifact;
@@ -63,10 +56,10 @@ import org.sonatype.aether.resolution.ArtifactResolutionException;
 import org.sonatype.aether.resolution.ArtifactResult;
 import org.sonatype.aether.util.artifact.DefaultArtifact;
 
-@Mojo(name = "make-xar-new")
-public class MakeXarNewMojo extends AbstractMojo {
+@Mojo(name = "make-xar")
+public class MakeXarMojoOld extends AbstractMojo {
 
-	@Parameter(defaultValue = "${project}")
+	@Component
 	private static MavenProject project;
 
 	@Component
@@ -82,7 +75,10 @@ public class MakeXarNewMojo extends AbstractMojo {
 	private ZipArchiver zipArchiver;
 
 	@Parameter(required = true)
-	private File descriptor;
+	private static List<FileSet> fileSets = new ArrayList<FileSet>();
+
+	@Parameter(required = true)
+	private File globalDescriptor;
 
 	@Parameter(defaultValue = "${project.build.directory}")
 	private File outputDirectory;
@@ -99,8 +95,11 @@ public class MakeXarNewMojo extends AbstractMojo {
 	@Parameter(defaultValue = "${repositorySystemSession}", readonly = true)
 	private RepositorySystemSession repoSession;
 
-	@Parameter(defaultValue = "${project.remoteProjectRepositories}", readonly = true)
+	@Parameter(defaultValue = "${project.remotePluginRepositories}", readonly = true)
 	private static List<RemoteRepository> remoteRepos;
+
+	@Parameter
+	private List<DependencySet> dependencySets;
 
 	protected List<String> filters = Arrays.asList();
 
@@ -108,66 +107,88 @@ public class MakeXarNewMojo extends AbstractMojo {
 	private final static int BUFFER = 2048;
 	private static boolean isEntry = false;
 	private static byte data[] = new byte[BUFFER];
-	private static String componentsTemplateFileContent = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
-			+ "<package xmlns=\"http://exist-db.org/ns/expath-pkg\">${components}</package>";
+	private static String xarJars = "";
+	private static String dependenciesDescription = "";
 
-	public void execute() throws MojoExecutionException, MojoFailureException {
+	public void execute() throws MojoExecutionException {
 
 		// test if descriptor file exists
-		if (!descriptor.exists()) {
+		if (!globalDescriptor.exists()) {
 			throw new MojoExecutionException("Global descriptor file does not exist.");
 		}
 
-		// set needed variables
 		String outputDirectoryPath = outputDirectory.getAbsolutePath();
-		String assemblyDescriptorName = descriptor.getName();
-		String archiveTmpDirectoryPath = project.getModel().getBuild().getDirectory() + File.separator + "xar-tmp";
-		String projectArtifactId = project.getArtifactId();
-		String components = "";
-		String descriptorsDirectoryPath = outputDirectoryPath + File.separator + "expath-descriptors-"
+		String globalDescriptorName = globalDescriptor.getName();
+		String projectBuildDirectory = project.getModel().getBuild().getDirectory();
+		String descriptorsDirectoryPath = projectBuildDirectory + File.separator + "expath-descriptors-"
 				+ UUID.randomUUID();
 
-		// Plugin xarPlugin =
-		// project.getPlugin("ro.kuberam.maven.plugins:kuberam-xar-plugin");
-		// DescriptorConfiguration mainConfig = new
-		// DescriptorConfiguration((Xpp3Dom) xarPlugin.getConfiguration());
-
 		// filter the descriptor file
-		filterResource(descriptor.getParent(), assemblyDescriptorName, archiveTmpDirectoryPath);
+		Resource resource = new Resource();
+		resource.setDirectory(globalDescriptor.getParent());
+		resource.addInclude(globalDescriptorName);
+		resource.setFiltering(true);
+		resource.setTargetPath(projectBuildDirectory);
 
-		// get the execution configuration
-		FileReader fileReader;
-		DescriptorConfiguration executionConfig;
+		MavenResourcesExecution mavenResourcesExecution = new MavenResourcesExecution(
+				Collections.singletonList(resource), outputDirectory, project, encoding, filters,
+				defaultNonFilteredFileExtensions, session);
+
+		mavenResourcesExecution.setInjectProjectBuildFilters(false);
+		mavenResourcesExecution.setOverwrite(true);
+		mavenResourcesExecution.setSupportMultiLineFiltering(true);
+
 		try {
-			fileReader = new FileReader(new File(archiveTmpDirectoryPath + File.separator + assemblyDescriptorName));
-			executionConfig = new DescriptorConfiguration(Xpp3DomBuilder.build(fileReader));
-		} catch (Exception e) {
-			throw new MojoExecutionException(e.getMessage());
+			mavenResourcesFiltering.filterResources(mavenResourcesExecution);
+		} catch (MavenFilteringException e) {
+			e.printStackTrace();
 		}
 
-		// extract settings from execution configuration
-		List<FileSet> fileSets = executionConfig.getFileSets();
-		List<DependencySet> dependencySets = executionConfig.getDependencySets();
-		String moduleNamespace = executionConfig.getModuleNamespace();
+		// generate the expath descriptors
+		executeMojo(
+				plugin(groupId("org.codehaus.mojo"), artifactId("xml-maven-plugin"), version("1.0"),
+						dependencies(dependency("net.sf.saxon", "Saxon-HE", "9.4.0.7"))),
+				goal("transform"),
+				configuration(
+						element(name("forceCreation"), "true"),
+						element(name("transformationSets"),
+								element(name("transformationSet"),
+										element(name("dir"), projectBuildDirectory),
+										element(name("includes"), element(name("include"), globalDescriptorName)),
+										element(name("stylesheet"),
+												this.getClass().getResource("generate-descriptors.xsl").toString()),
+										element(name("parameters"),
+												element(name("parameter"), element(name("name"), "package-dir"),
+														element(name("value"), descriptorsDirectoryPath)))))),
+				executionEnvironment(project, session, pluginManager));
 
-		// set the zip archiver
+		// make the archive
+		// start the xar
+		ZipOutputStream zos = null;
+		try {
+			FileOutputStream fos = new FileOutputStream(outputDirectoryPath + File.separator + finalName + ".xar");
+			zos = new ZipOutputStream(new BufferedOutputStream(fos));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		//set the zip archiver
 		zipArchiver.setCompress(true);
-		zipArchiver.setDestFile(new File(outputDirectoryPath + File.separator + finalName + ".xar"));
+		zipArchiver.setDestFile(new File(outputDirectoryPath + File.separator + finalName + "-new.xar"));
 		zipArchiver.setForced(true);
 
-		// process the maven type dependencies
 		for (int i = 0, il = dependencySets.size(); i < il; i++) {
 			DependencySet dependencySet = dependencySets.get(i);
-
-			// define the artifact
-			Artifact artifactDefinition;
-			try {
-				artifactDefinition = new DefaultArtifact(dependencySet.groupId + ":" + dependencySet.artifactId + ":"
-						+ dependencySet.version);
-			} catch (IllegalArgumentException e) {
-				throw new MojoFailureException(e.getMessage(), e);
+			
+			//setting the dependency output directory
+			String dependencySetOutputDirectory = dependencySet.outputDirectory;
+			if (dependencySetOutputDirectory == null || dependencySetOutputDirectory.equals("/")) {
+				dependencySetOutputDirectory = "";
 			}
 
+			// define the artifact
+			DefaultArtifact artifactDefinition = new DefaultArtifact(dependencySet.groupId + ":"
+					+ dependencySet.artifactId + ":" + dependencySet.version);
 			String artifactIdentifier = artifactDefinition.toString();
 			getLog().info("Resolving artifact: " + artifactDefinition);
 
@@ -189,86 +210,58 @@ public class MakeXarNewMojo extends AbstractMojo {
 			File artifactFile = artifact.getFile();
 			String artifactFileAbsolutePath = artifactFile.getAbsolutePath();
 			String artifactFileName = artifactFile.getName();
-			String dependencySetOutputDirectory = dependencySet.outputDirectory;
-			String archiveComponentPath = artifactFileName;
-			if (dependencySetOutputDirectory == null || dependencySetOutputDirectory.equals("/")) {
-				dependencySetOutputDirectory = "";
-			} else {
-				archiveComponentPath = dependencySetOutputDirectory + File.separator + artifactFileName;
-			}
-
-			// artifact is jar
+			
+			// if artifact is jar and outputDirectory is null or empty, then deploy it in a dedicated directory having the name 'finalName'
 			if (artifactIdentifier.contains(":jar:")) {
 				if (dependencySetOutputDirectory.equals("")) {
-					dependencySetOutputDirectory = projectArtifactId;
+					dependencySetOutputDirectory = finalName;
 				}
-				components += "<resource><public-uri>" + moduleNamespace + "</public-uri><file>" + archiveComponentPath
-						+ "</file></resource>";
+				xarJars += "<jar xmlns=\"http://exist-db.org/ns/expath-pkg\">" + artifactFileName + "</jar>";
+				dependenciesDescription += "<dependency name=\"\"></dependency>";
 
 			}
 
-			// artifact is anything but jar
-			zipArchiver.addFile(artifactFile, archiveComponentPath);
+			// if artifact is zip, unzip it to root of xar
+			zipArchiver.addFile(artifactFile, dependencySetOutputDirectory + File.separator + artifactFileName);
+			
 
 			if (i == 0 && artifactIdentifier.contains(":jar:")) {
-				components += "<resource><public-uri>http://exist-db.org/ns/expath-pkg/module-main-class</public-uri><file>"
-						+ getMainClass(artifactFileAbsolutePath) + "</file></resource>";
+				project.getModel().addProperty("xar-main-class", getMainClass(artifactFileAbsolutePath));
 			}
 		}
 
-		for (FileSet fileSet : fileSets) {
-			// System.out.println("assemblyFileSet.directory: " +
-			// fileSet.getDirectory());
-		}
+		project.getModel().addProperty("xar-jars", xarJars);
+		project.getModel().addProperty("dependencies-description", dependenciesDescription);
+		
+		// filter the package descriptors
+		List<Resource>  descriptorsAsResources = new ArrayList<Resource>();
+		
+		Resource expathPkg = new Resource();
+		expathPkg.setDirectory(".");
+		expathPkg.addInclude("expath-pkg.xml");
+		expathPkg.setFiltering(true);
+		//expathPkg.setTargetPath("new-" + descriptorsDirectoryPath);
+		descriptorsAsResources.add(expathPkg);
+		getLog().info("expathPkg.getDirectory(): " + expathPkg.getDirectory());
+		
+		
+		getLog().info("descriptorsDirectoryPath: " + descriptorsDirectoryPath + "-new");
+		
 
-		project.getModel().addProperty("components", components);
+		MavenResourcesExecution mavenResourcesExecution2 = new MavenResourcesExecution(
+				descriptorsAsResources, new File(descriptorsDirectoryPath + "-new"), project, encoding, filters,
+				defaultNonFilteredFileExtensions, session);
 
-		// create and filter the components descriptor
+		mavenResourcesExecution.setInjectProjectBuildFilters(false);
+		mavenResourcesExecution.setOverwrite(true);
+		mavenResourcesExecution.setSupportMultiLineFiltering(true);
+		
 		try {
-			FileUtils.fileWrite(new File(archiveTmpDirectoryPath + File.separator + "components.xml"), "UTF-8",
-					componentsTemplateFileContent);
-		} catch (IOException e2) {
-			e2.printStackTrace();
-		}
-		filterResource(archiveTmpDirectoryPath, "components.xml", descriptorsDirectoryPath);
-
-		System.out.println("descriptorsDirectoryPath: " + descriptorsDirectoryPath);
-
-		// generate the expath descriptors
-		executeMojo(
-				plugin(groupId("org.codehaus.mojo"), artifactId("xml-maven-plugin"), version("1.0"),
-						dependencies(dependency("net.sf.saxon", "Saxon-HE", "9.4.0.7"))),
-				goal("transform"),
-				configuration(
-						element(name("forceCreation"), "true"),
-						element(name("transformationSets"),
-								element(name("transformationSet"),
-										element(name("dir"), archiveTmpDirectoryPath),
-										element(name("includes"), element(name("include"), assemblyDescriptorName)),
-										element(name("stylesheet"),
-												this.getClass().getResource("generate-descriptors.xsl").toString()),
-										element(name("parameters"),
-												element(name("parameter"), element(name("name"), "package-dir"),
-														element(name("value"), descriptorsDirectoryPath)))))),
-				executionEnvironment(project, session, pluginManager));
-
-		// add the expath descriptors
-		File descriptorsDirectory = new File(descriptorsDirectoryPath);
-		for (String descriptorFileName : descriptorsDirectory.list()) {
-			System.out.println("descriptorFileName: " + descriptorsDirectoryPath + File.separator + descriptorFileName);
-			zipArchiver.addFile(new File(descriptorsDirectoryPath + File.separator + descriptorFileName), descriptorFileName);
-		}
-
-		// make the archive
-		// start the xar
-		ZipOutputStream zos = null;
-		try {
-			FileOutputStream fos = new FileOutputStream(outputDirectoryPath + File.separator + finalName + "-old.xar");
-			zos = new ZipOutputStream(new BufferedOutputStream(fos));
-		} catch (Exception e) {
+			mavenResourcesFiltering.filterResources(mavenResourcesExecution2);
+		} catch (MavenFilteringException e) {
 			e.printStackTrace();
 		}
-
+		
 		try {
 			zipArchiver.createArchive();
 		} catch (ArchiverException e1) {
@@ -278,8 +271,18 @@ public class MakeXarNewMojo extends AbstractMojo {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
+		
+		
+		
 
 		try {
+			// add the expath descriptors
+			File descriptorsDirectory = new File(descriptorsDirectoryPath);
+			for (String descriptorFileName : descriptorsDirectory.list()) {
+				addFileToXar(zos, new FileInputStream(descriptorsDirectoryPath + File.separator + descriptorFileName),
+						descriptorFileName);
+			}
+
 			// add fileSets
 			for (final Iterator<FileSet> fsIterator = fileSets.iterator(); fsIterator.hasNext();) {
 				final FileSet fileSet = fsIterator.next();
@@ -329,8 +332,6 @@ public class MakeXarNewMojo extends AbstractMojo {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
-		project.getModel().addProperty("components", "");
 	}
 
 	// public static void makeXar(String finalName, String
@@ -612,28 +613,4 @@ public class MakeXarNewMojo extends AbstractMojo {
 		}
 		return attr.getValue(Attributes.Name.MAIN_CLASS);
 	}
-
-	private void filterResource(String directory, String include, String targetPath) {
-		Resource resource = new Resource();
-		resource.setDirectory(directory);
-		resource.addInclude(include);
-		resource.setFiltering(true);
-		resource.setTargetPath(targetPath);
-
-		MavenResourcesExecution mavenResourcesExecution = new MavenResourcesExecution(
-				Collections.singletonList(resource), outputDirectory, project, encoding, filters,
-				defaultNonFilteredFileExtensions, session);
-
-		mavenResourcesExecution.setInjectProjectBuildFilters(false);
-		mavenResourcesExecution.setOverwrite(true);
-		mavenResourcesExecution.setSupportMultiLineFiltering(true);
-
-		try {
-			mavenResourcesFiltering.filterResources(mavenResourcesExecution);
-		} catch (MavenFilteringException e) {
-			e.printStackTrace();
-		}
-
-	}
-
 }
