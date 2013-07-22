@@ -1,7 +1,7 @@
 <package xmlns="http://expath.org/ns/pkg" xmlns:dc="http://dublincore.org/documents/dces/" xmlns:pkg="http://cxan.org/ns/package"
 	name="${package-name}" abbrev="${package-abbrev}" version="${project.version}" spec="1.0">
 	<title>${package-title}</title>
-	<dependency processor="eXist-db" />
+	<dependency processor="http://exist-db.org/" />
 	<dependency package="http://expath.org/lib/${module-prefix}" />
 	<dc:creator id="cteodorescu">Claudius Teodorescu</dc:creator>
 	<dc:identifier></dc:identifier>
@@ -34,12 +34,13 @@
 			<groupId>org.expath.libs</groupId>
 			<artifactId>crypto</artifactId>
 			<version>0.2.5</version>
+			<outputDirectory>${artifactId}</outputDirectory>
 		</dependencySet>
 		<dependencySet>
 			<groupId>org.exist-db</groupId>
 			<artifactId>exist-modules</artifactId>
 			<version>2.0-tech-preview</version>
-			<outputDirectory>/</outputDirectory>
+			<outputDirectory>${artifactId}</outputDirectory>
 		</dependencySet>
 	</dependencySets>
 </package>
