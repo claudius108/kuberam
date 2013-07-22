@@ -1,8 +1,5 @@
 package ro.kuberam.maven.xarPlugin.tests;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.maven.shared.model.fileset.FileSet;
 import org.apache.maven.shared.model.fileset.util.FileSetManager;
 import org.junit.Test;
