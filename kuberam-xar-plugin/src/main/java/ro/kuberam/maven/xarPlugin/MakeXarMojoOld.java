@@ -56,7 +56,7 @@ import org.sonatype.aether.resolution.ArtifactResolutionException;
 import org.sonatype.aether.resolution.ArtifactResult;
 import org.sonatype.aether.util.artifact.DefaultArtifact;
 
-@Mojo(name = "make-xar")
+@Mojo(name = "make-xar-old")
 public class MakeXarMojoOld extends AbstractMojo {
 
 	@Component

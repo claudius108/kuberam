@@ -50,7 +50,7 @@ import org.sonatype.aether.resolution.ArtifactResolutionException;
 import org.sonatype.aether.resolution.ArtifactResult;
 import org.sonatype.aether.util.artifact.DefaultArtifact;
 
-@Mojo(name = "make-xar-new")
+@Mojo(name = "make-xar")
 public class MakeXarMojo extends AbstractMojo {
 
 	@Parameter(defaultValue = "${project}")
@@ -214,8 +214,6 @@ public class MakeXarMojo extends AbstractMojo {
 			e2.printStackTrace();
 		}
 		filterResource(archiveTmpDirectoryPath, "components.xml", descriptorsDirectoryPath);
-
-		System.out.println("descriptorsDirectoryPath: " + descriptorsDirectoryPath);
 
 		// generate the expath descriptors
 		executeMojo(
