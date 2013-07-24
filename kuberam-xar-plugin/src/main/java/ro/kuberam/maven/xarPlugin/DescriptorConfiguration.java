@@ -25,7 +25,16 @@ public class DescriptorConfiguration extends Xpp3Dom {
 			for (Xpp3Dom fileSetChild : fileSetChildren) {
 				DefaultFileSet fileSet = new DefaultFileSet();
 				fileSet.setDirectory(new File(fileSetChild.getChild("directory").getValue()));
-				fileSet.setPrefix(fileSetChild.getChild("outputDirectory").getValue() + "/");
+				Xpp3Dom outputDirectoryElement = fileSetChild.getChild("outputDirectory");
+				String outputDirectory = "";
+				if (null != outputDirectoryElement) {
+					outputDirectory = outputDirectoryElement.getValue();
+				}
+				if ( !"".equals(outputDirectory) && !outputDirectory.endsWith( "/" ) )
+		        {
+					outputDirectory += "/";
+		        }
+				fileSet.setPrefix(outputDirectory);
 				fileSet.setIncludes("**/*.*");
 				Xpp3Dom includesElement = fileSetChild.getChild("includes");
 				if (null != includesElement) {
