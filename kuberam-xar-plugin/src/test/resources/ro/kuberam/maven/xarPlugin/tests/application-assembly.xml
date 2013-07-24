@@ -25,15 +25,15 @@
 			<includes>
 				<include>icon.png</include>
 			</includes>
-			<outputDirectory>i</outputDirectory>
+			<outputDirectory>/</outputDirectory>
 			<!-- <filtered>true</filtered> -->
 		</fileSet>
 	</fileSets>
 	<dependencySets>
 		<dependencySet>
-			<groupId>org.expath.libs</groupId>
-			<artifactId>crypto</artifactId>
-			<version>0.2.5</version>
+			<groupId>org.apache.maven.plugin-testing</groupId>
+			<artifactId>maven-plugin-testing-harness</artifactId>
+			<version>2.1</version>
 			<outputDirectory>${artifactId}</outputDirectory>
 		</dependencySet>
 		<dependencySet>

@@ -18,7 +18,6 @@
 	<fileSets>
 		<fileSet>
 			<directory>${basedir}/expath-specs</directory>
-			<outputDirectory>i</outputDirectory>
 		</fileSet>
 		<fileSet>
 			<directory>${basedir}/expath-specs</directory>
@@ -31,16 +30,16 @@
 	</fileSets>
 	<dependencySets>
 		<dependencySet>
-			<groupId>org.expath.libs</groupId>
-			<artifactId>crypto</artifactId>
-			<version>0.2.5</version>
-			<outputDirectory>${artifactId}</outputDirectory>
+			<groupId>org.exist-db</groupId>
+			<artifactId>exist-modules</artifactId>
+			<version>2.0-tech-preview</version>
+			<outputDirectory>${project.artifactId}</outputDirectory>
 		</dependencySet>
 		<dependencySet>
 			<groupId>org.apache.maven.plugin-testing</groupId>
 			<artifactId>maven-plugin-testing-harness</artifactId>
 			<version>2.1</version>
-			<outputDirectory>${artifactId}</outputDirectory>
+			<outputDirectory>${project.artifactId}</outputDirectory>
 		</dependencySet>
 	</dependencySets>
 </package>
