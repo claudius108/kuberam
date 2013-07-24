@@ -36,13 +36,6 @@
 		<url>http://github.com/claudius108/kuberam/tree/master/kuberam-xar-plugin</url>
 	</scm>
 
-	<distributionManagement>
-		<repository>
-			<id>sourceforge</id>
-			<url>sftp://${sourceforge-frs-host}${sourceforge-user-web-htdocs-path}</url>
-		</repository>
-	</distributionManagement>
-
 	<dependencies>
 		<dependency>
 			<groupId>org.apache.maven</groupId>
@@ -115,7 +108,7 @@
 	<dependency>
 		<groupId>org.codehaus.plexus</groupId>
 		<artifactId>plexus-archiver</artifactId>
-		<version>2.2</version>
+		<version>2.4.1</version>
 		<exclusions>
 			<exclusion>
 				<groupId>org.codehaus.plexus</groupId>
