@@ -30,8 +30,7 @@ public class DescriptorConfiguration extends Xpp3Dom {
 				if (null != outputDirectoryElement) {
 					outputDirectory = outputDirectoryElement.getValue();
 				}
-				if ( !"".equals(outputDirectory) && !outputDirectory.endsWith( "/" ) )
-		        {
+				if ( !"".equals(outputDirectory) && !outputDirectory.endsWith( "/" ) ) {
 					outputDirectory += "/";
 		        }
 				fileSet.setPrefix(outputDirectory);
