@@ -37,8 +37,11 @@ import org.apache.maven.project.MavenProject;
 import org.apache.maven.shared.filtering.MavenFilteringException;
 import org.apache.maven.shared.filtering.MavenResourcesExecution;
 import org.apache.maven.shared.filtering.MavenResourcesFiltering;
+import org.codehaus.plexus.archiver.ArchiveEntry;
 import org.codehaus.plexus.archiver.ArchiverException;
+import org.codehaus.plexus.archiver.ResourceIterator;
 import org.codehaus.plexus.archiver.zip.ZipArchiver;
+import org.codehaus.plexus.components.io.fileselectors.FileSelector;
 import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.xml.Xpp3DomBuilder;
 import org.sonatype.aether.RepositorySystem;
@@ -181,19 +184,10 @@ public class MakeXarMojo extends AbstractMojo {
 				archiveComponentPath = dependencySetOutputDirectory + File.separator + artifactFileName;
 			}
 
-			// artifact is jar
-			if (artifactIdentifier.contains(":jar:")) {
-				if (dependencySetOutputDirectory.equals("")) {
-					dependencySetOutputDirectory = projectArtifactId;
-				}
-				components += "<resource><public-uri>" + moduleNamespace + "</public-uri><file>" + archiveComponentPath
-						+ "</file></resource>";
-
-			}
-
-			// artifact is anything but jar
+			// add file to archive
 			zipArchiver.addFile(artifactFile, archiveComponentPath);
 
+			// collect metadata about module's java main class for exist.xml
 			if (i == 0 && artifactIdentifier.contains(":jar:")) {
 				components += "<resource><public-uri>http://exist-db.org/ns/expath-pkg/module-main-class</public-uri><file>"
 						+ getMainClass(artifactFileAbsolutePath) + "</file></resource>";
@@ -201,7 +195,18 @@ public class MakeXarMojo extends AbstractMojo {
 		}
 
 		for (DefaultFileSet fileSet : fileSets) {
-			 zipArchiver.addFileSet(fileSet);
+			zipArchiver.addFileSet(fileSet);
+		}
+
+		// collect metadata about the archive's entries
+		ResourceIterator itr = zipArchiver.getResources();
+		while (itr.hasNext()) {
+			ArchiveEntry entry = itr.next();
+			String entryPath = entry.getName();
+			if (entryPath.endsWith(".jar")) {
+				components += "<resource><public-uri>" + moduleNamespace + "</public-uri><file>" + entryPath
+						+ "</file></resource>";				
+			}
 		}
 
 		project.getModel().addProperty("components", components);
