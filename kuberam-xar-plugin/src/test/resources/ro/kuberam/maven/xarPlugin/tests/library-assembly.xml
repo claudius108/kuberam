@@ -24,7 +24,7 @@
 			<includes>
 				<include>icon.png</include>
 			</includes>
-			<outputDirectory>i</outputDirectory>
+			<outputDirectory>content</outputDirectory>
 			<!-- <filtered>true</filtered> -->
 		</fileSet>
 	</fileSets>
@@ -33,13 +33,11 @@
 			<groupId>org.exist-db</groupId>
 			<artifactId>exist-modules</artifactId>
 			<version>2.0-tech-preview</version>
-			<outputDirectory>${project.artifactId}</outputDirectory>
 		</dependencySet>
 		<dependencySet>
 			<groupId>org.apache.maven.plugin-testing</groupId>
 			<artifactId>maven-plugin-testing-harness</artifactId>
 			<version>2.1</version>
-			<outputDirectory>${project.artifactId}</outputDirectory>
 		</dependencySet>
 	</dependencySets>
 </package>

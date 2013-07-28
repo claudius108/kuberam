@@ -15,7 +15,7 @@
 	<version>0.1</version>
 	<packaging>maven-plugin</packaging>
 	<name>kuberam xar plugin</name>
-	<description>Plugin for generating xar archives</description>
+	<description>Plugin for generating xar archives.</description>
 	<url>http://kuberam.ro</url>
 	<licenses>
 		<license>
@@ -172,7 +172,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-plugin-plugin</artifactId>
-				<version>2.5.1</version>
+				<version>3.2</version>
 			</plugin>
 		</plugins>
 	</reporting>

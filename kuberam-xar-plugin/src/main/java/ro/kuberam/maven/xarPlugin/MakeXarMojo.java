@@ -41,7 +41,6 @@ import org.codehaus.plexus.archiver.ArchiveEntry;
 import org.codehaus.plexus.archiver.ArchiverException;
 import org.codehaus.plexus.archiver.ResourceIterator;
 import org.codehaus.plexus.archiver.zip.ZipArchiver;
-import org.codehaus.plexus.components.io.fileselectors.FileSelector;
 import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.xml.Xpp3DomBuilder;
 import org.sonatype.aether.RepositorySystem;
@@ -185,6 +184,9 @@ public class MakeXarMojo extends AbstractMojo {
 			}
 
 			// add file to archive
+			if (artifactFileAbsolutePath.endsWith(".jar")) {
+				archiveComponentPath = "content/" + archiveComponentPath;
+			}
 			zipArchiver.addFile(artifactFile, archiveComponentPath);
 
 			// collect metadata about module's java main class for exist.xml
@@ -204,8 +206,8 @@ public class MakeXarMojo extends AbstractMojo {
 			ArchiveEntry entry = itr.next();
 			String entryPath = entry.getName();
 			if (entryPath.endsWith(".jar")) {
-				components += "<resource><public-uri>" + moduleNamespace + "</public-uri><file>" + entryPath
-						+ "</file></resource>";				
+				components += "<resource><public-uri>" + moduleNamespace + "</public-uri><file>"
+						+ entryPath.substring(8) + "</file></resource>";
 			}
 		}
 
