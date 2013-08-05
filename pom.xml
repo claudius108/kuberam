@@ -10,6 +10,7 @@
 	<modules>
 		<module>junit-tests</module>
 		<module>sourceforge</module>
+		<module>kuberam-expath-plugin</module>
 	</modules>
 
 	<properties>

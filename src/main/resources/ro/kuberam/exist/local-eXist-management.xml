@@ -1,6 +1,6 @@
 <project xmlns:xdb="http://exist-db.org/ant" name="Local eXist server management" basedir="." default="start-exist-local-server">
 
-	<property name="eXist.test.server.dir">/home/claudius/workspaces/eXist/eXist-2.1</property>
+	<property name="eXist.test.server.dir">/home/claudius/eXist-db-2.1</property>
 	<property name="eXist.test.server.admin-username">admin</property>
 	<property name="eXist.test.server.admin-password">admin123</property>
 	<property name="kuberam.current.project.tmp.dir" value="${kuberam.current.project.dir}/../tmp" />
@@ -56,13 +56,13 @@
 			</fileset>
 		</xdb:store>
 	</target>
-	
+
 	<target name="add-file-to-db" description="Add a file to DB">
 		<echo>Copying file from '${source-file}' to collection '${target-collection}'...</echo>
 		<xdb:store user="${eXist.test.server.admin-username}" password="${eXist.test.server.admin-password}" uri="${eXist-server-url}${target-collection}" createcollection="true" createsubcollections="true">
-			<fileset file="${source-file}"/>
+			<fileset file="${source-file}" />
 		</xdb:store>
-	</target>	
+	</target>
 
 	<target name="deploy-module-jars-to-local-eXist-server" description="Deploy module jar and its dependencies to local eXist server">
 		<echo>Deploy module jar and its dependencies to local eXist server...</echo>

@@ -11,11 +11,11 @@
 	</parent>
 
 	<groupId>ro.kuberam.maven.plugins</groupId>
-	<artifactId>kuberam-xar-plugin</artifactId>
+	<artifactId>kuberam-expath-plugin</artifactId>
 	<version>0.1</version>
 	<packaging>maven-plugin</packaging>
-	<name>kuberam xar plugin</name>
-	<description>Plugin for generating xar archives.</description>
+	<name>kuberam expath plugin</name>
+	<description>Plugin for EXPath related functionality.</description>
 	<url>http://kuberam.ro</url>
 	<licenses>
 		<license>
