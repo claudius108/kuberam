@@ -23,7 +23,7 @@
 		<plugins>
 			<plugin>
 				<groupId>ro.kuberam.maven.plugins</groupId>
-				<artifactId>kuberam-xar-plugin</artifactId>
+				<artifactId>kuberam-expath-plugin</artifactId>
 				<version>0.1</version>
 				<executions>
 					<execution>

@@ -1,0 +1,37 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>ro.kuberam.maven.plugins.maven-xar-plugin</groupId>
+	<artifactId>generate-lib-files-test</artifactId>
+	<version>0.1</version>
+	<packaging>jar</packaging>
+	<name>Test GenerateLibBasicsMojo</name>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>ro.kuberam.maven.plugins</groupId>
+				<artifactId>kuberam-expath-plugin</artifactId>
+				<version>0.2</version>
+				<executions>
+					<execution>
+						<id>generate-lib-files</id>
+						<phase>test</phase>
+						<goals>
+							<goal>generate-lib-basics</goal>
+						</goals>
+						<configuration>
+							<libDirPath>${basedir}/expath-crypto-lib</libDirPath>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+</project>
