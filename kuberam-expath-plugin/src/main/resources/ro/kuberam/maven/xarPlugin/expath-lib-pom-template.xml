@@ -10,10 +10,10 @@
 		<version>1.0-SNAPSHOT</version>
 	</parent>
 
-	<artifactId>crypto</artifactId>
-	<version>0.2.5</version>
-	<name>EXPath Cryptographic Library</name>
-	<url>http://kuberam.ro/specs/expath/crypto/crypto.html</url>
+	<artifactId>${project.artifactId}</artifactId>
+	<version>${project.version}</version>
+	<name>${project.name}</name>
+	<url>${project.url}</url>
 
 	<build>
 		<plugins>
