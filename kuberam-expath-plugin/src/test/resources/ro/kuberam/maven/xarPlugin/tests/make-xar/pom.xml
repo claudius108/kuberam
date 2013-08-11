@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>ro.kuberam.maven.plugins.maven-xar-plugin</groupId>
-	<artifactId>project-to-test</artifactId>
+	<artifactId>make-xar-test</artifactId>
 	<version>0.2.6</version>
 	<packaging>jar</packaging>
 	<name>Test GenerateGlobalDescriptorsMojo</name>
