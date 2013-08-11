@@ -14,9 +14,14 @@ public class GenerateLibBasicsMojo extends AbstractMojo {
 
 	@Parameter(required = true)
 	private File libDirPath;
+	
+	@Parameter(defaultValue = "${project.artifactId}")
+	private String projectArtifactId;
 
 	@Override
 	public void execute() throws MojoExecutionException, MojoFailureException {
+		
+		libDirPath = new File(libDirPath + File.separator + projectArtifactId); 
 
 		// create the lib directory
 		if (!libDirPath.exists()) {
