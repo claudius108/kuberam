@@ -1,4 +1,4 @@
-package ro.kuberam.maven.xarPlugin;
+package ro.kuberam.maven.expathPlugin.mojos;
 
 import java.io.File;
 
@@ -7,7 +7,6 @@ import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 
-import ro.kuberam.maven.xarPlugin.mojos.AbstractExpathMojo;
 
 @Mojo(name = "generate-lib-basics")
 public class GenerateLibBasicsMojo extends AbstractExpathMojo {
@@ -29,7 +28,7 @@ public class GenerateLibBasicsMojo extends AbstractExpathMojo {
 		}
 
 		// filter expath-lib-pom-template.xml
-		unpack(GenerateLibBasicsMojo.class.getResource("expath-lib-pom-template.xml"), new File(projectBuildDirectory, "expath-lib-pom-template.xml"));
+		unpack(GenerateLibBasicsMojo.class.getResource("/ro/kuberam/maven/xarPlugin/expath-lib-pom-template.xml"), new File(projectBuildDirectory, "expath-lib-pom-template.xml"));
 		filterResource(projectBuildDirectory.getAbsolutePath(), "expath-lib-pom-template.xml", libDirPath.getAbsolutePath(), libDirPath);
 		
 

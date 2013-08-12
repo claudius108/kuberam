@@ -1,4 +1,4 @@
-package ro.kuberam.maven.xarPlugin.mojos;
+package ro.kuberam.maven.expathPlugin.mojos;
 
 import java.io.File;
 import java.io.FileOutputStream;

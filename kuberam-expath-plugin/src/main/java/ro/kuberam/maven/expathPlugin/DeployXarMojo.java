@@ -1,4 +1,4 @@
-package ro.kuberam.maven.xarPlugin;
+package ro.kuberam.maven.expathPlugin;
 
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
