@@ -18,25 +18,15 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.net.JarURLConnection;
 import java.net.URL;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 import java.util.jar.Attributes;
 
-import org.apache.maven.execution.MavenSession;
-import org.apache.maven.model.Resource;
-import org.apache.maven.plugin.AbstractMojo;
-import org.apache.maven.plugin.BuildPluginManager;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.Component;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
-import org.apache.maven.project.MavenProject;
-import org.apache.maven.shared.filtering.MavenFilteringException;
-import org.apache.maven.shared.filtering.MavenResourcesExecution;
-import org.apache.maven.shared.filtering.MavenResourcesFiltering;
 import org.codehaus.plexus.archiver.ArchiveEntry;
 import org.codehaus.plexus.archiver.ArchiverException;
 import org.codehaus.plexus.archiver.ResourceIterator;
@@ -52,20 +42,10 @@ import org.sonatype.aether.resolution.ArtifactResolutionException;
 import org.sonatype.aether.resolution.ArtifactResult;
 import org.sonatype.aether.util.artifact.DefaultArtifact;
 
+import ro.kuberam.maven.xarPlugin.mojos.AbstractExpathMojo;
+
 @Mojo(name = "make-xar")
-public class MakeXarMojo extends AbstractMojo {
-
-	@Parameter(defaultValue = "${project}")
-	private static MavenProject project;
-
-	@Component
-	private MavenSession session;
-
-	@Component
-	private BuildPluginManager pluginManager;
-
-	@Component(role = MavenResourcesFiltering.class, hint = "default")
-	protected MavenResourcesFiltering mavenResourcesFiltering;
+public class MakeXarMojo extends AbstractExpathMojo {
 
 	@Component(role = org.codehaus.plexus.archiver.Archiver.class, hint = "zip")
 	private ZipArchiver zipArchiver;
@@ -79,9 +59,6 @@ public class MakeXarMojo extends AbstractMojo {
 	@Parameter(defaultValue = "${project.artifactId}-${project.version}")
 	private String finalName;
 
-	@Parameter(property = "project.build.sourceEncoding", defaultValue = "UTF-8")
-	private String encoding;
-
 	@Component
 	private RepositorySystem repoSystem;
 
@@ -91,9 +68,6 @@ public class MakeXarMojo extends AbstractMojo {
 	@Parameter(defaultValue = "${project.remoteProjectRepositories}", readonly = true)
 	private static List<RemoteRepository> remoteRepos;
 
-	protected List<String> filters = Arrays.asList();
-
-	private List<String> defaultNonFilteredFileExtensions = Arrays.asList("jpg", "jpeg", "gif", "bmp", "png");
 	private static String componentsTemplateFileContent = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
 			+ "<package xmlns=\"http://exist-db.org/ns/expath-pkg\">${components}</package>";
 
@@ -119,7 +93,7 @@ public class MakeXarMojo extends AbstractMojo {
 		// DescriptorConfiguration((Xpp3Dom) xarPlugin.getConfiguration());
 
 		// filter the descriptor file
-		filterResource(descriptor.getParent(), assemblyDescriptorName, archiveTmpDirectoryPath);
+		filterResource(descriptor.getParent(), assemblyDescriptorName, archiveTmpDirectoryPath, outputDirectory);
 
 		// get the execution configuration
 		FileReader fileReader;
@@ -220,7 +194,7 @@ public class MakeXarMojo extends AbstractMojo {
 		} catch (IOException e2) {
 			e2.printStackTrace();
 		}
-		filterResource(archiveTmpDirectoryPath, "components.xml", descriptorsDirectoryPath);
+		filterResource(archiveTmpDirectoryPath, "components.xml", descriptorsDirectoryPath, outputDirectory);		
 
 		// generate the expath descriptors
 		executeMojo(
@@ -270,29 +244,6 @@ public class MakeXarMojo extends AbstractMojo {
 			e1.printStackTrace();
 		}
 		return attr.getValue(Attributes.Name.MAIN_CLASS);
-	}
-
-	private void filterResource(String directory, String include, String targetPath) {
-		Resource resource = new Resource();
-		resource.setDirectory(directory);
-		resource.addInclude(include);
-		resource.setFiltering(true);
-		resource.setTargetPath(targetPath);
-
-		MavenResourcesExecution mavenResourcesExecution = new MavenResourcesExecution(
-				Collections.singletonList(resource), outputDirectory, project, encoding, filters,
-				defaultNonFilteredFileExtensions, session);
-
-		mavenResourcesExecution.setInjectProjectBuildFilters(false);
-		mavenResourcesExecution.setOverwrite(true);
-		mavenResourcesExecution.setSupportMultiLineFiltering(true);
-
-		try {
-			mavenResourcesFiltering.filterResources(mavenResourcesExecution);
-		} catch (MavenFilteringException e) {
-			e.printStackTrace();
-		}
-
 	}
 
 }

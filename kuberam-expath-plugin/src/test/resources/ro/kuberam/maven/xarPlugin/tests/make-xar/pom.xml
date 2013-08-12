@@ -7,7 +7,7 @@
 	<artifactId>make-xar-test</artifactId>
 	<version>0.2.6</version>
 	<packaging>jar</packaging>
-	<name>Test GenerateGlobalDescriptorsMojo</name>
+	<name>Test MakeXarMojo</name>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -24,7 +24,7 @@
 			<plugin>
 				<groupId>ro.kuberam.maven.plugins</groupId>
 				<artifactId>kuberam-expath-plugin</artifactId>
-				<version>0.1</version>
+				<version>0.2</version>
 				<executions>
 					<execution>
 						<id>create-application-archive</id>
