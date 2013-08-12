@@ -1,4 +1,4 @@
-package ro.kuberam.maven.expathPlugin;
+package ro.kuberam.maven.expathPlugin.mojos;
 
 import static org.twdata.maven.mojoexecutor.MojoExecutor.artifactId;
 import static org.twdata.maven.mojoexecutor.MojoExecutor.configuration;
@@ -42,7 +42,9 @@ import org.sonatype.aether.resolution.ArtifactResolutionException;
 import org.sonatype.aether.resolution.ArtifactResult;
 import org.sonatype.aether.util.artifact.DefaultArtifact;
 
-import ro.kuberam.maven.expathPlugin.mojos.AbstractExpathMojo;
+import ro.kuberam.maven.expathPlugin.DefaultFileSet;
+import ro.kuberam.maven.expathPlugin.DependencySet;
+import ro.kuberam.maven.expathPlugin.DescriptorConfiguration;
 
 @Mojo(name = "make-xar")
 public class MakeXarMojo extends AbstractExpathMojo {
