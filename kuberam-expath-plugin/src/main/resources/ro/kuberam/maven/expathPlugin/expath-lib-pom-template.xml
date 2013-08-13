@@ -11,7 +11,7 @@
 	</parent>
 
 	<artifactId>${project.artifactId}</artifactId>
-	<version>${project.version}</version>
+	<version>${libVersion}</version>
 	<name>${project.name}</name>
 	<url>${project.url}</url>
 
@@ -20,10 +20,6 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-dependency-plugin</artifactId>
 			</plugin>
 		</plugins>
 	</build>
