@@ -47,8 +47,6 @@
 			<xsl:value-of select="$java-package-declaration" />
 			<xsl:text>
 
-import java.io.FileInputStream;
-import java.util.Properties;
 </xsl:text>
 			<xsl:text>
 /**
