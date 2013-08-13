@@ -7,9 +7,9 @@
 	<xsl:param name="specId" />
 	<xsl:param name="libDirPath" />
 	<xsl:param name="libVersion" />
+	<xsl:param name="libUrl" />
 
-	<xsl:variable name="javaPackageDirPath"
-		select="concat($libDirPath, '/src/main/java/org/expath/', $javaPackageName, '/')" />
+	<xsl:variable name="javaPackageDirPath" select="concat($libDirPath, '/src/main/java/org/expath/', $javaPackageName, '/')" />
 	<xsl:variable name="java-package-declaration" select="concat('package org.expath.', $javaPackageName, ';')" />
 
 	<xsl:variable name="java-end-of-instruction-line">
@@ -24,6 +24,35 @@
 		<xsl:variable name="module-prefix">
 			<xsl:copy-of select="//element()[@id = 'module-prefix']" />
 		</xsl:variable>
+
+		<xsl:result-document href="{concat($libDirPath, '/pom.xml')}" method="xml">
+			<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+				xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+				<modelVersion>4.0.0</modelVersion>
+
+				<parent>
+					<groupId>org.expath.libs</groupId>
+					<artifactId>base</artifactId>
+					<version>1.0-SNAPSHOT</version>
+				</parent>
+
+				<artifactId>${project.artifactId}</artifactId>
+				<version>${libVersion}</version>
+				<name>${project.name}</name>
+				<url><xsl:value-of select="$libUrl" /></url>
+
+				<build>
+					<plugins>
+						<plugin>
+							<groupId>org.apache.maven.plugins</groupId>
+							<artifactId>maven-jar-plugin</artifactId>
+						</plugin>
+					</plugins>
+				</build>
+
+			</project>
+		</xsl:result-document>
 
 		<xsl:result-document href="{concat($javaPackageDirPath, 'ErrorMessages.java')}" method="text">
 			<xsl:value-of select="$java-package-declaration" />

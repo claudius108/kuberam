@@ -34,6 +34,12 @@ public class GenerateLibBasicsMojo extends AbstractExpathMojo {
 
 	@Parameter(required = true)
 	private String javaPackageName;
+	
+	@Parameter(required = true)
+	private String libVersion;
+	
+	@Parameter(defaultValue = "${project.url}")
+	private String libUrl;
 
 	@Override
 	public void execute() throws MojoExecutionException, MojoFailureException {
@@ -44,14 +50,6 @@ public class GenerateLibBasicsMojo extends AbstractExpathMojo {
 		}
 
 		String libDirPath = libDir.getAbsolutePath();
-		String libVersion = project.getVersion();
-
-		// filter expath-lib-pom-template.xml
-		unpack(GenerateLibBasicsMojo.class.getResource("/ro/kuberam/maven/expathPlugin/expath-lib-pom-template.xml"), new File(projectBuildDirectory,
-				"expath-lib-pom-template.xml"));
-		filterResource(projectBuildDirectory.getAbsolutePath(), "expath-lib-pom-template.xml", libDirPath, libDir);
-		File libPomFile = new File(libDirPath + File.separator + "expath-lib-pom-template.xml");
-		libPomFile.renameTo(new File(libDirPath + File.separator + "pom.xml"));
 
 		// generate java classes
 		executeMojo(
@@ -65,12 +63,13 @@ public class GenerateLibBasicsMojo extends AbstractExpathMojo {
 										element(name("dir"), specDir.getAbsolutePath()),
 										element(name("includes"), element(name("include"), specId + ".xml")),
 										element(name("stylesheet"),
-												this.getClass().getResource("/ro/kuberam/maven/expathPlugin/generate-java-classes.xsl").toString()),
+												this.getClass().getResource("/ro/kuberam/maven/expathPlugin/generate-lib-basics.xsl").toString()),
 										element(name("parameters"),
 												element(name("parameter"), element(name("name"), "javaPackageName"),
 														element(name("value"), javaPackageName)),
 												element(name("parameter"), element(name("name"), "specId"), element(name("value"), specId)),
 												element(name("parameter"), element(name("name"), "libDirPath"), element(name("value"), libDirPath)),
+												element(name("parameter"), element(name("name"), "libUrl"), element(name("value"), libUrl)),
 												element(name("parameter"), element(name("name"), "libVersion"), element(name("value"), libVersion)))))),
 				executionEnvironment(project, session, pluginManager));
 	}

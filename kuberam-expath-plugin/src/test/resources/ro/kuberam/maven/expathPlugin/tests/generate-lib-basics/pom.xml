@@ -31,6 +31,7 @@
 							<specId>crypto</specId>
 							<specDir>${basedir}</specDir>
 							<libDir>${basedir}/crypto</libDir>
+							<libVersion>0.2.5</libVersion>
 							<javaPackageName>crypto</javaPackageName>
 						</configuration>
 					</execution>
