@@ -38,8 +38,6 @@ public class GenerateLibBasicsMojo extends AbstractExpathMojo {
 	@Override
 	public void execute() throws MojoExecutionException, MojoFailureException {
 
-		libDir = new File(libDir + File.separator + specId);
-
 		// create the lib directory
 		if (!libDir.exists()) {
 			libDir.mkdir();
@@ -52,6 +50,8 @@ public class GenerateLibBasicsMojo extends AbstractExpathMojo {
 		unpack(GenerateLibBasicsMojo.class.getResource("/ro/kuberam/maven/expathPlugin/expath-lib-pom-template.xml"), new File(projectBuildDirectory,
 				"expath-lib-pom-template.xml"));
 		filterResource(projectBuildDirectory.getAbsolutePath(), "expath-lib-pom-template.xml", libDirPath, libDir);
+		File libPomFile = new File(libDirPath + File.separator + "expath-lib-pom-template.xml");
+		libPomFile.renameTo(new File(libDirPath + File.separator + "pom.xml"));
 
 		// generate java classes
 		executeMojo(
@@ -73,9 +73,6 @@ public class GenerateLibBasicsMojo extends AbstractExpathMojo {
 												element(name("parameter"), element(name("name"), "libDirPath"), element(name("value"), libDirPath)),
 												element(name("parameter"), element(name("name"), "libVersion"), element(name("value"), libVersion)))))),
 				executionEnvironment(project, session, pluginManager));
-
-		System.out.println("libDirPath: " + libDirPath);
-
 	}
 
 }

@@ -30,7 +30,7 @@
 						<configuration>
 							<specId>crypto</specId>
 							<specDir>${basedir}</specDir>
-							<libDir>${basedir}</libDir>
+							<libDir>${basedir}/crypto</libDir>
 							<javaPackageName>crypto</javaPackageName>
 						</configuration>
 					</execution>
