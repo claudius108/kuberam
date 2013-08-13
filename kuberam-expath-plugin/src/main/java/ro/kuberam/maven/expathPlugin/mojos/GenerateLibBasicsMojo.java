@@ -74,7 +74,7 @@ public class GenerateLibBasicsMojo extends AbstractExpathMojo {
 												element(name("parameter"), element(name("name"), "libVersion"), element(name("value"), libVersion)))))),
 				executionEnvironment(project, session, pluginManager));
 
-		System.out.println("URL: " + GenerateLibBasicsMojo.class.getResource("expath-lib-pom-template.xml"));
+		System.out.println("libDirPath: " + libDirPath);
 
 	}
 

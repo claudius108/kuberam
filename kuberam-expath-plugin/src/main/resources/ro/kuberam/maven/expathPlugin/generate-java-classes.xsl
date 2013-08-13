@@ -9,7 +9,7 @@
 	<xsl:param name="libVersion" />
 
 	<xsl:variable name="javaPackageDirPath"
-		select="concat($libDirPath, '/', $specId, '/src/main/java/org/expath/', $javaPackageName, '/')" />
+		select="concat($libDirPath, '/src/main/java/org/expath/', $javaPackageName, '/')" />
 	<xsl:variable name="java-package-declaration" select="concat('package org.expath.', $javaPackageName, ';')" />
 
 	<xsl:variable name="java-end-of-instruction-line">
