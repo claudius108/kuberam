@@ -86,8 +86,7 @@ public class MakeXarMojo extends AbstractExpathMojo {
 		String archiveTmpDirectoryPath = project.getModel().getBuild().getDirectory() + File.separator + "xar-tmp";
 		String projectArtifactId = project.getArtifactId();
 		String components = "";
-		String descriptorsDirectoryPath = outputDirectoryPath + File.separator + "expath-descriptors-"
-				+ UUID.randomUUID();
+		String descriptorsDirectoryPath = outputDirectoryPath + File.separator + "expath-descriptors-" + UUID.randomUUID();
 
 		// Plugin xarPlugin =
 		// project.getPlugin("ro.kuberam.maven.plugins:kuberam-xar-plugin");
@@ -124,8 +123,7 @@ public class MakeXarMojo extends AbstractExpathMojo {
 			// define the artifact
 			Artifact artifactDefinition;
 			try {
-				artifactDefinition = new DefaultArtifact(dependencySet.groupId + ":" + dependencySet.artifactId + ":"
-						+ dependencySet.version);
+				artifactDefinition = new DefaultArtifact(dependencySet.groupId + ":" + dependencySet.artifactId + ":" + dependencySet.version);
 			} catch (IllegalArgumentException e) {
 				throw new MojoFailureException(e.getMessage(), e);
 			}
@@ -182,8 +180,7 @@ public class MakeXarMojo extends AbstractExpathMojo {
 			ArchiveEntry entry = itr.next();
 			String entryPath = entry.getName();
 			if (entryPath.endsWith(".jar")) {
-				components += "<resource><public-uri>" + moduleNamespace + "</public-uri><file>"
-						+ entryPath.substring(8) + "</file></resource>";
+				components += "<resource><public-uri>" + moduleNamespace + "</public-uri><file>" + entryPath.substring(8) + "</file></resource>";
 			}
 		}
 
@@ -191,12 +188,11 @@ public class MakeXarMojo extends AbstractExpathMojo {
 
 		// create and filter the components descriptor
 		try {
-			FileUtils.fileWrite(new File(archiveTmpDirectoryPath + File.separator + "components.xml"), "UTF-8",
-					componentsTemplateFileContent);
+			FileUtils.fileWrite(new File(archiveTmpDirectoryPath + File.separator + "components.xml"), "UTF-8", componentsTemplateFileContent);
 		} catch (IOException e2) {
 			e2.printStackTrace();
 		}
-		filterResource(archiveTmpDirectoryPath, "components.xml", descriptorsDirectoryPath, outputDirectory);		
+		filterResource(archiveTmpDirectoryPath, "components.xml", descriptorsDirectoryPath, outputDirectory);
 
 		// generate the expath descriptors
 		executeMojo(
@@ -209,8 +205,7 @@ public class MakeXarMojo extends AbstractExpathMojo {
 								element(name("transformationSet"),
 										element(name("dir"), archiveTmpDirectoryPath),
 										element(name("includes"), element(name("include"), assemblyDescriptorName)),
-										element(name("stylesheet"),
-												this.getClass().getResource("generate-descriptors.xsl").toString()),
+										element(name("stylesheet"), this.getClass().getResource("generate-descriptors.xsl").toString()),
 										element(name("parameters"),
 												element(name("parameter"), element(name("name"), "package-dir"),
 														element(name("value"), descriptorsDirectoryPath)))))),
@@ -219,8 +214,7 @@ public class MakeXarMojo extends AbstractExpathMojo {
 		// add the expath descriptors
 		File descriptorsDirectory = new File(descriptorsDirectoryPath);
 		for (String descriptorFileName : descriptorsDirectory.list()) {
-			zipArchiver.addFile(new File(descriptorsDirectoryPath + File.separator + descriptorFileName),
-					descriptorFileName);
+			zipArchiver.addFile(new File(descriptorsDirectoryPath + File.separator + descriptorFileName), descriptorFileName);
 		}
 
 		try {
