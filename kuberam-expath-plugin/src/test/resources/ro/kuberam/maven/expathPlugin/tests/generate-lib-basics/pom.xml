@@ -28,7 +28,10 @@
 							<goal>generate-lib-basics</goal>
 						</goals>
 						<configuration>
-							<libDirPath>${basedir}</libDirPath>
+							<specId>crypto</specId>
+							<specDir>${basedir}</specDir>
+							<libDir>${basedir}</libDir>
+							<javaPackageName>crypto</javaPackageName>
 						</configuration>
 					</execution>
 				</executions>
