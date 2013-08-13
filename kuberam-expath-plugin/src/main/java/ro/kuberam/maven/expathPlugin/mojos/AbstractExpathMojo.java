@@ -47,8 +47,6 @@ public class AbstractExpathMojo extends AbstractMojo {
 
 	@Override
 	public void execute() throws MojoExecutionException, MojoFailureException {
-		// TODO Auto-generated method stub
-
 	}
 
 	public void filterResource(String directory, String include, String targetPath, File outputDirectory) {
