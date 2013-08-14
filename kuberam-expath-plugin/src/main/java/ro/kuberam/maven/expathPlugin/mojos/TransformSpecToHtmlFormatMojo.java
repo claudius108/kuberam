@@ -14,6 +14,7 @@ import static org.twdata.maven.mojoexecutor.MojoExecutor.plugin;
 import static org.twdata.maven.mojoexecutor.MojoExecutor.version;
 
 import java.io.File;
+import java.util.UUID;
 
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -39,6 +40,8 @@ public class TransformSpecToHtmlFormatMojo extends AbstractExpathMojo {
 		if (!outputDir.exists()) {
 			outputDir.mkdir();
 		}
+		
+		String specTmpDir = projectBuildDirectory.getAbsolutePath() + File.separator + "spec-tmp-" + UUID.randomUUID();
 
 		// transform the spec
 		executeMojo(
@@ -52,10 +55,10 @@ public class TransformSpecToHtmlFormatMojo extends AbstractExpathMojo {
 										element(name("dir"), specDir.getAbsolutePath()),
 										element(name("includes"), element(name("include"), specId + ".xml")),
 										element(name("stylesheet"), this.getClass().getResource("/ro/kuberam/maven/expathPlugin/xmlspec.xsl")
-												.toString()), element(name("outputDir"), outputDir.getAbsolutePath())))),
+												.toString()), element(name("outputDir"), specTmpDir)))),
 				executionEnvironment(project, session, pluginManager));
 
-		File transformedSpecFile = new File(outputDir + File.separator + specId + ".xml");
+		File transformedSpecFile = new File(specTmpDir + File.separator + specId + ".xml");
 		transformedSpecFile.renameTo(new File(outputDir + File.separator + specId + ".html"));
 	}
 
