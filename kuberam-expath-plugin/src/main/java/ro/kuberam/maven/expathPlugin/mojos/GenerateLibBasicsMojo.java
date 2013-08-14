@@ -40,6 +40,12 @@ public class GenerateLibBasicsMojo extends AbstractExpathMojo {
 	
 	@Parameter(defaultValue = "${project.url}")
 	private String libUrl;
+	
+	@Parameter(required = true)
+	private String libId;
+	
+	@Parameter(required = true)
+	private String libName;
 
 	@Override
 	public void execute() throws MojoExecutionException, MojoFailureException {
@@ -70,6 +76,8 @@ public class GenerateLibBasicsMojo extends AbstractExpathMojo {
 												element(name("parameter"), element(name("name"), "specId"), element(name("value"), specId)),
 												element(name("parameter"), element(name("name"), "libDirPath"), element(name("value"), libDirPath)),
 												element(name("parameter"), element(name("name"), "libUrl"), element(name("value"), libUrl)),
+												element(name("parameter"), element(name("name"), "libId"), element(name("value"), libId)),
+												element(name("parameter"), element(name("name"), "libName"), element(name("value"), libName)),
 												element(name("parameter"), element(name("name"), "libVersion"), element(name("value"), libVersion)))))),
 				executionEnvironment(project, session, pluginManager));
 	}
