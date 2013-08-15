@@ -95,7 +95,7 @@
 			<xsl:text>      public final static String PREFIX = "</xsl:text>
 			<xsl:value-of select="concat($module-prefix, $java-end-of-instruction-line)" />
 			<xsl:text>      public final static String MODULE_NAME = "</xsl:text>
-			<xsl:value-of select="concat('EXPath ', //element()[local-name() = 'title'], $java-end-of-instruction-line)" />
+			<xsl:value-of select="concat($libName, $java-end-of-instruction-line)" />
 			<xsl:text>      public final static String MODULE_DESCRIPTION = "</xsl:text>
 			<xsl:value-of select="concat('A ', //element()[@id = 'module-description'], $java-end-of-instruction-line)" />
 			<xsl:text>}
