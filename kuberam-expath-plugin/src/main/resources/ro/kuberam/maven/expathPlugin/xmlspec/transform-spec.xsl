@@ -4,7 +4,7 @@
 
 	<xsl:import href="xmlspec.xsl" />
 
-	<xsl:output method="xhtml" version="1.0" omit-xml-declaration="yes" />
+	<xsl:output method="xhtml" version="1.0" omit-xml-declaration="yes" encoding="utf-8" />
 
 	<xsl:template match="/">
 		<xsl:text disable-output-escaping='yes'>&lt;!DOCTYPE html&gt;</xsl:text>
