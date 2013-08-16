@@ -22,6 +22,42 @@
 				<version>0.2</version>
 				<executions>
 					<execution>
+						<id>generate-crypto.html</id>
+						<phase>test</phase>
+						<goals>
+							<goal>transform-spec-to-html-format</goal>
+						</goals>
+						<configuration>
+							<specId>crypto</specId>
+							<specDir>${basedir}/crypto</specDir>
+							<outputDir>${basedir}/crypto</outputDir>
+						</configuration>
+					</execution>
+					<execution>
+						<id>generate-datatype-conversion.html</id>
+						<phase>test</phase>
+						<goals>
+							<goal>transform-spec-to-html-format</goal>
+						</goals>
+						<configuration>
+							<specId>datatype-conversion</specId>
+							<specDir>${basedir}/datatype-conversion</specDir>
+							<outputDir>${basedir}/datatype-conversion</outputDir>
+						</configuration>
+					</execution>
+					<execution>
+						<id>generate-ft-client.html</id>
+						<phase>test</phase>
+						<goals>
+							<goal>transform-spec-to-html-format</goal>
+						</goals>
+						<configuration>
+							<specId>ft-client</specId>
+							<specDir>${basedir}/ft-client</specDir>
+							<outputDir>${basedir}/ft-client</outputDir>
+						</configuration>
+					</execution>
+					<execution>
 						<id>generate-spec</id>
 						<phase>test</phase>
 						<goals>
@@ -29,10 +65,7 @@
 						</goals>
 						<configuration>
 							<specsDir>${basedir}</specsDir>
-						
 							<includeSpecIds>crypto,datatype-conversion,ft-client</includeSpecIds>
-
-							<outputDir>${project.build.directory}</outputDir>
 						</configuration>
 					</execution>
 				</executions>
