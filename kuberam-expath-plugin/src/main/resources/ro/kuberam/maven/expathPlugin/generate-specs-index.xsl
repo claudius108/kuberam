@@ -10,7 +10,7 @@
 
 	<xsl:template match="/">
 		<xsl:result-document href="{concat($outputDir, '/index.html')}" method="html">
-			<html>
+			<html xmlns="http://www.w3.org/1999/xhtml">
 				<head>
 					<title>EXPath Specifications Index</title>
 				</head>
@@ -23,11 +23,11 @@
 						<xsl:variable name="spec-in-html-format-path" select="concat($spec-name, '/', $spec-name, '.html')" />
 						<h4>
 							<a href="{$spec-in-html-format-path}">
-								<xsl:value-of select="$spec/element()[1]/element()[1]" />
+								<xsl:value-of select="normalize-space($spec/element()[1]/element()[1])" />
 							</a>
 						</h4>
 						<h5>
-							<xsl:value-of select="$spec/element()[3]/element()[2]" />
+							<xsl:value-of select="normalize-space($spec/element()[3]/element()[2])" />
 						</h5>
 					</xsl:for-each>
 				</body>
