@@ -198,9 +198,9 @@
                using a cryptographic algorithm and a secret key. It returns the hash-based message authentication code as base64 string.</p>
             <eg>
 <spec:function>crypto:hmac</spec:function>($data as <spec:type>xs:anyAtomicType</spec:type>,
-            $secret-key as <spec:type>xs:anyAtomicType</spec:type>,
-            $hashing-algorithm as <spec:type>xs:string</spec:type>,
-            $provider as <spec:type>xs:string?</spec:type>) as <spec:type>xs:string</spec:type>
+	$secret-key as <spec:type>xs:anyAtomicType</spec:type>,
+	$hashing-algorithm as <spec:type>xs:string</spec:type>,
+	$provider as <spec:type>xs:string?</spec:type>) as <spec:type>xs:string</spec:type>
 </eg>
             <ulist>
                <item>

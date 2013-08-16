@@ -40,7 +40,7 @@ public class TransformSpecToHtmlFormatMojo extends AbstractExpathMojo {
 		if (!outputDir.exists()) {
 			outputDir.mkdir();
 		}
-		
+
 		String specTmpDir = projectBuildDirectory.getAbsolutePath() + File.separator + "spec-tmp-" + UUID.randomUUID();
 
 		// transform the spec
@@ -54,9 +54,9 @@ public class TransformSpecToHtmlFormatMojo extends AbstractExpathMojo {
 								element(name("transformationSet"),
 										element(name("dir"), specDir.getAbsolutePath()),
 										element(name("includes"), element(name("include"), specId + ".xml")),
-										element(name("stylesheet"), this.getClass().getResource("/ro/kuberam/maven/expathPlugin/xmlspec.xsl")
-												.toString()), element(name("outputDir"), specTmpDir)))),
-				executionEnvironment(project, session, pluginManager));
+										element(name("stylesheet"),
+												this.getClass().getResource("/ro/kuberam/maven/expathPlugin/xmlspec/transform-spec.xsl").toString()),
+										element(name("outputDir"), specTmpDir)))), executionEnvironment(project, session, pluginManager));
 
 		File transformedSpecFile = new File(specTmpDir + File.separator + specId + ".xml");
 		transformedSpecFile.renameTo(new File(outputDir + File.separator + specId + ".html"));
