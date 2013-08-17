@@ -1,14 +1,10 @@
-<?xml version="1.0"?>
-<xsl:transform xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-               xmlns:saxon="http://icl.com/saxon"
-               xmlns="http://www.w3.org/1999/xhtml"
-               exclude-result-prefixes="saxon"
-               version="2.0">
+<?xml version="1.0" encoding="utf-8"?>
+<xsl:transform xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:saxon="http://icl.com/saxon" exclude-result-prefixes="saxon" version="2.0">
 
 <!-- ====================================================================== -->
 <!-- xmlspec.xsl: An HTML XSL[1] Stylesheet for XML Spec V2.1[2] markup
 
-     Version: $Id: xmlspec.xsl,v 1.1 2002/08/15 13:24:23 NormanWalsh Exp $
+     Version: $Id: xmlspec.xsl,v 1.1 2011/09/07 14:47:12 mdw Exp $
 
      URI:     http://dev.w3.org/cvsweb/spec-prod/html/xmlspec.xsl
 
@@ -19,7 +15,7 @@
               Henry S. Thompson (ht@cogsci.ed.ac.uk)
 
      Date:    Created 07 September 1999
-              Last updated $Date: 2002/08/15 13:24:23 $ by $Author: NormanWalsh $
+              Last updated $Date: 2011/09/07 14:47:12 $ by $Author: mdw $
 
      Copyright (C) 2000, 2001, 2002 Sun Microsystems, Inc. All Rights Reserved.
      This document is governed by the W3C Software License[3] as
@@ -130,36 +126,21 @@
 
   <xsl:preserve-space elements="*"/>
 
-  <xsl:strip-space elements="
-   abstract arg attribute authlist author back bibref blist body case col
-   colgroup component constant constraint constraintnote copyright def
-   definitions descr div div1 div2 div3 div4 div5 ednote enum enumerator
-   example exception footnote front gitem glist graphic group header
-   htable htbody inform-div1 interface issue item itemizedlist langusage
-   listitem member method module note notice ol olist orderedlist orglist
-   param parameters prod prodgroup prodrecap proto pubdate pubstmt raises
-   reference resolution returns revisiondesc scrap sequence slist
-   sourcedesc spec specref status struct table tbody tfoot thead tr
-   typedef ul ulist union vc vcnote wfc wfcnote"/>
+  <xsl:strip-space elements="    abstract arg attribute authlist author back bibref blist body case col    colgroup component constant constraint constraintnote copyright def    definitions descr div div1 div2 div3 div4 div5 ednote enum enumerator    example exception footnote front gitem glist graphic group header    htable htbody inform-div1 interface issue item itemizedlist langusage    listitem member method module note notice ol olist orderedlist orglist    param parameters prod prodgroup prodrecap proto pubdate pubstmt raises    reference resolution returns revisiondesc scrap sequence slist    sourcedesc spec specref status struct table tbody tfoot thead tr    typedef ul ulist union vc vcnote wfc wfcnote"/>
 
-  <xsl:param name="validity.hacks">1</xsl:param>
-  <xsl:param name="show.diff.markup">0</xsl:param>
-  <xsl:param name="additional.css"></xsl:param>
-  <xsl:param name="additional.title"></xsl:param>
-  <xsl:param name="called.by.diffspec">0</xsl:param>
-  <xsl:param name="show.ednotes">1</xsl:param>
-  <xsl:param name="tabular.examples">0</xsl:param>
+  <xsl:param name="validity.hacks" select="1"/>
+  <xsl:param name="show.diff.markup" select="0"/>
+  <xsl:param name="additional.css"/>
+  <xsl:param name="additional.title"/>
+  <xsl:param name="called.by.diffspec" select="0"/>
+  <xsl:param name="show.ednotes" select="1"/>
+  <xsl:param name="tabular.examples" select="0"/>
   <xsl:param name="toc.level" select="5"/>
 
   <xsl:key name="ids" match="*[@id]" use="@id"/>
   <xsl:key name="specrefs" match="specref" use="@ref"/>
 
-  <xsl:output method="html"
-       encoding="ISO-8859-1"
-       doctype-public="-//W3C//DTD HTML 4.01 Transitional//EN"
-       indent="no"/>
-
-  <xsl:strip-space elements="author"/>
+<!--   <xsl:output method="xml" encoding="UTF-8" doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN" indent="no" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"/> -->
 
   <!-- not handled:
     attribute:   unhandled IDL stuff
@@ -199,7 +180,7 @@
       <xsl:text>.</xsl:text>
     </xsl:message>
 
-    <font color="red">
+    <font xmlns="http://www.w3.org/1999/xhtml" color="red">
       <xsl:text>&lt;</xsl:text>
       <xsl:value-of select="name(.)"/>
       <xsl:text>&gt;</xsl:text>
@@ -213,6 +194,12 @@
   <!-- Template for the root node.  Creation of <html> element could
        go here, but that doesn't feel right. -->
   <xsl:template match="/">
+    <xsl:if test="//prod[@num] and //prod[not(@num)]">
+      <xsl:message terminate="yes">
+        <xsl:text>Manually and automatically numbered productions </xsl:text>
+        <xsl:text>cannot coexist.</xsl:text>
+      </xsl:message>
+    </xsl:if>
     <xsl:apply-templates/>
   </xsl:template>
 
@@ -220,8 +207,9 @@
   <!-- format as a second-level div -->
   <!-- called in enforced order from header's template -->
   <xsl:template match="abstract">
-    <div>
-      <xsl:text>&#10;</xsl:text>
+    <div xmlns="http://www.w3.org/1999/xhtml">
+      <xsl:text>
+</xsl:text>
       <h2>
         <xsl:call-template name="anchor">
           <xsl:with-param name="conditional" select="0"/>
@@ -248,7 +236,7 @@
     <xsl:if test="preceding-sibling::arg">
       <xsl:text>, </xsl:text>
     </xsl:if>
-    <var>
+    <var xmlns="http://www.w3.org/1999/xhtml">
       <xsl:value-of select="@type"/>
     </var>
     <xsl:if test="@occur = 'opt'">
@@ -260,7 +248,7 @@
   <!-- used lots of places -->
   <!-- format as monospaced code -->
   <xsl:template match="att">
-    <code><xsl:apply-templates/></code>
+    <code xmlns="http://www.w3.org/1999/xhtml"><xsl:apply-templates/></code>
   </xsl:template>
 
   <!-- attribute: -->
@@ -279,9 +267,9 @@
   <!-- called in enforced order from header's template, in <dl>
        context -->
   <xsl:template match="authlist">
-    <dt>
+    <dt xmlns="http://www.w3.org/1999/xhtml">
       <xsl:text>Editor</xsl:text>
-      <xsl:if test="count(author) > 1">
+      <xsl:if test="count(author) &gt; 1">
         <xsl:text>s</xsl:text>
       </xsl:if>
       <xsl:text>:</xsl:text>
@@ -293,7 +281,7 @@
   <!-- only appears in authlist -->
   <!-- called in <dl> context -->
   <xsl:template match="author">
-    <dd>
+    <dd xmlns="http://www.w3.org/1999/xhtml">
       <xsl:apply-templates/>
       <xsl:if test="@role = '2e'">
         <xsl:text> - Second Edition</xsl:text>
@@ -305,8 +293,9 @@
   <!-- make a <div> for neatness -->
   <!-- affects numbering of div1 children -->
   <xsl:template match="back">
-    <div class="back">
+    <div xmlns="http://www.w3.org/1999/xhtml" class="back">
       <xsl:apply-templates/>
+      <xsl:call-template name="autogenerated-appendices"/>
     </div>
   </xsl:template>
 
@@ -316,7 +305,7 @@
   <!-- if there's a key, use it in the <dt>, otherwise use the ID -->
   <!-- if there's an href, add a ref in parens at the end of the text -->
   <xsl:template match="bibl">
-    <dt class="label">
+    <dt xmlns="http://www.w3.org/1999/xhtml" class="label">
       <xsl:if test="@id">
         <a name="{@id}" id="{@id}"/>
       </xsl:if>
@@ -329,17 +318,8 @@
         </xsl:otherwise>
       </xsl:choose>
     </dt>
-    <dd>
-      <xsl:choose>
-        <xsl:when test="@href">
-          <a href="{@href}">
-            <xsl:apply-templates/>
-          </a>
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:apply-templates/>
-        </xsl:otherwise>
-      </xsl:choose>
+    <dd xmlns="http://www.w3.org/1999/xhtml">
+      <xsl:apply-templates/>
       <xsl:if test="@href">
         <xsl:text>  (See </xsl:text>
         <xsl:value-of select="@href"/>
@@ -353,7 +333,7 @@
   <!-- if the bibl has a key, put it in square brackets; otherwise use
        the bibl's ID -->
   <xsl:template match="bibref">
-    <a>
+    <a xmlns="http://www.w3.org/1999/xhtml">
       <xsl:attribute name="href">
         <xsl:call-template name="href.target">
           <xsl:with-param name="target" select="key('ids', @ref)"/>
@@ -375,7 +355,7 @@
   <!-- blist: list of bibliographic entries -->
   <!-- set up the list and process children -->
   <xsl:template match="blist">
-    <dl>
+    <dl xmlns="http://www.w3.org/1999/xhtml">
       <xsl:apply-templates/>
     </dl>
   </xsl:template>
@@ -384,10 +364,10 @@
   <!-- preformatted within a table cell -->
   <!-- scrap provides <table> context -->
   <xsl:template match="bnf">
-    <tbody>
+    <tbody xmlns="http://www.w3.org/1999/xhtml">
       <tr>
         <td>
-          <xsl:if test="@diff and $show.diff.markup='1'">
+          <xsl:if test="@diff and $show.diff.markup != 0">
             <xsl:attribute name="class">
               <xsl:text>diff-</xsl:text>
               <xsl:value-of select="@diff"/>
@@ -407,8 +387,9 @@
        notes) -->
   <xsl:template match="body">
     <xsl:if test="$toc.level &gt; 0">
-      <div class="toc">
-        <xsl:text>&#10;</xsl:text>
+      <div xmlns="http://www.w3.org/1999/xhtml" class="toc">
+        <xsl:text>
+</xsl:text>
         <h2>
           <xsl:call-template name="anchor">
             <xsl:with-param name="conditional" select="0"/>
@@ -420,7 +401,8 @@
           <xsl:apply-templates select="div1" mode="toc"/>
         </p>
         <xsl:if test="../back">
-          <xsl:text>&#10;</xsl:text>
+          <xsl:text>
+</xsl:text>
           <h3>
             <xsl:call-template name="anchor">
               <xsl:with-param name="conditional" select="0"/>
@@ -429,7 +411,7 @@
 
             <xsl:text>Appendi</xsl:text>
             <xsl:choose>
-              <xsl:when test="count(../back/div1 | ../back/inform-div1) > 1">
+              <xsl:when test="count(../back/div1 | ../back/inform-div1) &gt; 1">
                 <xsl:text>ces</xsl:text>
               </xsl:when>
               <xsl:otherwise>
@@ -438,8 +420,8 @@
             </xsl:choose>
           </h3>
           <p class="toc">
-            <xsl:apply-templates mode="toc"
-                                 select="../back/div1 | ../back/inform-div1"/>
+            <xsl:apply-templates mode="toc" select="../back/div1 | ../back/inform-div1"/>
+            <xsl:call-template name="autogenerated-appendices-toc"/>
           </p>
         </xsl:if>
         <xsl:if test="//footnote[not(ancestor::table)]">
@@ -450,11 +432,19 @@
           </p>
         </xsl:if>
       </div>
-      <hr/>
+      <hr xmlns="http://www.w3.org/1999/xhtml"/>
     </xsl:if>
-    <div class="body">
+    <div xmlns="http://www.w3.org/1999/xhtml" class="body">
       <xsl:apply-templates/>
     </div>
+  </xsl:template>
+
+  <xsl:template name="autogenerated-appendices">
+    <!-- there are none by default -->
+  </xsl:template>
+
+  <xsl:template name="autogenerated-appendices-toc">
+    <!-- there are none by default -->
   </xsl:template>
 
   <!-- caption: see table -->
@@ -465,7 +455,7 @@
   <!-- code: generic computer code -->
   <!-- output as HTML <code> for monospaced formatting -->
   <xsl:template match="code">
-    <code><xsl:apply-templates/></code>
+    <code xmlns="http://www.w3.org/1999/xhtml"><xsl:apply-templates/></code>
   </xsl:template>
 
   <!-- col: see table -->
@@ -477,8 +467,8 @@
   <xsl:template match="com">
     <xsl:choose>
       <xsl:when test="preceding-sibling::*[1][name()='rhs']">
-        <td>
-          <xsl:if test="ancestor-or-self::*/@diff and $show.diff.markup='1'">
+        <td xmlns="http://www.w3.org/1999/xhtml">
+          <xsl:if test="ancestor-or-self::*/@diff and $show.diff.markup != 0">
             <xsl:attribute name="class">
               <xsl:text>diff-</xsl:text>
               <xsl:value-of select="ancestor-or-self::*/@diff"/>
@@ -492,10 +482,10 @@
         </td>
       </xsl:when>
       <xsl:otherwise>
-        <tr valign="baseline">
+        <tr xmlns="http://www.w3.org/1999/xhtml" valign="baseline">
           <td/><td/><td/><td/>
           <td>
-            <xsl:if test="ancestor-or-self::*/@diff and $show.diff.markup='1'">
+            <xsl:if test="ancestor-or-self::*/@diff and $show.diff.markup != 0">
               <xsl:attribute name="class">
                 <xsl:text>diff-</xsl:text>
                 <xsl:value-of select="ancestor-or-self::*/@diff"/>
@@ -516,7 +506,7 @@
        have arbitrary text and com mixed in, I don't feel like
        spending enough time to figure out how -->
   <xsl:template match="rhs/com">
-    <i>
+    <i xmlns="http://www.w3.org/1999/xhtml">
       <xsl:text>/* </xsl:text>
       <xsl:apply-templates/>
       <xsl:text> */</xsl:text>
@@ -534,8 +524,8 @@
   <xsl:template match="constraint">
     <xsl:choose>
       <xsl:when test="preceding-sibling::*[1][name()='rhs']">
-        <td>
-          <xsl:if test="@diff and $show.diff.markup='1'">
+        <td xmlns="http://www.w3.org/1999/xhtml">
+          <xsl:if test="@diff and $show.diff.markup != 0">
             <xsl:attribute name="class">
               <xsl:text>diff-</xsl:text>
               <xsl:value-of select="@diff"/>
@@ -554,10 +544,10 @@
         </td>
       </xsl:when>
       <xsl:otherwise>
-        <tr valign="baseline">
+        <tr xmlns="http://www.w3.org/1999/xhtml" valign="baseline">
           <td/><td/><td/><td/>
           <td>
-            <xsl:if test="@diff and $show.diff.markup='1'">
+            <xsl:if test="@diff and $show.diff.markup != 0">
               <xsl:attribute name="class">
                 <xsl:text>diff-</xsl:text>
                 <xsl:value-of select="@diff"/>
@@ -582,7 +572,7 @@
   <!-- constraintnote: note constraining a formal production -->
   <!-- see also constraintnote/head -->
   <xsl:template match="constraintnote">
-    <div class="constraint">
+    <div xmlns="http://www.w3.org/1999/xhtml" class="constraint">
       <xsl:apply-templates/>
     </div>
   </xsl:template>
@@ -600,7 +590,7 @@
   <!-- def: glossary definition -->
   <!-- already in <dl> context from glist -->
   <xsl:template match="def">
-    <dd>
+    <dd xmlns="http://www.w3.org/1999/xhtml">
       <xsl:apply-templates/>
     </dd>
   </xsl:template>
@@ -615,31 +605,31 @@
   <!-- make an HTML div -->
   <!-- see also div[n]/head -->
   <xsl:template match="div1">
-    <div class="div1">
+    <div xmlns="http://www.w3.org/1999/xhtml" class="div1">
       <xsl:apply-templates/>
     </div>
   </xsl:template>
 
   <xsl:template match="div2">
-    <div class="div2">
+    <div xmlns="http://www.w3.org/1999/xhtml" class="div2">
       <xsl:apply-templates/>
     </div>
   </xsl:template>
 
   <xsl:template match="div3">
-    <div class="div3">
+    <div xmlns="http://www.w3.org/1999/xhtml" class="div3">
       <xsl:apply-templates/>
     </div>
   </xsl:template>
 
   <xsl:template match="div4">
-    <div class="div4">
+    <div xmlns="http://www.w3.org/1999/xhtml" class="div4">
       <xsl:apply-templates/>
     </div>
   </xsl:template>
 
   <xsl:template match="div5">
-    <div class="div5">
+    <div xmlns="http://www.w3.org/1999/xhtml" class="div5">
       <xsl:apply-templates/>
     </div>
   </xsl:template>
@@ -647,7 +637,7 @@
   <!-- ednote: editors' note -->
   <xsl:template match="ednote">
     <xsl:if test="$show.ednotes != 0">
-      <table border="1">
+      <table xmlns="http://www.w3.org/1999/xhtml" border="1">
         <xsl:attribute name="summary">
           <xsl:text>Editorial note</xsl:text>
           <xsl:if test="name">
@@ -670,7 +660,7 @@
               <xsl:when test="date">
                 <xsl:apply-templates select="date"/>
               </xsl:when>
-              <xsl:otherwise>&#160;</xsl:otherwise>
+              <xsl:otherwise> </xsl:otherwise>
             </xsl:choose>
           </td>
         </tr>
@@ -687,6 +677,10 @@
     <xsl:apply-templates/>
   </xsl:template>
 
+  <xsl:template match="edtext">
+    <xsl:apply-templates/>
+  </xsl:template>
+
   <!-- edtext: text of an editors' note -->
   <!-- ednote is currently hidden -->
 
@@ -695,14 +689,14 @@
   <!-- Chris's personal preference is to put pointy-brackets around
        this, but he seems to be in the minority -->
   <xsl:template match="el">
-    <code><xsl:apply-templates/></code>
+    <code xmlns="http://www.w3.org/1999/xhtml"><xsl:apply-templates/></code>
   </xsl:template>
 
   <!-- email: an email address for an editor -->
   <!-- only occurs in author -->
   <xsl:template match="email">
     <xsl:text> </xsl:text>
-    <a href="{@href}">
+    <a xmlns="http://www.w3.org/1999/xhtml" href="{@href}">
       <xsl:text>&lt;</xsl:text>
       <xsl:apply-templates/>
       <xsl:text>&gt;</xsl:text>
@@ -714,7 +708,12 @@
   <!-- the role attribute could be used for multiple kinds of
        emphasis, but that would not be kind -->
   <xsl:template match="emph">
-    <em><xsl:apply-templates/></em>
+    <em xmlns="http://www.w3.org/1999/xhtml"><xsl:apply-templates/></em>
+  </xsl:template>
+
+  <!-- rfc2119: identifies RFC 2119 keywords -->
+  <xsl:template match="rfc2119">
+    <strong xmlns="http://www.w3.org/1999/xhtml"><xsl:apply-templates/></strong>
   </xsl:template>
 
   <!-- enum: -->
@@ -733,22 +732,27 @@
         <xsl:otherwise>example</xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
-    <div class="{$class}">
+    <div xmlns="http://www.w3.org/1999/xhtml" class="{$class}">
       <xsl:apply-templates/>
     </div>
   </xsl:template>
 
   <xsl:template match="example/head">
-    <xsl:text>&#10;</xsl:text>
+    <xsl:text>
+</xsl:text>
     <xsl:choose>
       <xsl:when test="$tabular.examples = 0">
-        <div class="exampleHead">
+        <div xmlns="http://www.w3.org/1999/xhtml" class="exampleHeader">
+          <xsl:call-template name="anchor">
+            <xsl:with-param name="node" select=".."/>
+            <xsl:with-param name="conditional" select="0"/>
+          </xsl:call-template>
           <xsl:text>Example: </xsl:text>
           <xsl:apply-templates/>
         </div>
       </xsl:when>
       <xsl:otherwise>
-        <h5>
+        <h5 xmlns="http://www.w3.org/1999/xhtml">
           <xsl:call-template name="anchor">
             <xsl:with-param name="node" select=".."/>
             <xsl:with-param name="conditional" select="0"/>
@@ -765,8 +769,9 @@
   <!-- present as preformatted text -->
   <xsl:template match="eg">
     <xsl:variable name="content">
-      <pre>
-        <xsl:if test="@diff and $show.diff.markup='1'">
+      <xsl:call-template name="anchor"/>
+      <pre xmlns="http://www.w3.org/1999/xhtml">
+        <xsl:if test="@diff and $show.diff.markup != 0">
           <xsl:attribute name="class">
             <xsl:text>diff-</xsl:text>
             <xsl:value-of select="@diff"/>
@@ -777,14 +782,12 @@
     </xsl:variable>
     <xsl:choose>
       <xsl:when test="$tabular.examples = 0">
-        <div class="exampleInner">
+        <div xmlns="http://www.w3.org/1999/xhtml" class="exampleInner">
           <xsl:copy-of select="$content"/>
         </div>
       </xsl:when>
       <xsl:otherwise>
-        <table class="eg" cellpadding="5" border="1"
-               bgcolor="#99ffff" width="100%"
-               summary="Example">
+        <table xmlns="http://www.w3.org/1999/xhtml" class="eg" cellpadding="5" border="1" bgcolor="#99ffff" width="100%" summary="Example">
           <tr>
             <td>
               <xsl:copy-of select="$content"/>
@@ -810,10 +813,9 @@
         </xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
-    <sup>
+    <sup xmlns="http://www.w3.org/1999/xhtml">
       <xsl:text>[</xsl:text>
-      <a name="FN-ANCH-{$this-note-id}" id="FN-ANCH-{$this-note-id}"
-         href="#{$this-note-id}">
+      <a name="FN-ANCH-{$this-note-id}" id="FN-ANCH-{$this-note-id}" href="#{$this-note-id}">
         <xsl:apply-templates select="." mode="number-simple"/>
       </a>
       <xsl:text>]</xsl:text>
@@ -823,7 +825,7 @@
   <!-- front: front matter for the spec -->
   <!-- make a div for cleanliness -->
   <xsl:template match="front">
-    <div class="front">
+    <div xmlns="http://www.w3.org/1999/xhtml" class="front">
       <xsl:apply-templates/>
     </div>
   </xsl:template>
@@ -831,7 +833,7 @@
   <!-- function: name of a function -->
   <!-- format as HTML <code> for monospaced presentation -->
   <xsl:template match="function">
-    <code><xsl:apply-templates/></code>
+    <code xmlns="http://www.w3.org/1999/xhtml"><xsl:apply-templates/></code>
   </xsl:template>
 
   <!-- gitem: glossary list entry -->
@@ -843,13 +845,13 @@
   <!-- glist: glossary list -->
   <!-- create <dl> and handle children -->
   <xsl:template match="glist">
-    <xsl:if test="$validity.hacks and local-name(..) = 'p'">
+    <xsl:if test="$validity.hacks = 1 and local-name(..) = 'p'">
       <xsl:text disable-output-escaping="yes">&lt;/p&gt;</xsl:text>
     </xsl:if>
-    <dl>
+    <dl xmlns="http://www.w3.org/1999/xhtml">
       <xsl:apply-templates/>
     </dl>
-    <xsl:if test="$validity.hacks and local-name(..) = 'p'">
+    <xsl:if test="$validity.hacks = 1 and local-name(..) = 'p'">
       <xsl:text disable-output-escaping="yes">&lt;p&gt;</xsl:text>
     </xsl:if>
   </xsl:template>
@@ -857,7 +859,7 @@
   <!-- graphic: external illustration -->
   <!-- reference external graphic file with alt text -->
   <xsl:template match="graphic">
-    <img src="{@source}">
+    <img xmlns="http://www.w3.org/1999/xhtml" src="{@source}">
       <xsl:if test="@alt">
         <xsl:attribute name="alt">
           <xsl:value-of select="@alt"/>
@@ -874,7 +876,7 @@
   <!-- constraintnotes have different types, but they're
        non-enumerated; nothing is done with them right now -->
   <xsl:template match="constraintnote/head">
-    <p class="prefix">
+    <p xmlns="http://www.w3.org/1999/xhtml" class="prefix">
       <xsl:if test="../@id">
         <a name="{../@id}" id="{../@id}"/>
       </xsl:if>
@@ -883,8 +885,9 @@
   </xsl:template>
 
   <xsl:template match="div1/head">
-    <xsl:text>&#10;</xsl:text>
-    <h2>
+    <xsl:text>
+</xsl:text>
+    <h2 xmlns="http://www.w3.org/1999/xhtml">
       <xsl:call-template name="anchor">
         <xsl:with-param name="conditional" select="0"/>
         <xsl:with-param name="node" select=".."/>
@@ -895,8 +898,9 @@
   </xsl:template>
 
   <xsl:template match="div2/head">
-    <xsl:text>&#10;</xsl:text>
-    <h3>
+    <xsl:text>
+</xsl:text>
+    <h3 xmlns="http://www.w3.org/1999/xhtml">
       <xsl:call-template name="anchor">
         <xsl:with-param name="conditional" select="0"/>
         <xsl:with-param name="node" select=".."/>
@@ -907,8 +911,9 @@
   </xsl:template>
 
   <xsl:template match="div3/head">
-    <xsl:text>&#10;</xsl:text>
-    <h4>
+    <xsl:text>
+</xsl:text>
+    <h4 xmlns="http://www.w3.org/1999/xhtml">
       <xsl:call-template name="anchor">
         <xsl:with-param name="conditional" select="0"/>
         <xsl:with-param name="node" select=".."/>
@@ -919,8 +924,9 @@
   </xsl:template>
 
   <xsl:template match="div4/head">
-    <xsl:text>&#10;</xsl:text>
-    <h5>
+    <xsl:text>
+</xsl:text>
+    <h5 xmlns="http://www.w3.org/1999/xhtml">
       <xsl:call-template name="anchor">
         <xsl:with-param name="conditional" select="0"/>
         <xsl:with-param name="node" select=".."/>
@@ -931,8 +937,9 @@
   </xsl:template>
 
   <xsl:template match="div5/head">
-    <xsl:text>&#10;</xsl:text>
-    <h6>
+    <xsl:text>
+</xsl:text>
+    <h6 xmlns="http://www.w3.org/1999/xhtml">
       <xsl:call-template name="anchor">
         <xsl:with-param name="conditional" select="0"/>
         <xsl:with-param name="node" select=".."/>
@@ -943,8 +950,9 @@
   </xsl:template>
 
   <xsl:template match="inform-div1/head">
-    <xsl:text>&#10;</xsl:text>
-    <h2>
+    <xsl:text>
+</xsl:text>
+    <h2 xmlns="http://www.w3.org/1999/xhtml">
       <xsl:call-template name="anchor">
         <xsl:with-param name="conditional" select="0"/>
         <xsl:with-param name="node" select=".."/>
@@ -956,14 +964,15 @@
   </xsl:template>
 
   <xsl:template match="issue/head">
-    <p class="prefix">
+    <p xmlns="http://www.w3.org/1999/xhtml" class="prefix">
       <b><xsl:apply-templates/></b>
     </p>
   </xsl:template>
 
   <xsl:template match="scrap/head">
-    <xsl:text>&#10;</xsl:text>
-    <h5>
+    <xsl:text>
+</xsl:text>
+    <h5 xmlns="http://www.w3.org/1999/xhtml">
       <xsl:call-template name="anchor">
         <xsl:with-param name="node" select=".."/>
         <xsl:with-param name="conditional" select="0"/>
@@ -974,7 +983,7 @@
   </xsl:template>
 
   <xsl:template match="vcnote/head">
-    <p class="prefix">
+    <p xmlns="http://www.w3.org/1999/xhtml" class="prefix">
       <xsl:if test="../@id">
         <a name="{../@id}" id="{../@id}"/>
       </xsl:if>
@@ -983,7 +992,7 @@
   </xsl:template>
 
   <xsl:template match="wfcnote/head">
-    <p class="prefix">
+    <p xmlns="http://www.w3.org/1999/xhtml" class="prefix">
       <xsl:if test="../@id">
         <a name="{../@id}" id="{../@id}"/>
       </xsl:if>
@@ -994,16 +1003,28 @@
   <!-- header: metadata about the spec -->
   <!-- pull out information into standard W3C layout -->
   <xsl:template match="header">
-    <div class="head">
+    <div xmlns="http://www.w3.org/1999/xhtml" class="head">
       <xsl:if test="not(/spec/@role='editors-copy')">
         <p>
           <a href="http://www.w3.org/">
-            <img src="http://www.w3.org/Icons/w3c_home"
-              alt="W3C" height="48" width="72"/>
+            <img src="http://www.w3.org/Icons/w3c_home" alt="W3C" height="48" width="72"/>
           </a>
+	  <xsl:choose>
+	    <xsl:when test="/spec/@w3c-doctype='memsub'">
+	      <a href="http://www.w3.org/Submission/">
+		<img alt="Member Submission" src="http://www.w3.org/Icons/member_subm"/>
+	      </a>
+	    </xsl:when>
+	    <xsl:when test="/spec/@w3c-doctype='teamsub'">
+	      <a href="http://www.w3.org/2003/06/TeamSubmission">
+		<img alt="Team Submission" src="http://www.w3.org/Icons/team_subm"/>
+	      </a>
+	    </xsl:when>
+	  </xsl:choose>
         </p>
       </xsl:if>
-      <xsl:text>&#10;</xsl:text>
+      <xsl:text>
+</xsl:text>
       <h1>
         <xsl:call-template name="anchor">
           <xsl:with-param name="node" select="title[1]"/>
@@ -1018,7 +1039,8 @@
         </xsl:if>
       </h1>
       <xsl:if test="subtitle">
-        <xsl:text>&#10;</xsl:text>
+        <xsl:text>
+</xsl:text>
         <h2>
           <xsl:call-template name="anchor">
             <xsl:with-param name="node" select="subtitle[1]"/>
@@ -1028,16 +1050,24 @@
           <xsl:apply-templates select="subtitle"/>
         </h2>
       </xsl:if>
-      <xsl:text>&#10;</xsl:text>
+      <xsl:text>
+</xsl:text>
       <h2>
-        <xsl:call-template name="anchor">
-          <xsl:with-param name="node" select="w3c-doctype[1]"/>
-          <xsl:with-param name="conditional" select="0"/>
-          <xsl:with-param name="default.id" select="'w3c-doctype'"/>
-        </xsl:call-template>
+	<xsl:call-template name="anchor">
+	  <xsl:with-param name="node" select="w3c-doctype[1]"/>
+	  <xsl:with-param name="conditional" select="0"/>
+	  <xsl:with-param name="default.id" select="'w3c-doctype'"/>
+	</xsl:call-template>
 
-        <xsl:apply-templates select="w3c-doctype"/>
-        <xsl:text> </xsl:text>
+	<xsl:choose>
+	  <xsl:when test="/spec/@w3c-doctype = 'review'">
+	    <xsl:text>Editor's Draft</xsl:text>
+	  </xsl:when>
+	  <xsl:otherwise>
+	    <xsl:value-of select="w3c-doctype[1]"/>
+	  </xsl:otherwise>
+	</xsl:choose>
+	<xsl:text> </xsl:text>
         <xsl:if test="pubdate/day">
           <xsl:apply-templates select="pubdate/day"/>
           <xsl:text> </xsl:text>
@@ -1053,22 +1083,11 @@
         <xsl:apply-templates select="authlist"/>
       </dl>
 
-      <!-- output the altlocs -->
-      <xsl:if test="altlocs">
-        <p>
-          <xsl:text>This document is also available </xsl:text>
-          <xsl:text>in these non-normative formats: </xsl:text>
-          <xsl:for-each select="altlocs/loc">
-            <xsl:if test="position() &gt; 1">
-              <xsl:if test="last() &gt; 2">,&#160;</xsl:if>
-              <xsl:if test="last() = 2">&#160;</xsl:if>
-            </xsl:if>
-            <xsl:if test="position() = last() and position() &gt; 1">and&#160;</xsl:if>
-            <a href="{@href}"><xsl:apply-templates/></a>
-          </xsl:for-each>
-          <xsl:text>.</xsl:text>
-        </p>
-      </xsl:if>
+      <!-- output the errataloc and altlocs -->
+      <xsl:apply-templates select="errataloc"/>
+      <xsl:apply-templates select="preverrataloc"/>
+      <xsl:apply-templates select="translationloc"/>
+      <xsl:apply-templates select="altlocs"/>
 
       <xsl:choose>
         <xsl:when test="copyright">
@@ -1076,44 +1095,46 @@
         </xsl:when>
         <xsl:otherwise>
           <p class="copyright">
-            <a href="http://www.w3.org/Consortium/Legal/ipr-notice-20000612#Copyright">
+            <a href="http://www.w3.org/Consortium/Legal/ipr-notice#Copyright">
               <xsl:text>Copyright</xsl:text>
             </a>
-            <xsl:text>&#xa0;&#xa9;&#xa0;</xsl:text>
+            <xsl:text> © </xsl:text>
             <xsl:apply-templates select="pubdate/year"/>
-            <xsl:text>&#xa0;</xsl:text>
+            <xsl:text> </xsl:text>
             <a href="http://www.w3.org/">
-              <abbr title="World Wide Web Consortium">W3C</abbr>
+              <acronym title="World Wide Web Consortium">W3C</acronym>
             </a>
-            <sup>&#xae;</sup>
+            <sup>®</sup>
             <xsl:text> (</xsl:text>
-            <a href="http://www.lcs.mit.edu/">
-              <abbr title="Massachusetts Institute of Technology">MIT</abbr>
+            <a href="http://www.csail.mit.edu/">
+              <acronym title="Massachusetts Institute of Technology">MIT</acronym>
             </a>
             <xsl:text>, </xsl:text>
-            <a href="http://www.inria.fr/">
-              <abbr lang="fr"
-                    title="Institut National de Recherche en Informatique et Automatique">INRIA</abbr>
+            <a href="http://www.ercim.eu/">
+              <acronym title="European Research Consortium for Informatics and Mathematics">ERCIM</acronym>
             </a>
             <xsl:text>, </xsl:text>
             <a href="http://www.keio.ac.jp/">Keio</a>
             <xsl:text>), All Rights Reserved. W3C </xsl:text>
-            <a href="http://www.w3.org/Consortium/Legal/ipr-notice-20000612#Legal_Disclaimer">liability</a>
+            <a href="http://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer">liability</a>
             <xsl:text>, </xsl:text>
-            <a href="http://www.w3.org/Consortium/Legal/ipr-notice-20000612#W3C_Trademarks">trademark</a>
-            <xsl:text>, </xsl:text>
-            <a href="http://www.w3.org/Consortium/Legal/copyright-documents-19990405">document use</a>
-            <xsl:text>, and </xsl:text>
-            <a href="http://www.w3.org/Consortium/Legal/copyright-software-19980720">software licensing</a>
+            <a href="http://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks">trademark</a>
+            <xsl:text> and </xsl:text>
+            <a href="http://www.w3.org/Consortium/Legal/copyright-documents">document use</a>
             <xsl:text> rules apply.</xsl:text>
           </p>
         </xsl:otherwise>
       </xsl:choose>
     </div>
-    <hr/>
+    <hr xmlns="http://www.w3.org/1999/xhtml"/>
     <xsl:apply-templates select="notice"/>
     <xsl:apply-templates select="abstract"/>
     <xsl:apply-templates select="status"/>
+    <xsl:apply-templates select="revisiondesc"/>
+  </xsl:template>
+
+  <xsl:template match="revisiondesc">
+    <!-- suppressed by default -->
   </xsl:template>
 
   <xsl:template match="copyright">
@@ -1121,7 +1142,7 @@
   </xsl:template>
 
   <xsl:template match="copyright/p">
-    <p class="copyright">
+    <p xmlns="http://www.w3.org/1999/xhtml" class="copyright">
       <xsl:apply-templates/>
     </p>
   </xsl:template>
@@ -1129,7 +1150,7 @@
   <!-- inform-div1: non-normative back matter top-level division -->
   <!-- treat like div1 except add "(Non-Normative)" to title -->
   <xsl:template match="inform-div1">
-    <div class="div1">
+    <div xmlns="http://www.w3.org/1999/xhtml" class="div1">
       <xsl:apply-templates/>
     </div>
   </xsl:template>
@@ -1143,7 +1164,7 @@
        element; this should probably be cleaned up to only use the
        head if it's present -->
   <xsl:template match="issue">
-    <div class="issue">
+    <div xmlns="http://www.w3.org/1999/xhtml" class="issue">
       <p class="prefix">
         <xsl:if test="@id">
           <a name="{@id}" id="{@id}"/>
@@ -1169,7 +1190,12 @@
 
   <!-- item: generic list item -->
   <xsl:template match="item">
-    <li>
+    <li xmlns="http://www.w3.org/1999/xhtml">
+      <xsl:if test="@id">
+	<xsl:attribute name="id">
+	  <xsl:value-of select="@id"/>
+	</xsl:attribute>
+      </xsl:if>
       <xsl:apply-templates/>
     </li>
   </xsl:template>
@@ -1177,13 +1203,13 @@
   <!-- kw: keyword -->
   <!-- make it bold -->
   <xsl:template match="kw">
-    <b><xsl:apply-templates/></b>
+    <b xmlns="http://www.w3.org/1999/xhtml"><xsl:apply-templates/></b>
   </xsl:template>
 
   <!-- label: term for defintion in glossary entry -->
   <!-- already in <dl> context from glist -->
   <xsl:template match="label">
-    <dt class="label">
+    <dt xmlns="http://www.w3.org/1999/xhtml" class="label">
       <xsl:call-template name="anchor">
         <xsl:with-param name="node" select=".."/>
       </xsl:call-template>
@@ -1199,20 +1225,40 @@
 
   <!-- latestloc: latest location for this spec -->
   <!-- called in a <dl> context from header -->
+
+  <!-- New pubrules will allow more than one, support multiple loc elements -->
+  <!-- DTD actually allows p.pcd.mix (!?) so be careful here... -->
+
   <xsl:template match="latestloc">
-    <dt>Latest version:</dt>
-    <dd>
-      <xsl:apply-templates/>
-    </dd>
+    <xsl:choose>
+      <xsl:when test="count(loc) &gt; 1">
+	<xsl:for-each select="loc">
+	  <dt xmlns="http://www.w3.org/1999/xhtml">
+	    <xsl:apply-templates select="node()"/>
+	  </dt>
+	  <dd xmlns="http://www.w3.org/1999/xhtml">
+	    <a href="{@href}">
+	      <xsl:value-of select="@href"/>
+	    </a>
+	  </dd>
+	</xsl:for-each>
+      </xsl:when>
+      <xsl:otherwise>
+	<dt xmlns="http://www.w3.org/1999/xhtml">Latest version:</dt>
+	<dd xmlns="http://www.w3.org/1999/xhtml">
+	  <xsl:apply-templates/>
+	</dd>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
 
   <!-- lhs: left-hand side of formal productions -->
   <!-- make a table row with the lhs and the corresponding other
        pieces in this crazy mixed-up content model -->
   <xsl:template match="lhs">
-    <tr valign="baseline">
+    <tr xmlns="http://www.w3.org/1999/xhtml" valign="baseline">
       <td>
-        <xsl:if test="ancestor-or-self::*/@diff and $show.diff.markup='1'">
+        <xsl:if test="ancestor-or-self::*/@diff and $show.diff.markup != 0">
           <xsl:attribute name="class">
             <xsl:text>diff-</xsl:text>
             <xsl:value-of select="ancestor-or-self::*/@diff"/>
@@ -1228,10 +1274,10 @@
           <xsl:number count="prod" level="any" from="spec"
             format="[1]"/>
   -->
-        <xsl:text>&#xa0;&#xa0;&#xa0;</xsl:text>
+        <xsl:text>   </xsl:text>
       </td>
       <td>
-        <xsl:if test="ancestor-or-self::*/@diff and $show.diff.markup='1'">
+        <xsl:if test="ancestor-or-self::*/@diff and $show.diff.markup != 0">
           <xsl:attribute name="class">
             <xsl:text>diff-</xsl:text>
             <xsl:value-of select="ancestor-or-self::*/@diff"/>
@@ -1240,31 +1286,47 @@
         <code><xsl:apply-templates/></code>
       </td>
       <td>
-        <xsl:if test="ancestor-or-self::*/@diff and $show.diff.markup='1'">
+        <xsl:if test="ancestor-or-self::*/@diff and $show.diff.markup != 0">
           <xsl:attribute name="class">
             <xsl:text>diff-</xsl:text>
             <xsl:value-of select="ancestor-or-self::*/@diff"/>
           </xsl:attribute>
         </xsl:if>
-        <xsl:text>&#xa0;&#xa0;&#xa0;::=&#xa0;&#xa0;&#xa0;</xsl:text>
+        <xsl:text>   ::=   </xsl:text>
       </td>
-      <xsl:apply-templates
-        select="following-sibling::*[1][name()='rhs']"/>
+      <xsl:apply-templates select="following-sibling::*[1][name()='rhs']"/>
     </tr>
   </xsl:template>
 
   <!-- loc: a Web location -->
   <!-- outside the header, it's a normal cross-reference -->
   <xsl:template match="loc">
-    <a href="{@href}">
-      <xsl:apply-templates/>
+    <xsl:if test="starts-with(@href, '#')">
+      <xsl:if test="not(key('ids', substring-after(@href, '#')))">
+        <xsl:message terminate="yes">
+          <xsl:text>Internal loc href to </xsl:text>
+          <xsl:value-of select="@href"/>
+          <xsl:text>, but that ID does not exist in this document.</xsl:text>
+        </xsl:message>
+      </xsl:if>
+    </xsl:if>
+
+    <a xmlns="http://www.w3.org/1999/xhtml" href="{@href}">
+      <xsl:choose>
+        <xsl:when test="count(child::node())=0">
+          <xsl:value-of select="@href"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:apply-templates/>
+        </xsl:otherwise>
+      </xsl:choose>
     </a>
   </xsl:template>
 
   <!-- member: member of an organization -->
   <!-- appears only in orglist, which creates <ul> context -->
   <xsl:template match="member">
-    <li>
+    <li xmlns="http://www.w3.org/1999/xhtml">
       <xsl:apply-templates/>
     </li>
   </xsl:template>
@@ -1290,7 +1352,7 @@
 
   <!-- note: a note about the spec -->
   <xsl:template match="note">
-    <div class="note">
+    <div xmlns="http://www.w3.org/1999/xhtml" class="note">
       <p class="prefix">
         <b>Note:</b>
       </p>
@@ -1301,7 +1363,7 @@
   <!-- notice: a front-matter advisory about the spec's status -->
   <!-- make sure people notice it -->
   <xsl:template match="notice">
-    <div class="notice">
+    <div xmlns="http://www.w3.org/1999/xhtml" class="notice">
       <p class="prefix">
         <b>NOTICE:</b>
       </p>
@@ -1312,7 +1374,7 @@
   <!-- nt: production non-terminal -->
   <!-- make a link to the non-terminal's definition -->
   <xsl:template match="nt">
-    <a>
+    <a xmlns="http://www.w3.org/1999/xhtml">
       <xsl:attribute name="href">
         <xsl:call-template name="href.target">
           <xsl:with-param name="target" select="key('ids', @def)"/>
@@ -1325,35 +1387,14 @@
   <!-- ====================================================================== -->
   <!-- OrderedList Numeration -->
 
-  <xsl:template name="next.numeration">
-    <xsl:param name="numeration" select="'default'"/>
-    <xsl:choose>
-      <!-- Change this list if you want to change the order of numerations -->
-      <xsl:when test="$numeration = 'arabic'">loweralpha</xsl:when>
-      <xsl:when test="$numeration = 'loweralpha'">lowerroman</xsl:when>
-      <xsl:when test="$numeration = 'lowerroman'">upperalpha</xsl:when>
-      <xsl:when test="$numeration = 'upperalpha'">upperroman</xsl:when>
-      <xsl:when test="$numeration = 'upperroman'">arabic</xsl:when>
-      <xsl:otherwise>arabic</xsl:otherwise>
-    </xsl:choose>
-  </xsl:template>
-
   <xsl:template name="list.numeration">
-    <xsl:param name="node" select="."/>
-
+    <xsl:variable name="depth" select="count(ancestor::olist)"/>
     <xsl:choose>
-      <xsl:when test="$node/ancestor::olist">
-        <xsl:call-template name="next.numeration">
-          <xsl:with-param name="numeration">
-            <xsl:call-template name="list.numeration">
-              <xsl:with-param name="node" select="$node/ancestor::olist[1]"/>
-            </xsl:call-template>
-          </xsl:with-param>
-        </xsl:call-template>
-      </xsl:when>
-      <xsl:otherwise>
-        <xsl:call-template name="next.numeration"/>
-      </xsl:otherwise>
+      <xsl:when test="$depth mod 5 = 0">ar</xsl:when>
+      <xsl:when test="$depth mod 5 = 1">la</xsl:when>
+      <xsl:when test="$depth mod 5 = 2">lr</xsl:when>
+      <xsl:when test="$depth mod 5 = 3">ua</xsl:when>
+      <xsl:when test="$depth mod 5 = 4">ur</xsl:when>
     </xsl:choose>
   </xsl:template>
 
@@ -1363,39 +1404,21 @@
       <xsl:call-template name="list.numeration"/>
     </xsl:variable>
 
-    <xsl:variable name="type">
-      <xsl:choose>
-        <xsl:when test="$numeration='arabic'">1</xsl:when>
-        <xsl:when test="$numeration='loweralpha'">a</xsl:when>
-        <xsl:when test="$numeration='lowerroman'">i</xsl:when>
-        <xsl:when test="$numeration='upperalpha'">A</xsl:when>
-        <xsl:when test="$numeration='upperroman'">I</xsl:when>
-        <!-- What!? This should never happen -->
-        <xsl:otherwise>
-          <xsl:message>
-            <xsl:text>Unexpected numeration: </xsl:text>
-            <xsl:value-of select="$numeration"/>
-          </xsl:message>
-          <xsl:value-of select="1"/>
-        </xsl:otherwise>
-      </xsl:choose>
-    </xsl:variable>
-
-    <ol type="{$type}">
+    <ol xmlns="http://www.w3.org/1999/xhtml" class="enum{$numeration}">
       <xsl:apply-templates/>
     </ol>
   </xsl:template>
 
   <!-- orglist: a list of an organization's members -->
   <xsl:template match="orglist">
-    <ul>
+    <ul xmlns="http://www.w3.org/1999/xhtml">
       <xsl:apply-templates/>
     </ul>
   </xsl:template>
 
   <!-- p: a standard paragraph -->
   <xsl:template match="p">
-    <p>
+    <p xmlns="http://www.w3.org/1999/xhtml">
       <xsl:if test="@id">
         <xsl:attribute name="id">
           <xsl:value-of select="@id"/>
@@ -1420,18 +1443,25 @@
   <!-- role attributes may be used to request different formatting,
        which isn't currently handled -->
   <xsl:template match="phrase">
-    <xsl:apply-templates/>
+    <span xmlns="http://www.w3.org/1999/xhtml">
+      <xsl:if test="@role">
+        <xsl:attribute name="class">
+          <xsl:value-of select="@role"/>
+        </xsl:attribute>
+      </xsl:if>
+      <xsl:apply-templates/>
+    </span>
   </xsl:template>
 
   <!-- prevlocs: previous locations for this spec -->
   <!-- called in a <dl> context from header -->
   <xsl:template match="prevlocs">
-    <dt>
+    <dt xmlns="http://www.w3.org/1999/xhtml">
       <xsl:text>Previous version</xsl:text>
       <xsl:if test="count(loc) &gt; 1">s</xsl:if>
       <xsl:text>:</xsl:text>
     </dt>
-    <dd>
+    <dd xmlns="http://www.w3.org/1999/xhtml">
       <xsl:apply-templates/>
     </dd>
   </xsl:template>
@@ -1443,31 +1473,19 @@
   <!-- process the first child in each row, and it will process the
        others -->
   <xsl:template match="prod">
-    <tbody>
-      <xsl:apply-templates
-        select="lhs |
-                rhs[preceding-sibling::*[1][name()!='lhs']] |
-                com[preceding-sibling::*[1][name()!='rhs']] |
-                constraint[preceding-sibling::*[1][name()!='rhs']] |
-                vc[preceding-sibling::*[1][name()!='rhs']] |
-                wfc[preceding-sibling::*[1][name()!='rhs']]"/>
+    <tbody xmlns="http://www.w3.org/1999/xhtml">
+      <xsl:apply-templates select="lhs |                 rhs[preceding-sibling::*[1][name()!='lhs']] |                 com[preceding-sibling::*[1][name()!='rhs']] |                 constraint[preceding-sibling::*[1][name()!='rhs']] |                 vc[preceding-sibling::*[1][name()!='rhs']] |                 wfc[preceding-sibling::*[1][name()!='rhs']]"/>
     </tbody>
   </xsl:template>
 
   <xsl:template match="prodgroup/prod">
-    <xsl:apply-templates
-      select="lhs |
-              rhs[preceding-sibling::*[1][name()!='lhs']] |
-              com[preceding-sibling::*[1][name()!='rhs']] |
-              constraint[preceding-sibling::*[1][name()!='rhs']] |
-              vc[preceding-sibling::*[1][name()!='rhs']] |
-              wfc[preceding-sibling::*[1][name()!='rhs']]"/>
+    <xsl:apply-templates select="lhs |               rhs[preceding-sibling::*[1][name()!='lhs']] |               com[preceding-sibling::*[1][name()!='rhs']] |               constraint[preceding-sibling::*[1][name()!='rhs']] |               vc[preceding-sibling::*[1][name()!='rhs']] |               wfc[preceding-sibling::*[1][name()!='rhs']]"/>
   </xsl:template>
 
   <!-- prodgroup: group of formal productions -->
   <!-- create one <tbody> for each group -->
   <xsl:template match="prodgroup">
-    <tbody>
+    <tbody xmlns="http://www.w3.org/1999/xhtml">
       <xsl:apply-templates/>
     </tbody>
   </xsl:template>
@@ -1477,15 +1495,24 @@
        <tbody> or a number, plus links the lhs to the original
        production -->
   <xsl:template match="prodrecap">
-    <tbody>
+    <tbody xmlns="http://www.w3.org/1999/xhtml">
       <xsl:apply-templates select="key('ids', @ref)" mode="ref"/>
     </tbody>
+  </xsl:template>
+
+  <xsl:template match="processing-instruction('specprod')">
+    <xsl:if test="contains(., 'production-recap')"/>
+    <table xmlns="http://www.w3.org/1999/xhtml" class="scrap" summary="Scrap">
+      <tbody>
+        <xsl:apply-templates select="//prod" mode="ref"/>
+      </tbody>
+    </table>
   </xsl:template>
 
   <!-- proto: function prototype -->
   <!-- type and name of the function, with arguments in parens -->
   <xsl:template match="proto">
-    <p>
+    <p xmlns="http://www.w3.org/1999/xhtml">
       <em><xsl:value-of select="@return-type"/></em>
       <xsl:text> </xsl:text>
       <b><xsl:value-of select="@name"/></b>
@@ -1501,10 +1528,51 @@
   <!-- publoc: location of current version of spec -->
   <!-- called from header in <dl> context -->
   <xsl:template match="publoc">
-    <dt>This version:</dt>
-    <dd>
+    <dt xmlns="http://www.w3.org/1999/xhtml">This version:</dt>
+    <dd xmlns="http://www.w3.org/1999/xhtml">
       <xsl:apply-templates/>
     </dd>
+  </xsl:template>
+
+  <xsl:template match="altlocs">
+    <p xmlns="http://www.w3.org/1999/xhtml">
+      <xsl:text>This document is also available </xsl:text>
+      <xsl:text>in these non-normative formats: </xsl:text>
+      <xsl:for-each select="loc">
+        <xsl:if test="position() &gt; 1">
+          <xsl:if test="last() &gt; 2">
+            <xsl:text>, </xsl:text>
+          </xsl:if>
+          <xsl:if test="last() = 2">
+            <xsl:text> </xsl:text>
+          </xsl:if>
+        </xsl:if>
+        <xsl:if test="position() = last() and position() &gt; 1">and </xsl:if>
+        <xsl:apply-templates select="."/>
+      </xsl:for-each>
+      <xsl:text>.</xsl:text>
+    </p>
+  </xsl:template>
+
+  <xsl:template match="errataloc">
+    <p xmlns="http://www.w3.org/1999/xhtml">
+      <xsl:text>Please refer to the </xsl:text>
+      <a href="{@href}">errata</a>
+      <xsl:text> for this document, which may
+      include normative corrections.</xsl:text>
+    </p>
+  </xsl:template>
+
+  <xsl:template match="preverrataloc">
+    <p xmlns="http://www.w3.org/1999/xhtml">
+      <xsl:text>The </xsl:text>
+      <a href="{@href}">previous errata</a>
+      <xsl:text> for this document, are also available.</xsl:text>
+    </p>
+  </xsl:template>
+
+  <xsl:template match="translationloc">
+    <p xmlns="http://www.w3.org/1999/xhtml">See also <a href="{@href}"><strong>translations</strong></a>.</p>
   </xsl:template>
 
   <!-- pubstmt: statement of publication -->
@@ -1527,7 +1595,7 @@
 
   <!-- resolution: resolution of an issue -->
   <xsl:template match="resolution">
-    <p class="prefix">
+    <p xmlns="http://www.w3.org/1999/xhtml" class="prefix">
       <b>
         <xsl:if test="@role='partial'">Partial </xsl:if>
         <xsl:text>Resolution:</xsl:text>
@@ -1548,8 +1616,8 @@
   <xsl:template match="rhs">
     <xsl:choose>
       <xsl:when test="preceding-sibling::*[1][name()='lhs']">
-        <td>
-          <xsl:if test="ancestor-or-self::*/@diff and $show.diff.markup='1'">
+        <td xmlns="http://www.w3.org/1999/xhtml">
+          <xsl:if test="ancestor-or-self::*/@diff and $show.diff.markup != 0">
             <xsl:attribute name="class">
               <xsl:text>diff-</xsl:text>
               <xsl:value-of select="ancestor-or-self::*/@diff"/>
@@ -1557,17 +1625,13 @@
           </xsl:if>
           <code><xsl:apply-templates/></code>
         </td>
-        <xsl:apply-templates
-          select="following-sibling::*[1][name()='com' or
-                                          name()='constraint' or
-                                          name()='vc' or
-                                          name()='wfc']"/>
+        <xsl:apply-templates select="following-sibling::*[1][name()='com' or                                           name()='constraint' or                                           name()='vc' or                                           name()='wfc']"/>
       </xsl:when>
       <xsl:otherwise>
-        <tr valign="baseline">
+        <tr xmlns="http://www.w3.org/1999/xhtml" valign="baseline">
           <td/><td/><td/>
           <td>
-            <xsl:if test="ancestor-or-self::*/@diff and $show.diff.markup='1'">
+            <xsl:if test="ancestor-or-self::*/@diff and $show.diff.markup != 0">
               <xsl:attribute name="class">
                 <xsl:text>diff-</xsl:text>
                 <xsl:value-of select="ancestor-or-self::*/@diff"/>
@@ -1575,11 +1639,7 @@
             </xsl:if>
             <code><xsl:apply-templates/></code>
           </td>
-          <xsl:apply-templates
-            select="following-sibling::*[1][name()='com' or
-                                            name()='constraint' or
-                                            name()='vc' or
-                                            name()='wfc']"/>
+          <xsl:apply-templates select="following-sibling::*[1][name()='com' or                                             name()='constraint' or                                             name()='vc' or                                             name()='wfc']"/>
         </tr>
       </xsl:otherwise>
     </xsl:choose>
@@ -1588,7 +1648,7 @@
   <!-- role: part played by a member of an organization -->
   <xsl:template match="role">
     <xsl:text> (</xsl:text>
-    <i><xsl:apply-templates/></i>
+    <i xmlns="http://www.w3.org/1999/xhtml"><xsl:apply-templates/></i>
     <xsl:text>) </xsl:text>
   </xsl:template>
 
@@ -1596,7 +1656,7 @@
   <!-- set up a <table> and handle children -->
   <xsl:template match="scrap">
     <xsl:apply-templates select="head"/>
-    <table class="scrap" summary="Scrap">
+    <table xmlns="http://www.w3.org/1999/xhtml" class="scrap" summary="Scrap">
       <xsl:apply-templates select="bnf | prod | prodgroup"/>
     </table>
   </xsl:template>
@@ -1606,16 +1666,19 @@
 
   <!-- sitem: simple list item -->
   <!-- just make one paragraph with <br>s between items -->
-  <xsl:template match="sitem[position() &gt; 1]">
-    <br/>
+  <xsl:template match="sitem">
+    <xsl:apply-templates/>
+  </xsl:template>
+
+  <xsl:template match="sitem[position() &gt; 1]" priority="2">
+    <br xmlns="http://www.w3.org/1999/xhtml"/>
     <xsl:apply-templates/>
   </xsl:template>
 
   <!-- slist: simple list -->
-  <!-- using a <blockquote> to indent the list is very wrong, but it
-       works -->
+  <!-- using a <blockquote> to indent the list is very wrong, but it works -->
   <xsl:template match="slist">
-    <blockquote>
+    <blockquote xmlns="http://www.w3.org/1999/xhtml">
       <p>
         <xsl:apply-templates/>
       </p>
@@ -1624,7 +1687,7 @@
 
   <!-- source: the source of an issue -->
   <xsl:template match="source">
-    <p>
+    <p xmlns="http://www.w3.org/1999/xhtml">
       <b>Source</b>
       <xsl:text>: </xsl:text>
       <xsl:apply-templates/>
@@ -1636,14 +1699,13 @@
 
   <!-- spec: the specification itself -->
   <xsl:template match="spec">
-    <html>
+    <html xmlns="http://www.w3.org/1999/xhtml">
       <xsl:if test="header/langusage/language">
         <xsl:attribute name="lang">
           <xsl:value-of select="header/langusage/language/@id"/>
         </xsl:attribute>
       </xsl:if>
       <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"/>
         <title>
           <xsl:apply-templates select="header/title"/>
           <xsl:if test="header/version">
@@ -1656,13 +1718,15 @@
           </xsl:if>
         </title>
         <xsl:call-template name="css"/>
+	<xsl:call-template name="additional-head"/>
       </head>
       <body>
         <xsl:apply-templates/>
         <xsl:if test="//footnote[not(ancestor::table)]">
           <hr/>
           <div class="endnotes">
-            <xsl:text>&#10;</xsl:text>
+            <xsl:text>
+</xsl:text>
             <h3>
               <xsl:call-template name="anchor">
                 <xsl:with-param name="conditional" select="0"/>
@@ -1671,8 +1735,7 @@
               <xsl:text>End Notes</xsl:text>
             </h3>
             <dl>
-              <xsl:apply-templates select="//footnote[not(ancestor::table)]"
-                                   mode="notes"/>
+              <xsl:apply-templates select="//footnote[not(ancestor::table)]" mode="notes"/>
             </dl>
           </div>
         </xsl:if>
@@ -1680,97 +1743,21 @@
     </html>
   </xsl:template>
 
+  <!-- Specref -->
+
   <!-- specref: reference to another part of teh current specification -->
   <xsl:template match="specref">
-    <xsl:variable name="target" select="key('ids', @ref)[1]"/>
+    <xsl:param name="target" select="key('ids', @ref)[1]"/>
 
     <xsl:choose>
-      <xsl:when test="local-name($target)='issue'">
-        <xsl:text>[</xsl:text>
-        <a>
-          <xsl:attribute name="href">
-            <xsl:call-template name="href.target">
-              <xsl:with-param name="target" select="key('ids', @ref)"/>
-            </xsl:call-template>
-          </xsl:attribute>
-          <b>
-            <xsl:text>Issue </xsl:text>
-            <xsl:apply-templates select="key('ids', @ref)" mode="number"/>
-            <xsl:text>: </xsl:text>
-            <xsl:for-each select="key('ids', @ref)/head">
-              <xsl:apply-templates/>
-            </xsl:for-each>
-          </b>
-        </a>
-        <xsl:text>]</xsl:text>
+      <xsl:when test="not($target)">
+	<xsl:message>
+	  <xsl:text>specref to non-existent ID: </xsl:text>
+	  <xsl:value-of select="@ref"/>
+	</xsl:message>
       </xsl:when>
-      <xsl:when test="starts-with(local-name($target), 'div')">
-        <a>
-          <xsl:attribute name="href">
-            <xsl:call-template name="href.target">
-              <xsl:with-param name="target" select="key('ids', @ref)"/>
-            </xsl:call-template>
-          </xsl:attribute>
-          <b>
-            <xsl:apply-templates select="key('ids', @ref)" mode="divnum"/>
-            <xsl:apply-templates select="key('ids', @ref)/head" mode="text"/>
-          </b>
-        </a>
-      </xsl:when>
-      <xsl:when test="starts-with(local-name($target), 'inform-div')">
-        <a>
-          <xsl:attribute name="href">
-            <xsl:call-template name="href.target">
-              <xsl:with-param name="target" select="key('ids', @ref)"/>
-            </xsl:call-template>
-          </xsl:attribute>
-          <b>
-            <xsl:apply-templates select="key('ids', @ref)" mode="divnum"/>
-            <xsl:apply-templates select="key('ids', @ref)/head" mode="text"/>
-          </b>
-        </a>
-      </xsl:when>
-      <xsl:when test="local-name($target) = 'vcnote'">
-        <b>
-          <xsl:text>[VC: </xsl:text>
-          <a>
-            <xsl:attribute name="href">
-              <xsl:call-template name="href.target">
-                <xsl:with-param name="target" select="key('ids', @ref)"/>
-              </xsl:call-template>
-            </xsl:attribute>
-            <xsl:apply-templates select="key('ids', @ref)/head" mode="text"/>
-          </a>
-          <xsl:text>]</xsl:text>
-        </b>
-      </xsl:when>
-      <xsl:when test="local-name($target) = 'prod'">
-        <b>
-          <xsl:text>[PROD: </xsl:text>
-          <a>
-            <xsl:attribute name="href">
-              <xsl:call-template name="href.target">
-                <xsl:with-param name="target" select="key('ids', @ref)"/>
-              </xsl:call-template>
-            </xsl:attribute>
-            <xsl:apply-templates select="$target" mode="number-simple"/>
-          </a>
-          <xsl:text>]</xsl:text>
-        </b>
-      </xsl:when>
-      <xsl:when test="local-name($target) = 'label'">
-        <b>
-          <xsl:text>[</xsl:text>
-          <a>
-            <xsl:attribute name="href">
-              <xsl:call-template name="href.target">
-                <xsl:with-param name="target" select="key('ids', @ref)"/>
-              </xsl:call-template>
-            </xsl:attribute>
-            <xsl:value-of select="$target"/>
-          </a>
-          <xsl:text>]</xsl:text>
-        </b>
+      <xsl:when test="local-name($target)='issue'                       or starts-with(local-name($target), 'div')                       or starts-with(local-name($target), 'inform-div')                       or local-name($target) = 'vcnote'                       or local-name($target) = 'prod'                       or local-name($target) = 'example'                       or local-name($target) = 'label'         or $target/self::item[parent::olist]">
+        <xsl:apply-templates select="$target" mode="specref"/>
       </xsl:when>
       <xsl:otherwise>
         <xsl:message>
@@ -1781,7 +1768,7 @@
           <xsl:text>] </xsl:text>
           <xsl:text> (Contact stylesheet maintainer).</xsl:text>
         </xsl:message>
-        <b>
+        <b xmlns="http://www.w3.org/1999/xhtml">
           <a>
             <xsl:attribute name="href">
               <xsl:call-template name="href.target">
@@ -1795,10 +1782,166 @@
     </xsl:choose>
   </xsl:template>
 
+  <xsl:template match="item" mode="specref">
+    <xsl:variable name="items" select="ancestor-or-self::item[parent::olist]"/>
+
+    <a xmlns="http://www.w3.org/1999/xhtml">
+      <xsl:attribute name="href">
+        <xsl:call-template name="href.target"/>
+      </xsl:attribute>
+
+      <!--
+      <xsl:value-of select="count($items)"/>
+      <xsl:text>;</xsl:text>
+      -->
+
+      <xsl:for-each select="$items">
+	<xsl:variable name="number" select="count(preceding-sibling::item)+1"/>
+	<xsl:variable name="numeration">
+	  <!-- this is related to, but not the same as, list.numeration -->
+	  <xsl:choose>
+	    <xsl:when test="count(ancestor::olist) mod 5 = 1">ar</xsl:when>
+	    <xsl:when test="count(ancestor::olist) mod 5 = 2">la</xsl:when>
+	    <xsl:when test="count(ancestor::olist) mod 5 = 3">lr</xsl:when>
+	    <xsl:when test="count(ancestor::olist) mod 5 = 4">ua</xsl:when>
+	    <xsl:when test="count(ancestor::olist) mod 5 = 0">ur</xsl:when>
+	  </xsl:choose>
+	</xsl:variable>
+
+	<xsl:choose>
+	  <xsl:when test="$numeration = 'la'">
+	    <xsl:number value="$number" format="a"/>
+	  </xsl:when>
+	  <xsl:when test="$numeration = 'lr'">
+	    <xsl:number value="$number" format="i"/>
+	  </xsl:when>
+	  <xsl:when test="$numeration = 'ua'">
+	    <xsl:number value="$number" format="A"/>
+	  </xsl:when>
+	  <xsl:when test="$numeration = 'ur'">
+	    <xsl:number value="$number" format="I"/>
+	  </xsl:when>
+	  <xsl:otherwise>
+	    <xsl:value-of select="$number"/>
+	  </xsl:otherwise>
+	</xsl:choose>
+	<xsl:text>.</xsl:text>
+
+	<!--
+	<xsl:text>(</xsl:text>
+	<xsl:value-of select="$number"/>
+	<xsl:text>;</xsl:text>
+	<xsl:value-of select="$numeration"/>
+	<xsl:text>)</xsl:text>
+	-->
+
+      </xsl:for-each>
+
+    </a>
+  </xsl:template>
+
+  <xsl:template match="issue" mode="specref">
+    <xsl:text>[</xsl:text>
+    <a xmlns="http://www.w3.org/1999/xhtml">
+      <xsl:attribute name="href">
+        <xsl:call-template name="href.target"/>
+      </xsl:attribute>
+      <b>
+        <xsl:text>Issue </xsl:text>
+        <xsl:apply-templates select="." mode="number"/>
+        <xsl:text>: </xsl:text>
+        <xsl:apply-templates select="head" mode="text"/>
+      </b>
+    </a>
+    <xsl:text>]</xsl:text>
+  </xsl:template>
+
+  <xsl:template match="div1|div2|div3|div4|div5" mode="specref">
+    <a xmlns="http://www.w3.org/1999/xhtml">
+      <xsl:attribute name="href">
+        <xsl:call-template name="href.target"/>
+      </xsl:attribute>
+      <b>
+        <xsl:apply-templates select="." mode="divnum"/>
+        <xsl:apply-templates select="head" mode="text"/>
+      </b>
+    </a>
+  </xsl:template>
+
+  <xsl:template match="inform-div1" mode="specref">
+    <a xmlns="http://www.w3.org/1999/xhtml">
+      <xsl:attribute name="href">
+        <xsl:call-template name="href.target"/>
+      </xsl:attribute>
+      <b>
+        <xsl:apply-templates select="." mode="divnum"/>
+        <xsl:apply-templates select="head" mode="text"/>
+      </b>
+    </a>
+  </xsl:template>
+
+  <xsl:template match="vcnote" mode="specref">
+    <b xmlns="http://www.w3.org/1999/xhtml">
+      <xsl:text>[VC: </xsl:text>
+      <a>
+        <xsl:attribute name="href">
+          <xsl:call-template name="href.target"/>
+        </xsl:attribute>
+        <xsl:apply-templates select="head" mode="text"/>
+      </a>
+      <xsl:text>]</xsl:text>
+    </b>
+  </xsl:template>
+
+  <xsl:template match="prod" mode="specref">
+    <b xmlns="http://www.w3.org/1999/xhtml">
+      <xsl:text>[PROD: </xsl:text>
+      <a>
+        <xsl:attribute name="href">
+          <xsl:call-template name="href.target"/>
+        </xsl:attribute>
+        <xsl:apply-templates select="." mode="number-simple"/>
+      </a>
+      <xsl:text>]</xsl:text>
+    </b>
+  </xsl:template>
+
+  <xsl:template match="label" mode="specref">
+    <b xmlns="http://www.w3.org/1999/xhtml">
+      <xsl:text>[</xsl:text>
+      <a>
+        <xsl:attribute name="href">
+          <xsl:call-template name="href.target"/>
+        </xsl:attribute>
+        <xsl:value-of select="."/>
+      </a>
+      <xsl:text>]</xsl:text>
+    </b>
+  </xsl:template>
+
+  <xsl:template match="example" mode="specref">
+    <xsl:apply-templates select="head" mode="specref"/>
+  </xsl:template>
+
+  <xsl:template match="example/head" mode="specref">
+    <xsl:variable name="id">
+      <xsl:call-template name="object.id">
+        <xsl:with-param name="node" select=".."/>
+      </xsl:call-template>
+    </xsl:variable>
+
+    <a xmlns="http://www.w3.org/1999/xhtml" href="#{$id}">
+      <xsl:text>Example</xsl:text>
+    </a>
+  </xsl:template>
+
+  <!-- /Specref -->
+
   <!-- status: the status of the spec -->
   <xsl:template match="status">
-    <div>
-      <xsl:text>&#10;</xsl:text>
+    <div xmlns="http://www.w3.org/1999/xhtml">
+      <xsl:text>
+</xsl:text>
       <h2>
         <xsl:call-template name="anchor">
           <xsl:with-param name="conditional" select="0"/>
@@ -1819,7 +1962,7 @@
 
   <!-- sub: subscript -->
   <xsl:template match="sub">
-    <sub>
+    <sub xmlns="http://www.w3.org/1999/xhtml">
       <xsl:apply-templates/>
     </sub>
   </xsl:template>
@@ -1832,22 +1975,55 @@
 
   <!-- sup: superscript -->
   <xsl:template match="sup">
-    <sup>
+    <sup xmlns="http://www.w3.org/1999/xhtml">
       <xsl:apply-templates/>
     </sup>
   </xsl:template>
 
   <!-- table: the HTML table model adopted wholesale; note however that we -->
   <!-- do this such that the XHTML stylesheet will do the right thing. -->
-  <xsl:template match="caption|col|colgroup|td|tfoot|th|thead|tr|tbody">
-    <xsl:element name="{local-name(.)}">
+  <xsl:template match="caption|col|colgroup|tfoot|thead|tr|tbody">
+    <xsl:element name="{local-name(.)}" namespace="http://www.w3.org/1999/xhtml">
       <xsl:for-each select="@*">
         <!-- Wait: some of these aren't HTML attributes after all... -->
-        <xsl:if test="local-name(.) != 'diff'">
-          <xsl:copy>
-            <xsl:apply-templates/>
-          </xsl:copy>
-        </xsl:if>
+        <xsl:choose>
+          <xsl:when test="local-name(.) = 'role'">
+            <xsl:attribute name="class">
+              <xsl:value-of select="."/>
+            </xsl:attribute>
+          </xsl:when>
+          <xsl:when test="local-name(.) = 'diff'">
+            <!-- nop -->
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:copy>
+              <xsl:apply-templates/>
+            </xsl:copy>
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:for-each>
+      <xsl:apply-templates/>
+    </xsl:element>
+  </xsl:template>
+
+  <!-- td/th are special -->
+  <xsl:template match="td|th">
+    <xsl:element name="{local-name(.)}" namespace="http://www.w3.org/1999/xhtml">
+      <xsl:for-each select="@*">
+        <!-- Wait: some of these aren't HTML attributes after all... -->
+	<xsl:choose>
+          <xsl:when test="local-name(.) = 'role'">
+            <xsl:attribute name="class">
+              <xsl:value-of select="."/>
+            </xsl:attribute>
+          </xsl:when>
+          <xsl:when test="local-name(.) = 'diff'"/>
+	  <xsl:when test="local-name(.) = 'colspan' and . = 1"/>
+	  <xsl:when test="local-name(.) = 'rowspan' and . = 1"/>
+	  <xsl:otherwise>
+            <xsl:copy-of select="."/>
+          </xsl:otherwise>
+        </xsl:choose>
       </xsl:for-each>
       <xsl:apply-templates/>
     </xsl:element>
@@ -1855,14 +2031,23 @@
 
   <!-- but table is special, to handle footnotes -->
   <xsl:template match="table">
-    <table>
+    <xsl:call-template name="anchor"/>
+    <table xmlns="http://www.w3.org/1999/xhtml">
       <xsl:for-each select="@*">
         <!-- Wait: some of these aren't HTML attributes after all... -->
-        <xsl:if test="local-name(.) != 'diff'">
-          <xsl:copy>
-            <xsl:apply-templates/>
-          </xsl:copy>
-        </xsl:if>
+        <xsl:choose>
+          <xsl:when test="local-name(.) = 'role'">
+            <xsl:attribute name="class">
+              <xsl:value-of select="."/>
+            </xsl:attribute>
+          </xsl:when>
+          <xsl:when test="local-name(.) = 'diff' or local-name(.) = 'id'">
+            <!-- nop -->
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:copy-of select="."/>
+          </xsl:otherwise>
+        </xsl:choose>
       </xsl:for-each>
       <xsl:apply-templates/>
 
@@ -1880,13 +2065,13 @@
 
   <!-- term: the actual mention of a term within a termdef -->
   <xsl:template match="term">
-    <b><xsl:apply-templates/></b>
+    <b xmlns="http://www.w3.org/1999/xhtml"><xsl:apply-templates/></b>
   </xsl:template>
 
   <!-- termdef: sentence or phrase defining a term -->
   <xsl:template match="termdef">
     <xsl:text>[</xsl:text>
-    <a name="{@id}" id="{@id}" title="{@term}">
+    <a xmlns="http://www.w3.org/1999/xhtml" name="{@id}" id="{@id}" title="{@term}">
       <xsl:text>Definition</xsl:text>
     </a>
     <xsl:text>: </xsl:text>
@@ -1896,7 +2081,7 @@
 
   <!-- termref: reference to a defined term -->
   <xsl:template match="termref">
-    <a title="{key('ids', @def)/@term}">
+    <a xmlns="http://www.w3.org/1999/xhtml" title="{key('ids', @def)/@term}">
       <xsl:attribute name="href">
         <xsl:call-template name="href.target">
           <xsl:with-param name="target" select="key('ids', @def)"/>
@@ -1918,14 +2103,21 @@
   <xsl:template match="titleref">
     <xsl:choose>
       <xsl:when test="@href">
-        <a href="{@href}">
+        <a xmlns="http://www.w3.org/1999/xhtml" href="{@href}">
+          <cite>
+            <xsl:apply-templates/>
+          </cite>
+        </a>
+      </xsl:when>
+      <xsl:when test="ancestor::bibl/@href">
+        <a xmlns="http://www.w3.org/1999/xhtml" href="{ancestor::bibl/@href}">
           <cite>
             <xsl:apply-templates/>
           </cite>
         </a>
       </xsl:when>
       <xsl:otherwise>
-        <cite>
+        <cite xmlns="http://www.w3.org/1999/xhtml">
           <xsl:apply-templates/>
         </cite>
       </xsl:otherwise>
@@ -1942,7 +2134,7 @@
 
   <!-- ulist: unordered list -->
   <xsl:template match="ulist">
-    <ul>
+    <ul xmlns="http://www.w3.org/1999/xhtml">
       <xsl:apply-templates/>
     </ul>
   </xsl:template>
@@ -1952,7 +2144,7 @@
 
   <!-- var: a variable -->
   <xsl:template match="var">
-    <var>
+    <var xmlns="http://www.w3.org/1999/xhtml">
       <xsl:apply-templates/>
     </var>
   </xsl:template>
@@ -1961,8 +2153,8 @@
   <xsl:template match="vc">
     <xsl:choose>
       <xsl:when test="preceding-sibling::*[1][name()='rhs']">
-        <td>
-          <xsl:if test="@diff and $show.diff.markup='1'">
+        <td xmlns="http://www.w3.org/1999/xhtml">
+          <xsl:if test="@diff and $show.diff.markup != 0">
             <xsl:attribute name="class">
               <xsl:text>diff-</xsl:text>
               <xsl:value-of select="@diff"/>
@@ -1981,10 +2173,10 @@
         </td>
       </xsl:when>
       <xsl:otherwise>
-        <tr valign="baseline">
+        <tr xmlns="http://www.w3.org/1999/xhtml" valign="baseline">
           <td/><td/><td/><td/>
           <td>
-            <xsl:if test="@diff and $show.diff.markup='1'">
+            <xsl:if test="@diff and $show.diff.markup != 0">
               <xsl:attribute name="class">
                 <xsl:text>diff-</xsl:text>
                 <xsl:value-of select="@diff"/>
@@ -2008,7 +2200,7 @@
 
   <!-- vcnote: validity check note after a formal production -->
   <xsl:template match="vcnote">
-    <div class="constraint">
+    <div xmlns="http://www.w3.org/1999/xhtml" class="constraint">
       <xsl:apply-templates/>
     </div>
   </xsl:template>
@@ -2022,19 +2214,12 @@
   <!-- w3c-designation: canonical name for this spec -->
   <!-- not used for formatting -->
 
-  <!-- w3c-doctype: type of document the specification is -->
-  <!-- used by header template to select CSS stylesheet for output
-       HTML -->
-  <xsl:template match="w3c-doctype">
-    <xsl:apply-templates/>
-  </xsl:template>
-
   <!-- wfc: well-formedness check reference in a formal production -->
   <xsl:template match="wfc">
     <xsl:choose>
       <xsl:when test="preceding-sibling::*[1][name()='rhs']">
-        <td>
-          <xsl:if test="@diff and $show.diff.markup='1'">
+        <td xmlns="http://www.w3.org/1999/xhtml">
+          <xsl:if test="@diff and $show.diff.markup != 0">
             <xsl:attribute name="class">
               <xsl:text>diff-</xsl:text>
               <xsl:value-of select="@diff"/>
@@ -2053,10 +2238,10 @@
         </td>
       </xsl:when>
       <xsl:otherwise>
-        <tr valign="baseline">
+        <tr xmlns="http://www.w3.org/1999/xhtml" valign="baseline">
           <td/><td/><td/><td/>
           <td>
-            <xsl:if test="@diff and $show.diff.markup='1'">
+            <xsl:if test="@diff and $show.diff.markup != 0">
               <xsl:attribute name="class">
                 <xsl:text>diff-</xsl:text>
                 <xsl:value-of select="@diff"/>
@@ -2080,7 +2265,7 @@
 
   <!-- wfcnote: well-formedness check note after formal production -->
   <xsl:template match="wfcnote">
-    <div class="constraint">
+    <div xmlns="http://www.w3.org/1999/xhtml" class="constraint">
       <xsl:apply-templates/>
     </div>
   </xsl:template>
@@ -2090,7 +2275,7 @@
   <!-- xtermref: external term reference -->
   <!-- just link to URI provided -->
   <xsl:template match="xnt | xspecref | xtermref">
-    <a href="{@href}">
+    <a xmlns="http://www.w3.org/1999/xhtml" href="{@href}">
       <xsl:apply-templates/>
     </a>
   </xsl:template>
@@ -2105,64 +2290,52 @@
        show up in a spec, but they're easy to handle and you just
        never know. -->
   <xsl:template match="a|div|em|h1|h2|h3|h4|h5|h6|li|ol|pre|ul">
-    <xsl:element name="{local-name(.)}">
-      <xsl:for-each select="@*">
-        <xsl:copy>
-          <xsl:apply-templates/>
-        </xsl:copy>
-      </xsl:for-each>
+    <xsl:element name="{local-name(.)}" namespace="http://www.w3.org/1999/xhtml">
+      <xsl:copy-of select="@*"/>
       <xsl:apply-templates/>
     </xsl:element>
   </xsl:template>
 
   <!-- legacy XML spec stuff -->
   <xsl:template match="htable">
-    <table summary="HTML Table">
-      <xsl:for-each select="@*">
-        <xsl:copy>
-          <xsl:apply-templates/>
-        </xsl:copy>
-      </xsl:for-each>
+    <table xmlns="http://www.w3.org/1999/xhtml" summary="HTML Table">
+      <xsl:copy-of select="@*"/>
       <xsl:apply-templates/>
     </table>
   </xsl:template>
   <xsl:template match="htbody">
-    <tbody>
-      <xsl:for-each select="@*">
-        <xsl:copy>
-          <xsl:apply-templates/>
-        </xsl:copy>
-      </xsl:for-each>
+    <tbody xmlns="http://www.w3.org/1999/xhtml">
+      <xsl:copy-of select="@*"/>
       <xsl:apply-templates/>
     </tbody>
   </xsl:template>
   <xsl:template match="key-term">
-    <b><xsl:apply-templates/></b>
+    <b xmlns="http://www.w3.org/1999/xhtml"><xsl:apply-templates/></b>
   </xsl:template>
   <xsl:template match="statusp">
-    <p>
+    <p xmlns="http://www.w3.org/1999/xhtml">
       <xsl:apply-templates/>
     </p>
   </xsl:template>
 
   <!-- legacy DocBook stuff -->
   <xsl:template match="itemizedlist">
-    <ul>
+    <ul xmlns="http://www.w3.org/1999/xhtml">
       <xsl:apply-templates/>
     </ul>
   </xsl:template>
   <xsl:template match="listitem">
-    <li>
+    <li xmlns="http://www.w3.org/1999/xhtml">
       <xsl:apply-templates/>
     </li>
   </xsl:template>
   <xsl:template match="orderedlist">
-    <ol>
+    <ol xmlns="http://www.w3.org/1999/xhtml">
       <xsl:apply-templates/>
     </ol>
   </xsl:template>
   <xsl:template match="para">
-    <p>
+    <p xmlns="http://www.w3.org/1999/xhtml">
       <xsl:apply-templates/>
     </p>
   </xsl:template>
@@ -2176,48 +2349,38 @@
     <xsl:number count="div1 | inform-div1" format="A "/>
   </xsl:template>
 
-  <xsl:template mode="divnum"
-    match="front/div1 | front//div2 | front//div3 | front//div4 | front//div5"/>
+  <xsl:template mode="divnum" match="front/div1 | front//div2 | front//div3 | front//div4 | front//div5"/>
 
   <xsl:template mode="divnum" match="div2">
     <xsl:number level="multiple" count="div1 | div2" format="1.1 "/>
   </xsl:template>
 
   <xsl:template mode="divnum" match="back//div2">
-    <xsl:number level="multiple" count="div1 | div2 | inform-div1"
-      format="A.1 "/>
+    <xsl:number level="multiple" count="div1 | div2 | inform-div1" format="A.1 "/>
   </xsl:template>
 
   <xsl:template mode="divnum" match="div3">
-    <xsl:number level="multiple" count="div1 | div2 | div3"
-      format="1.1.1 "/>
+    <xsl:number level="multiple" count="div1 | div2 | div3" format="1.1.1 "/>
   </xsl:template>
 
   <xsl:template mode="divnum" match="back//div3">
-    <xsl:number level="multiple"
-      count="div1 | div2 | div3 | inform-div1" format="A.1.1 "/>
+    <xsl:number level="multiple" count="div1 | div2 | div3 | inform-div1" format="A.1.1 "/>
   </xsl:template>
 
   <xsl:template mode="divnum" match="div4">
-    <xsl:number level="multiple" count="div1 | div2 | div3 | div4"
-      format="1.1.1.1 "/>
+    <xsl:number level="multiple" count="div1 | div2 | div3 | div4" format="1.1.1.1 "/>
   </xsl:template>
 
   <xsl:template mode="divnum" match="back//div4">
-    <xsl:number level="multiple"
-      count="div1 | div2 | div3 | div4 | inform-div1"
-      format="A.1.1.1 "/>
+    <xsl:number level="multiple" count="div1 | div2 | div3 | div4 | inform-div1" format="A.1.1.1 "/>
   </xsl:template>
 
   <xsl:template mode="divnum" match="div5">
-    <xsl:number level="multiple"
-      count="div1 | div2 | div3 | div4 | div5" format="1.1.1.1.1 "/>
+    <xsl:number level="multiple" count="div1 | div2 | div3 | div4 | div5" format="1.1.1.1.1 "/>
   </xsl:template>
 
   <xsl:template mode="divnum" match="back//div5">
-    <xsl:number level="multiple"
-      count="div1 | div2 | div3 | div4 | div5 | inform-div1"
-      format="A.1.1.1.1 "/>
+    <xsl:number level="multiple" count="div1 | div2 | div3 | div4 | div5 | inform-div1" format="A.1.1.1.1 "/>
   </xsl:template>
 
   <!-- mode: notes -->
@@ -2232,14 +2395,14 @@
         </xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
-    <dt>
+    <dt xmlns="http://www.w3.org/1999/xhtml">
       <xsl:text>[</xsl:text>
       <a name="{$this-note-id}" id="{$this-note-id}" href="#FN-ANCH-{$this-note-id}">
         <xsl:apply-templates select="." mode="number-simple"/>
       </a>
       <xsl:text>]</xsl:text>
     </dt>
-    <dd>
+    <dd xmlns="http://www.w3.org/1999/xhtml">
       <xsl:apply-templates/>
     </dd>
   </xsl:template>
@@ -2260,7 +2423,7 @@
         </xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
-    <p class="table.footnote">
+    <p xmlns="http://www.w3.org/1999/xhtml" class="table.footnote">
       <sup>
         <a name="{$this-note-id}" id="{$this-note-id}" href="#FN-ANCH-{$this-note-id}">
           <xsl:apply-templates select="parent::footnote" mode="number-simple"/>
@@ -2285,20 +2448,26 @@
 
   <xsl:template mode="number" match="prod[@diff='add']">
     <xsl:text>[</xsl:text>
-    <xsl:apply-templates select="preceding::prod[not(@diff='add')][1]"
-      mode="number-simple"/>
+    <xsl:apply-templates select="preceding::prod[not(@diff='add')][1]" mode="number-simple"/>
 <!--
   Once again, this could be done right here, but XT won't hear of it.
     <xsl:number level="any" count="prod[not(@diff='add')]"/>
   -->
-    <xsl:number level="any" count="prod[@diff='add']"
-      from="prod[not(@diff='add')]" format="a"/>
+    <xsl:number level="any" count="prod[@diff='add']" from="prod[not(@diff='add')]" format="a"/>
     <xsl:text>]</xsl:text>
   </xsl:template>
 
   <!-- mode: number-simple -->
   <xsl:template mode="number-simple" match="prod">
-    <xsl:number level="any" count="prod[not(@diff='add')]"/>
+    <!-- Using @num and auto-numbered productions is forbidden. -->
+    <xsl:choose>
+      <xsl:when test="@num">
+        <xsl:value-of select="@num"/>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:number level="any" count="prod[not(@diff='add')]"/>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
 
   <xsl:template mode="number-simple" match="footnote">
@@ -2307,42 +2476,51 @@
 
   <!-- mode: ref -->
   <xsl:template match="lhs" mode="ref">
-    <tr valign="baseline">
-      <td/>
+    <tr xmlns="http://www.w3.org/1999/xhtml" valign="baseline">
       <td>
-        <xsl:if test="ancestor-or-self::*/@diff and $show.diff.markup='1'">
+        <xsl:if test="ancestor-or-self::*/@diff and $show.diff.markup != 0">
           <xsl:attribute name="class">
             <xsl:text>diff-</xsl:text>
             <xsl:value-of select="ancestor-or-self::*/@diff"/>
           </xsl:attribute>
         </xsl:if>
-        <xsl:if test="../@id">
-          <a name="{../@id}" id="{../@id}"/>
-        </xsl:if>
-        <code><xsl:apply-templates/></code>
+        <xsl:apply-templates select="ancestor::prod" mode="number"/>
+        <xsl:text>   </xsl:text>
       </td>
       <td>
-        <xsl:if test="ancestor-or-self::*/@diff and $show.diff.markup='1'">
+        <xsl:if test="ancestor-or-self::*/@diff and $show.diff.markup != 0">
           <xsl:attribute name="class">
             <xsl:text>diff-</xsl:text>
             <xsl:value-of select="ancestor-or-self::*/@diff"/>
           </xsl:attribute>
         </xsl:if>
-        <xsl:text>&#xa0;&#xa0;&#xa0;::=&#xa0;&#xa0;&#xa0;</xsl:text>
+        <xsl:choose>
+          <xsl:when test="../@id">
+            <a href="#{../@id}">
+              <code><xsl:apply-templates/></code>
+            </a>
+          </xsl:when>
+          <xsl:otherwise>
+            <code><xsl:apply-templates/></code>
+          </xsl:otherwise>
+        </xsl:choose>
       </td>
-      <xsl:apply-templates
-        select="following-sibling::*[1][name()='rhs']"/>
+      <td>
+        <xsl:if test="ancestor-or-self::*/@diff and $show.diff.markup != 0">
+          <xsl:attribute name="class">
+            <xsl:text>diff-</xsl:text>
+            <xsl:value-of select="ancestor-or-self::*/@diff"/>
+          </xsl:attribute>
+        </xsl:if>
+        <xsl:text>   ::=   </xsl:text>
+      </td>
+      <xsl:apply-templates select="following-sibling::*[1][name()='rhs']"/>
     </tr>
   </xsl:template>
 
   <xsl:template mode="ref" match="prod">
     <xsl:apply-templates select="lhs" mode="ref"/>
-    <xsl:apply-templates
-      select="rhs[preceding-sibling::*[1][name()!='lhs']] |
-              com[preceding-sibling::*[1][name()!='rhs']] |
-              constraint[preceding-sibling::*[1][name()!='rhs']] |
-              vc[preceding-sibling::*[1][name()!='rhs']] |
-              wfc[preceding-sibling::*[1][name()!='rhs']]"/>
+    <xsl:apply-templates select="rhs[preceding-sibling::*[1][name()!='lhs']] |               com[preceding-sibling::*[1][name()!='rhs']] |               constraint[preceding-sibling::*[1][name()!='rhs']] |               vc[preceding-sibling::*[1][name()!='rhs']] |               wfc[preceding-sibling::*[1][name()!='rhs']]"/>
   </xsl:template>
 
   <!-- mode: text -->
@@ -2353,7 +2531,7 @@
   <!-- mode: toc -->
   <xsl:template mode="toc" match="div1">
     <xsl:apply-templates select="." mode="divnum"/>
-    <a>
+    <a xmlns="http://www.w3.org/1999/xhtml">
       <xsl:attribute name="href">
         <xsl:call-template name="href.target">
           <xsl:with-param name="target" select="."/>
@@ -2361,16 +2539,18 @@
       </xsl:attribute>
       <xsl:apply-templates select="head" mode="text"/>
     </a>
-    <br/>
+    <br xmlns="http://www.w3.org/1999/xhtml"/>
+    <xsl:text>
+</xsl:text>
     <xsl:if test="$toc.level &gt; 1">
       <xsl:apply-templates select="div2" mode="toc"/>
     </xsl:if>
   </xsl:template>
 
   <xsl:template mode="toc" match="div2">
-    <xsl:text>&#xa0;&#xa0;&#xa0;&#xa0;</xsl:text>
+    <xsl:text>    </xsl:text>
     <xsl:apply-templates select="." mode="divnum"/>
-    <a>
+    <a xmlns="http://www.w3.org/1999/xhtml">
       <xsl:attribute name="href">
         <xsl:call-template name="href.target">
           <xsl:with-param name="target" select="."/>
@@ -2378,16 +2558,18 @@
       </xsl:attribute>
       <xsl:apply-templates select="head" mode="text"/>
     </a>
-    <br/>
+    <br xmlns="http://www.w3.org/1999/xhtml"/>
+    <xsl:text>
+</xsl:text>
     <xsl:if test="$toc.level &gt; 2">
       <xsl:apply-templates select="div3" mode="toc"/>
     </xsl:if>
   </xsl:template>
 
   <xsl:template mode="toc" match="div3">
-    <xsl:text>&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;</xsl:text>
+    <xsl:text>        </xsl:text>
     <xsl:apply-templates select="." mode="divnum"/>
-    <a>
+    <a xmlns="http://www.w3.org/1999/xhtml">
       <xsl:attribute name="href">
         <xsl:call-template name="href.target">
           <xsl:with-param name="target" select="."/>
@@ -2395,16 +2577,18 @@
       </xsl:attribute>
       <xsl:apply-templates select="head" mode="text"/>
     </a>
-    <br/>
+    <br xmlns="http://www.w3.org/1999/xhtml"/>
+    <xsl:text>
+</xsl:text>
     <xsl:if test="$toc.level &gt; 3">
       <xsl:apply-templates select="div4" mode="toc"/>
     </xsl:if>
   </xsl:template>
 
   <xsl:template mode="toc" match="div4">
-    <xsl:text>&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;</xsl:text>
+    <xsl:text>            </xsl:text>
     <xsl:apply-templates select="." mode="divnum"/>
-    <a>
+    <a xmlns="http://www.w3.org/1999/xhtml">
       <xsl:attribute name="href">
         <xsl:call-template name="href.target">
           <xsl:with-param name="target" select="."/>
@@ -2412,16 +2596,18 @@
       </xsl:attribute>
       <xsl:apply-templates select="head" mode="text"/>
     </a>
-    <br/>
+    <br xmlns="http://www.w3.org/1999/xhtml"/>
+    <xsl:text>
+</xsl:text>
     <xsl:if test="$toc.level &gt; 4">
       <xsl:apply-templates select="div5" mode="toc"/>
     </xsl:if>
   </xsl:template>
 
   <xsl:template mode="toc" match="div5">
-    <xsl:text>&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;</xsl:text>
+    <xsl:text>                </xsl:text>
     <xsl:apply-templates select="." mode="divnum"/>
-    <a>
+    <a xmlns="http://www.w3.org/1999/xhtml">
       <xsl:attribute name="href">
         <xsl:call-template name="href.target">
           <xsl:with-param name="target" select="."/>
@@ -2429,12 +2615,14 @@
       </xsl:attribute>
       <xsl:apply-templates select="head" mode="text"/>
     </a>
-    <br/>
+    <br xmlns="http://www.w3.org/1999/xhtml"/>
+    <xsl:text>
+</xsl:text>
   </xsl:template>
 
   <xsl:template mode="toc" match="inform-div1">
     <xsl:apply-templates select="." mode="divnum"/>
-    <a>
+    <a xmlns="http://www.w3.org/1999/xhtml">
       <xsl:attribute name="href">
         <xsl:call-template name="href.target">
           <xsl:with-param name="target" select="."/>
@@ -2443,14 +2631,16 @@
       <xsl:apply-templates select="head" mode="text"/>
     </a>
     <xsl:text> (Non-Normative)</xsl:text>
-    <br/>
+    <br xmlns="http://www.w3.org/1999/xhtml"/>
+    <xsl:text>
+</xsl:text>
     <xsl:if test="$toc.level &gt; 2">
       <xsl:apply-templates select="div2" mode="toc"/>
     </xsl:if>
   </xsl:template>
 
   <xsl:template name="css">
-    <style type="text/css">
+    <style xmlns="http://www.w3.org/1999/xhtml" type="text/css">
       <xsl:text>
 code           { font-family: monospace; }
 
@@ -2459,8 +2649,12 @@ div.issue,
 div.note,
 div.notice     { margin-left: 2em; }
 
-li p           { margin-top: 0.3em;
-                 margin-bottom: 0.3em; }
+ol.enumar      { list-style-type: decimal; }
+ol.enumla      { list-style-type: lower-alpha; }
+ol.enumlr      { list-style-type: lower-roman; }
+ol.enumua      { list-style-type: upper-alpha; }
+ol.enumur      { list-style-type: upper-roman; }
+
 </xsl:text>
       <xsl:if test="$tabular.examples = 0">
         <xsl:text>
@@ -2483,18 +2677,24 @@ div.exampleHeader { font-weight: bold;
       </xsl:if>
       <xsl:value-of select="$additional.css"/>
     </style>
-    <link rel="stylesheet" type="text/css">
+    <link xmlns="http://www.w3.org/1999/xhtml" rel="stylesheet" type="text/css">
       <xsl:attribute name="href">
         <xsl:text>http://www.w3.org/StyleSheets/TR/</xsl:text>
         <xsl:choose>
           <xsl:when test="/spec/@role='editors-copy'">base</xsl:when>
           <xsl:otherwise>
             <xsl:choose>
+	      <!-- Editor's review drafts are a special case. -->
+              <xsl:when test="/spec/@w3c-doctype='review'          or contains(/spec/header/w3c-doctype, 'Editor')">base</xsl:when>
               <xsl:when test="/spec/@w3c-doctype='wd'">W3C-WD</xsl:when>
               <xsl:when test="/spec/@w3c-doctype='rec'">W3C-REC</xsl:when>
               <xsl:when test="/spec/@w3c-doctype='pr'">W3C-PR</xsl:when>
+              <xsl:when test="/spec/@w3c-doctype='per'">W3C-PER</xsl:when>
               <xsl:when test="/spec/@w3c-doctype='cr'">W3C-CR</xsl:when>
               <xsl:when test="/spec/@w3c-doctype='note'">W3C-NOTE</xsl:when>
+              <xsl:when test="/spec/@w3c-doctype='wgnote'">W3C-WG-NOTE</xsl:when>
+              <xsl:when test="/spec/@w3c-doctype='memsub'">W3C-Member-SUBM</xsl:when>
+              <xsl:when test="/spec/@w3c-doctype='teamsub'">W3C-Team-SUBM</xsl:when>
               <xsl:otherwise>base</xsl:otherwise>
             </xsl:choose>
           </xsl:otherwise>
@@ -2502,6 +2702,10 @@ div.exampleHeader { font-weight: bold;
         <xsl:text>.css</xsl:text>
       </xsl:attribute>
     </link>
+  </xsl:template>
+
+  <xsl:template name="additional-head">
+    <!-- nop -->
   </xsl:template>
 
   <xsl:template name="href.target">
@@ -2551,7 +2755,7 @@ div.exampleHeader { font-weight: bold;
     </xsl:call-template>
   </xsl:variable>
   <xsl:if test="$conditional = 0 or $node/@id">
-    <a name="{$id}" id="{$id}"/>
+    <a xmlns="http://www.w3.org/1999/xhtml" name="{$id}" id="{$id}"/>
   </xsl:if>
 </xsl:template>
 

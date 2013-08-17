@@ -10,8 +10,12 @@ div.issue,
 div.note,
 div.notice     { margin-left: 2em; }
 
-li p           { margin-top: 0.3em;
-                 margin-bottom: 0.3em; }
+ol.enumar      { list-style-type: decimal; }
+ol.enumla      { list-style-type: lower-alpha; }
+ol.enumlr      { list-style-type: lower-roman; }
+ol.enumua      { list-style-type: upper-alpha; }
+ol.enumur      { list-style-type: upper-roman; }
+
 
 div.exampleInner pre { margin-left: 1em;
                        margin-top: 0em; margin-bottom: 0em}
@@ -49,12 +53,12 @@ div.exampleHeader { font-weight: bold;
          <dl>
             <dt>This version:</dt>
             <dd>
-               <a href="http://expath.org/spec/ft-client/20110928"></a>
+               <a href="http://expath.org/spec/ft-client/20110928">http://expath.org/spec/ft-client/20110928</a>
                
             </dd>
             <dt>Latest version:</dt>
             <dd>
-               <a href="http://expath.org/spec/ft-client"></a>
+               <a href="http://expath.org/spec/ft-client">http://expath.org/spec/ft-client</a>
                
             </dd>
             <dt>Editor:</dt>
@@ -104,11 +108,31 @@ div.exampleHeader { font-weight: bold;
          
          <h2><a name="contents" id="contents"></a>Table of Contents
          </h2>
-         <p class="toc">1 <a href="#d4e75">Introduction</a><br />    1.1 <a href="#d4e84">Namespace conventions</a><br />    1.2 <a href="#d4e103">Error management</a><br />2 <a href="#d4e114">The ft-client:connect function</a><br />3 <a href="#d4e178">The ft-client:list-resources function</a><br />    3.1 <a href="#d4e216">The ft-client:resource-list element</a><br />    3.2 <a href="#d4e229">The ft-client:resource element</a><br />4 <a href="#d4e293">The ft-client:store-resource function</a><br />5 <a href="#d4e357">The ft-client:retrieve-resource function</a><br />6 <a href="#d4e398">The ft-client:rename-resource function</a><br />7 <a href="#d4e445">The ft-client:copy-resource function</a><br />8 <a href="#d4e492">The ft-client:move-resource function</a><br />9 <a href="#d4e539">The ft-client:delete-resource function</a><br />10 <a href="#d4e577">The ft-client:get-resource-metadata function</a><br />11 <a href="#d4e618">The ft-client:set-resource-metadata function</a><br />12 <a href="#d4e666">The ft-client:disconnect function</a><br /></p>
+         <p class="toc">1 <a href="#d4e75">Introduction</a><br />
+            1.1 <a href="#d4e84">Namespace conventions</a><br />
+            1.2 <a href="#d4e103">Error management</a><br />
+            2 <a href="#d4e114">The ft-client:connect function</a><br />
+            3 <a href="#d4e178">The ft-client:list-resources function</a><br />
+            3.1 <a href="#d4e216">The ft-client:resource-list element</a><br />
+            3.2 <a href="#d4e229">The ft-client:resource element</a><br />
+            4 <a href="#d4e293">The ft-client:store-resource function</a><br />
+            5 <a href="#d4e357">The ft-client:retrieve-resource function</a><br />
+            6 <a href="#d4e398">The ft-client:rename-resource function</a><br />
+            7 <a href="#d4e445">The ft-client:copy-resource function</a><br />
+            8 <a href="#d4e492">The ft-client:move-resource function</a><br />
+            9 <a href="#d4e539">The ft-client:delete-resource function</a><br />
+            10 <a href="#d4e577">The ft-client:get-resource-metadata function</a><br />
+            11 <a href="#d4e618">The ft-client:set-resource-metadata function</a><br />
+            12 <a href="#d4e666">The ft-client:disconnect function</a><br />
+            
+         </p>
          
          <h3><a name="appendices" id="appendices"></a>Appendices
          </h3>
-         <p class="toc">A <a href="#d4e693">References</a><br />B <a href="#d4e742">Summary of Error Conditions</a><br /></p>
+         <p class="toc">A <a href="#d4e693">References</a><br />
+            B <a href="#d4e742">Summary of Error Conditions</a><br />
+            
+         </p>
       </div>
       <hr />
       <div class="body">
@@ -305,7 +329,7 @@ div.exampleHeader { font-weight: bold;
                completed, false if not.
             </p>
             <p>This function is designated to accomplish the following tasks:</p>
-            <ol type="1">
+            <ol class="enumar">
                <li>
                   <p>
                      					store a directory on the host, when <code>$remote-resource-path</code> ends with '/'; 

@@ -10,8 +10,12 @@ div.issue,
 div.note,
 div.notice     { margin-left: 2em; }
 
-li p           { margin-top: 0.3em;
-                 margin-bottom: 0.3em; }
+ol.enumar      { list-style-type: decimal; }
+ol.enumla      { list-style-type: lower-alpha; }
+ol.enumlr      { list-style-type: lower-roman; }
+ol.enumua      { list-style-type: upper-alpha; }
+ol.enumur      { list-style-type: upper-roman; }
+
 
 div.exampleInner pre { margin-left: 1em;
                        margin-top: 0em; margin-bottom: 0em}
@@ -49,7 +53,7 @@ div.exampleHeader { font-weight: bold;
          <dl>
             <dt>Latest version:</dt>
             <dd>
-               <a href="http://expath.org/spec/datatype-conversion"></a>
+               <a href="http://expath.org/spec/datatype-conversion">http://expath.org/spec/datatype-conversion</a>
                
             </dd>
             <dt>Editor:</dt>
@@ -87,8 +91,7 @@ div.exampleHeader { font-weight: bold;
          
          <h2><a name="abstract" id="abstract"></a>Abstract
          </h2>
-         <p>This proposal defines a module for providing conversions between various XPath Data
-            Model datatypes.
+         <p>This proposal defines a <span>module for providing conversions between various XPath Data Model datatypes</span>.
             It has been designed to be compatible with XQuery 3.0 and XSLT 3.0, as well as any
             other standard based on XPath 3.0.
          </p>
@@ -100,11 +103,33 @@ div.exampleHeader { font-weight: bold;
          
          <h2><a name="contents" id="contents"></a>Table of Contents
          </h2>
-         <p class="toc">1 <a href="#d4e74">Introduction</a><br />    1.1 <a href="#d4e81">Namespace conventions</a><br />    1.2 <a href="#d4e100">Error management</a><br />2 <a href="#d4e111">xs:base64Binary to other datatypes</a><br />    2.1 <a href="#d4e118">The dt-conv:base64Binary-to-byte function</a><br />    2.2 <a href="#d4e143">The dt-conv:base64Binary-to-string function</a><br />3 <a href="#d4e186">xs:byte to other datatypes</a><br />    3.1 <a href="#d4e193">The dt-conv:byte-to-base64Binary function</a><br />    3.2 <a href="#d4e218">The dt-conv:byte-to-hexBinary function</a><br />4 <a href="#d4e243">xs:hexBinary to other datatypes</a><br />    4.1 <a href="#d4e250">The dt-conv:hexBinary-to-byte function</a><br />    4.2 <a href="#d4e275">The dt-conv:hexBinary-to-string function</a><br />5 <a href="#d4e318">xs:string to other datatypes</a><br />    5.1 <a href="#d4e325">The dt-conv:string-to-base64Binary function</a><br />    5.2 <a href="#d4e368">The dt-conv:string-to-hexBinary function</a><br />    5.3 <a href="#d4e411">The dt-conv:string-to-integer function</a><br />6 <a href="#d4e444">xs:integer to other datatypes</a><br />    6.1 <a href="#d4e451">The dt-conv:integer-to-string function</a><br /></p>
+         <p class="toc">1 <a href="#d4e74">Introduction</a><br />
+            1.1 <a href="#d4e81">Namespace conventions</a><br />
+            1.2 <a href="#d4e100">Error management</a><br />
+            2 <a href="#d4e111">xs:base64Binary to other datatypes</a><br />
+            2.1 <a href="#d4e118">The dt-conv:base64Binary-to-byte function</a><br />
+            2.2 <a href="#d4e143">The dt-conv:base64Binary-to-string function</a><br />
+            3 <a href="#d4e186">xs:byte to other datatypes</a><br />
+            3.1 <a href="#d4e193">The dt-conv:byte-to-base64Binary function</a><br />
+            3.2 <a href="#d4e218">The dt-conv:byte-to-hexBinary function</a><br />
+            4 <a href="#d4e243">xs:hexBinary to other datatypes</a><br />
+            4.1 <a href="#d4e250">The dt-conv:hexBinary-to-byte function</a><br />
+            4.2 <a href="#d4e275">The dt-conv:hexBinary-to-string function</a><br />
+            5 <a href="#d4e318">xs:string to other datatypes</a><br />
+            5.1 <a href="#d4e325">The dt-conv:string-to-base64Binary function</a><br />
+            5.2 <a href="#d4e368">The dt-conv:string-to-hexBinary function</a><br />
+            5.3 <a href="#d4e411">The dt-conv:string-to-integer function</a><br />
+            6 <a href="#d4e444">xs:integer to other datatypes</a><br />
+            6.1 <a href="#d4e451">The dt-conv:integer-to-string function</a><br />
+            
+         </p>
          
          <h3><a name="appendices" id="appendices"></a>Appendices
          </h3>
-         <p class="toc">A <a href="#d4e485">References</a><br />B <a href="#d4e529">Summary of Error Conditions</a><br /></p>
+         <p class="toc">A <a href="#d4e485">References</a><br />
+            B <a href="#d4e529">Summary of Error Conditions</a><br />
+            
+         </p>
       </div>
       <hr />
       <div class="body">
