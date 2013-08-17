@@ -205,7 +205,7 @@ public class MakeXarMojo extends AbstractExpathMojo {
 								element(name("transformationSet"),
 										element(name("dir"), archiveTmpDirectoryPath),
 										element(name("includes"), element(name("include"), assemblyDescriptorName)),
-										element(name("stylesheet"), this.getClass().getResource("generate-descriptors.xsl").toString()),
+										element(name("stylesheet"), this.getClass().getResource("/ro/kuberam/maven/expathPlugin/generate-descriptors.xsl").toString()),
 										element(name("parameters"),
 												element(name("parameter"), element(name("name"), "package-dir"),
 														element(name("value"), descriptorsDirectoryPath)))))),
