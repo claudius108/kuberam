@@ -3,7 +3,7 @@
                xmlns:saxon="http://icl.com/saxon"
                xmlns="http://www.w3.org/1999/xhtml"
                exclude-result-prefixes="saxon"
-               version="1.0">
+               version="2.0">
 
 <!-- ====================================================================== -->
 <!-- xmlspec.xsl: An HTML XSL[1] Stylesheet for XML Spec V2.1[2] markup

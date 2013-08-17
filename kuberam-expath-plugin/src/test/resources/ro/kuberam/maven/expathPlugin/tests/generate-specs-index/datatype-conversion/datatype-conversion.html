@@ -1,7 +1,8 @@
 <!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml" lang="">
    <head>
       <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-      <title>DataType Conversion Module 1.0</title><style type="text/css">
+      <title>DataType Conversion Module 1.0</title>
+      <link rel="stylesheet" type="text/css" href="http://www.w3.org/StyleSheets/TR/base.css" /><style type="text/css">
 code           { font-family: monospace; }
 
 div.constraint,
@@ -28,17 +29,16 @@ div.exampleWrapper { margin: 4px }
 div.exampleHeader { font-weight: bold;
                     margin: 4px}
 
-		code.function { font-weight: bold; }
-		code.type { font-style: italic; }
-		/* h1, h2, h3 { color: #84001C; background: white
-		} */
-		/* a, :link, :visited, a:active { color: #84005C; background: white } */
-		body {
-		background-image: url(http://expath.org/images/logo-candidate.png);
-		}
-	</style><link rel="stylesheet" type="text/css" href="http://www.w3.org/StyleSheets/TR/base.css" />
-   </head>
+      code.function { font-weight: bold; }
+      code.type { font-style: italic; }
+      /* h1, h2, h3 { color: #84001C; background: white } */
+      /* a, :link, :visited, a:active { color: #84005C; background: white } */
+      body {
+        background-image: url(http://expath.org/images/logo-candidate.png);
+      }
+   </style></head>
    <body>
+      <p><a href="http://expath.org/"><img src="http://expath.org/images/expath-icon.png" alt="EXPath" height="32" width="32" /></a></p>
       <div class="head">
          
          <h1><a name="title" id="title"></a>DataType Conversion Module 1.0
@@ -55,14 +55,40 @@ div.exampleHeader { font-weight: bold;
             <dt>Editor:</dt>
             <dd>Claudius Teodorescu, XML Consultant</dd>
          </dl>
-         <p class="copyright"></p>
+         <p class="copyright">
+            			Copyright © 2012-2013 Claudius Teodorescu, published by the
+            			<a href="http://w3.org/community/expath/">EXPath Community Group</a>
+            			under the
+            			<a href="https://www.w3.org/community/about/agreements/cla/">W3C Community Contributor
+               				License Agreement (CLA)</a>
+            			. A human-readable
+            			<a href="http://www.w3.org/community/about/agreements/cla-deed/">summary</a>
+            			is
+            			available.
+            		
+         </p>
+         <p class="copyright">
+            			This specification was published by the
+            			<a href="http://www.w3.org/community/expath/">EXPath Community Group</a>
+            			. It is not a W3C Standard nor is it on the W3C
+            			Standards Track. Please note that under the
+            			<a href="http://www.w3.org/community/about/agreements/cla/">W3C Community Contributor
+               				License Agreement (CLA)</a>
+            			there is a limited opt-out and other conditions apply.
+            			Learn more about
+            			<a href="http://www.w3.org/community/">W3C Community and Business
+               				Groups</a>
+            			.
+            		
+         </p>
       </div>
       <hr />
       <div>
          
          <h2><a name="abstract" id="abstract"></a>Abstract
          </h2>
-         <p>This proposal defines a module for providing conversions between various XPath Data Model datatypes.
+         <p>This proposal defines a module for providing conversions between various XPath Data
+            Model datatypes.
             It has been designed to be compatible with XQuery 3.0 and XSLT 3.0, as well as any
             other standard based on XPath 3.0.
          </p>
@@ -74,17 +100,17 @@ div.exampleHeader { font-weight: bold;
          
          <h2><a name="contents" id="contents"></a>Table of Contents
          </h2>
-         <p class="toc">1 <a href="#d4e53">Introduction</a><br />    1.1 <a href="#d4e60">Namespace conventions</a><br />    1.2 <a href="#d4e79">Error management</a><br />2 <a href="#d4e90">xs:base64Binary to other datatypes</a><br />    2.1 <a href="#d4e97">The dt-conv:base64Binary-to-byte function</a><br />    2.2 <a href="#d4e122">The dt-conv:base64Binary-to-string function</a><br />3 <a href="#d4e165">xs:byte to other datatypes</a><br />    3.1 <a href="#d4e172">The dt-conv:byte-to-base64Binary function</a><br />    3.2 <a href="#d4e197">The dt-conv:byte-to-hexBinary function</a><br />4 <a href="#d4e222">xs:hexBinary to other datatypes</a><br />    4.1 <a href="#d4e229">The dt-conv:hexBinary-to-byte function</a><br />    4.2 <a href="#d4e254">The dt-conv:hexBinary-to-string function</a><br />5 <a href="#d4e297">xs:string to other datatypes</a><br />    5.1 <a href="#d4e304">The dt-conv:string-to-base64Binary function</a><br />    5.2 <a href="#d4e347">The dt-conv:string-to-hexBinary function</a><br />    5.3 <a href="#d4e390">The dt-conv:string-to-integer function</a><br />6 <a href="#d4e423">xs:integer to other datatypes</a><br />    6.1 <a href="#d4e430">The dt-conv:integer-to-string function</a><br /></p>
+         <p class="toc">1 <a href="#d4e74">Introduction</a><br />    1.1 <a href="#d4e81">Namespace conventions</a><br />    1.2 <a href="#d4e100">Error management</a><br />2 <a href="#d4e111">xs:base64Binary to other datatypes</a><br />    2.1 <a href="#d4e118">The dt-conv:base64Binary-to-byte function</a><br />    2.2 <a href="#d4e143">The dt-conv:base64Binary-to-string function</a><br />3 <a href="#d4e186">xs:byte to other datatypes</a><br />    3.1 <a href="#d4e193">The dt-conv:byte-to-base64Binary function</a><br />    3.2 <a href="#d4e218">The dt-conv:byte-to-hexBinary function</a><br />4 <a href="#d4e243">xs:hexBinary to other datatypes</a><br />    4.1 <a href="#d4e250">The dt-conv:hexBinary-to-byte function</a><br />    4.2 <a href="#d4e275">The dt-conv:hexBinary-to-string function</a><br />5 <a href="#d4e318">xs:string to other datatypes</a><br />    5.1 <a href="#d4e325">The dt-conv:string-to-base64Binary function</a><br />    5.2 <a href="#d4e368">The dt-conv:string-to-hexBinary function</a><br />    5.3 <a href="#d4e411">The dt-conv:string-to-integer function</a><br />6 <a href="#d4e444">xs:integer to other datatypes</a><br />    6.1 <a href="#d4e451">The dt-conv:integer-to-string function</a><br /></p>
          
          <h3><a name="appendices" id="appendices"></a>Appendices
          </h3>
-         <p class="toc">A <a href="#d4e464">References</a><br />B <a href="#d4e508">Summary of Error Conditions</a><br /></p>
+         <p class="toc">A <a href="#d4e485">References</a><br />B <a href="#d4e529">Summary of Error Conditions</a><br /></p>
       </div>
       <hr />
       <div class="body">
          <div class="div1">
             
-            <h2><a name="d4e53" id="d4e53"></a>1 Introduction
+            <h2><a name="d4e74" id="d4e74"></a>1 Introduction
             </h2>
             <p>This module is designed to help datatypes handling, providing conversions between
                datatypes that are not covered by casts mentioned in
@@ -92,7 +118,7 @@ div.exampleHeader { font-weight: bold;
             </p>
             <div class="div2">
                
-               <h3><a name="d4e60" id="d4e60"></a>1.1 Namespace conventions
+               <h3><a name="d4e81" id="d4e81"></a>1.1 Namespace conventions
                </h3>
                <p>The module defined by this document defines functions and elements in the namespace
                   <code>http://expath.org/ns/datatype-conversion</code>. In this document, the
@@ -105,7 +131,7 @@ div.exampleHeader { font-weight: bold;
             </div>
             <div class="div2">
                
-               <h3><a name="d4e79" id="d4e79"></a>1.2 Error management
+               <h3><a name="d4e100" id="d4e100"></a>1.2 Error management
                </h3>
                <p>Error conditions are identified by a code (a <code>QName</code>). When such an error
                   condition is reached during the execution of the function, a dynamic error is thrown,
@@ -116,12 +142,12 @@ div.exampleHeader { font-weight: bold;
          </div>
          <div class="div1">
             
-            <h2><a name="d4e90" id="d4e90"></a>2 <code>xs:base64Binary</code> to other datatypes
+            <h2><a name="d4e111" id="d4e111"></a>2 <code>xs:base64Binary</code> to other datatypes
             </h2>
             <p>These functions provide conversion from xs:base64Binary datatype to other datatypes.</p>
             <div class="div2">
                
-               <h3><a name="d4e97" id="d4e97"></a>2.1 The <code>dt-conv:base64Binary-to-byte</code> function
+               <h3><a name="d4e118" id="d4e118"></a>2.1 The <code>dt-conv:base64Binary-to-byte</code> function
                </h3>
                <p>This function converts from xs:base64Binary to xs:byte.</p>
                <div class="exampleInner"><pre>
@@ -136,7 +162,7 @@ div.exampleHeader { font-weight: bold;
             </div>
             <div class="div2">
                
-               <h3><a name="d4e122" id="d4e122"></a>2.2 The <code>dt-conv:base64Binary-to-string</code> function
+               <h3><a name="d4e143" id="d4e143"></a>2.2 The <code>dt-conv:base64Binary-to-string</code> function
                </h3>
                <p>This function converts from xs:base64Binary to xs:string.</p>
                <div class="exampleInner"><pre>
@@ -162,12 +188,12 @@ div.exampleHeader { font-weight: bold;
          </div>
          <div class="div1">
             
-            <h2><a name="d4e165" id="d4e165"></a>3 <code>xs:byte</code> to other datatypes
+            <h2><a name="d4e186" id="d4e186"></a>3 <code>xs:byte</code> to other datatypes
             </h2>
             <p>These functions provide conversion from xs:byte datatype to other datatypes.</p>
             <div class="div2">
                
-               <h3><a name="d4e172" id="d4e172"></a>3.1 The <code>dt-conv:byte-to-base64Binary</code> function
+               <h3><a name="d4e193" id="d4e193"></a>3.1 The <code>dt-conv:byte-to-base64Binary</code> function
                </h3>
                <p>This function converts from xs:byte to xs:base64Binary.</p>
                <div class="exampleInner"><pre>
@@ -182,7 +208,7 @@ div.exampleHeader { font-weight: bold;
             </div>
             <div class="div2">
                
-               <h3><a name="d4e197" id="d4e197"></a>3.2 The <code>dt-conv:byte-to-hexBinary</code> function
+               <h3><a name="d4e218" id="d4e218"></a>3.2 The <code>dt-conv:byte-to-hexBinary</code> function
                </h3>
                <p>This function converts from xs:byte to xs:hexBinary.</p>
                <div class="exampleInner"><pre>
@@ -198,12 +224,12 @@ div.exampleHeader { font-weight: bold;
          </div>
          <div class="div1">
             
-            <h2><a name="d4e222" id="d4e222"></a>4 <code>xs:hexBinary</code> to other datatypes
+            <h2><a name="d4e243" id="d4e243"></a>4 <code>xs:hexBinary</code> to other datatypes
             </h2>
             <p>These functions provide conversion from xs:hexBinary datatype to other datatypes.</p>
             <div class="div2">
                
-               <h3><a name="d4e229" id="d4e229"></a>4.1 The <code>dt-conv:hexBinary-to-byte</code> function
+               <h3><a name="d4e250" id="d4e250"></a>4.1 The <code>dt-conv:hexBinary-to-byte</code> function
                </h3>
                <p>This function converts from xs:hexBinary to xs:byte.</p>
                <div class="exampleInner"><pre>
@@ -218,7 +244,7 @@ div.exampleHeader { font-weight: bold;
             </div>
             <div class="div2">
                
-               <h3><a name="d4e254" id="d4e254"></a>4.2 The <code>dt-conv:hexBinary-to-string</code> function
+               <h3><a name="d4e275" id="d4e275"></a>4.2 The <code>dt-conv:hexBinary-to-string</code> function
                </h3>
                <p>This function converts from xs:hexBinary to xs:string.</p>
                <div class="exampleInner"><pre>
@@ -244,12 +270,12 @@ div.exampleHeader { font-weight: bold;
          </div>
          <div class="div1">
             
-            <h2><a name="d4e297" id="d4e297"></a>5 <code>xs:string</code> to other datatypes
+            <h2><a name="d4e318" id="d4e318"></a>5 <code>xs:string</code> to other datatypes
             </h2>
             <p>These functions provide conversion from xs:string datatype to other datatypes.</p>
             <div class="div2">
                
-               <h3><a name="d4e304" id="d4e304"></a>5.1 The <code>dt-conv:string-to-base64Binary</code> function
+               <h3><a name="d4e325" id="d4e325"></a>5.1 The <code>dt-conv:string-to-base64Binary</code> function
                </h3>
                <p>This function converts from xs:string to xs:base64Binary.</p>
                <div class="exampleInner"><pre>
@@ -274,7 +300,7 @@ div.exampleHeader { font-weight: bold;
             </div>
             <div class="div2">
                
-               <h3><a name="d4e347" id="d4e347"></a>5.2 The <code>dt-conv:string-to-hexBinary</code> function
+               <h3><a name="d4e368" id="d4e368"></a>5.2 The <code>dt-conv:string-to-hexBinary</code> function
                </h3>
                <p>This function converts from xs:string to xs:hexBinary.</p>
                <div class="exampleInner"><pre>
@@ -299,7 +325,7 @@ div.exampleHeader { font-weight: bold;
             </div>
             <div class="div2">
                
-               <h3><a name="d4e390" id="d4e390"></a>5.3 The <code>dt-conv:string-to-integer</code> function
+               <h3><a name="d4e411" id="d4e411"></a>5.3 The <code>dt-conv:string-to-integer</code> function
                </h3>
                <p>This function converts from xs:string to xs:integer.</p>
                <div class="exampleInner"><pre>
@@ -321,12 +347,12 @@ div.exampleHeader { font-weight: bold;
          </div>
          <div class="div1">
             
-            <h2><a name="d4e423" id="d4e423"></a>6 <code>xs:integer</code> to other datatypes
+            <h2><a name="d4e444" id="d4e444"></a>6 <code>xs:integer</code> to other datatypes
             </h2>
             <p>These functions provide conversion from xs:integer datatype to other datatypes.</p>
             <div class="div2">
                
-               <h3><a name="d4e430" id="d4e430"></a>6.1 The <code>dt-conv:integer-to-string</code> function
+               <h3><a name="d4e451" id="d4e451"></a>6.1 The <code>dt-conv:integer-to-string</code> function
                </h3>
                <p>This function converts from xs:integer to xs:string.</p>
                <div class="exampleInner"><pre>
@@ -349,7 +375,7 @@ div.exampleHeader { font-weight: bold;
       <div class="back">
          <div class="div1">
             
-            <h2><a name="d4e464" id="d4e464"></a>A References
+            <h2><a name="d4e485" id="d4e485"></a>A References
             </h2>
             <dl>
                <dt class="label"><a name="xpath-30" id="xpath-30"></a>XPath 3.0
@@ -411,7 +437,7 @@ div.exampleHeader { font-weight: bold;
          </div>
          <div class="div1">
             
-            <h2><a name="d4e508" id="d4e508"></a>B Summary of Error Conditions
+            <h2><a name="d4e529" id="d4e529"></a>B Summary of Error Conditions
             </h2>
             <dl>
                <dt class="label"><a name="errDTCONV01" id="errDTCONV01"></a>err:DTCONV01
@@ -419,6 +445,13 @@ div.exampleHeader { font-weight: bold;
                <dd>The encoding is not supported.</dd>
             </dl>
          </div>
-      </div>
-   </body>
+      </div><script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+         </script><script type="text/javascript">
+            try {
+               var pageTracker = _gat._getTracker("UA-5463082-2");
+               pageTracker._trackPageview();
+            } catch(err) {}
+         </script></body>
 </html>
