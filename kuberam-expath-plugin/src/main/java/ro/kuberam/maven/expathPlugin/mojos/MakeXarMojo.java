@@ -46,6 +46,13 @@ import ro.kuberam.maven.expathPlugin.DefaultFileSet;
 import ro.kuberam.maven.expathPlugin.DependencySet;
 import ro.kuberam.maven.expathPlugin.DescriptorConfiguration;
 
+/**
+ * Assembles a package. <br/>
+ * 
+ * @author <a href="mailto:claudius.teodorescu@gmail.com">Claudius Teodorescu</a>
+ * 
+ */
+
 @Mojo(name = "make-xar")
 public class MakeXarMojo extends AbstractExpathMojo {
 

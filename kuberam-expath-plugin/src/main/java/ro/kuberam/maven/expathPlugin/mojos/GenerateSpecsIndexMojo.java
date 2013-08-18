@@ -24,6 +24,13 @@ import org.apache.maven.plugins.annotations.Parameter;
 import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.io.RawInputStreamFacade;
 
+/**
+ * Generates the HTML index for a directory containing EXPath specifications. <br/>
+ * 
+ * @author <a href="mailto:claudius.teodorescu@gmail.com">Claudius Teodorescu</a>
+ * 
+ */
+
 @Mojo(name = "generate-specs-index")
 public class GenerateSpecsIndexMojo extends AbstractExpathMojo {
 

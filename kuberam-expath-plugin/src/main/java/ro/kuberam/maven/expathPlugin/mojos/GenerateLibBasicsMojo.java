@@ -20,6 +20,13 @@ import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 
+/**
+ * Generates the basic files needed for the library implementing the EXPath module. <br/>
+ * 
+ * @author <a href="mailto:claudius.teodorescu@gmail.com">Claudius Teodorescu</a>
+ * 
+ */
+
 @Mojo(name = "generate-lib-basics")
 public class GenerateLibBasicsMojo extends AbstractExpathMojo {
 

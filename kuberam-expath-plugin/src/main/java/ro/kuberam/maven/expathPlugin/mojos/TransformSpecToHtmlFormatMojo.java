@@ -21,6 +21,13 @@ import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 
+/**
+ * Transforms a EXPath specification to HTML format. <br/>
+ * 
+ * @author <a href="mailto:claudius.teodorescu@gmail.com">Claudius Teodorescu</a>
+ * 
+ */
+
 @Mojo(name = "transform-spec-to-html-format")
 public class TransformSpecToHtmlFormatMojo extends AbstractExpathMojo {
 
