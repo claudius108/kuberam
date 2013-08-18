@@ -19,7 +19,7 @@
 					<xsl:for-each select="tokenize($includeSpecIds, ',')">
 						<xsl:variable name="spec-name" select="." />
 						<xsl:variable name="spec-dir" select="concat($specsDir, '/', $spec-name, '/')" />
-						<xsl:variable name="spec" select="document(concat($spec-dir, $spec-name, '.html'))/html/body" />
+						<xsl:variable name="spec" select="document(concat('file://', $spec-dir, $spec-name, '.html'))/html/body" />
 						<xsl:variable name="spec-in-html-format-path" select="concat($spec-name, '/', $spec-name, '.html')" />
 						<h4>
 							<a href="{$spec-in-html-format-path}">

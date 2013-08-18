@@ -50,9 +50,6 @@ public class GenerateSpecsIndexMojo extends AbstractExpathMojo {
 			e2.printStackTrace();
 		}
 
-		System.out.println("specsDir: " + specsDir);
-		System.out.println("specsIndexTmpDir: " + specsIndexTmpDir);
-
 		// generate the index
 		executeMojo(
 				plugin(groupId("org.codehaus.mojo"), artifactId("xml-maven-plugin"), version("1.0"),
@@ -64,16 +61,19 @@ public class GenerateSpecsIndexMojo extends AbstractExpathMojo {
 								element(name("transformationSet"),
 										element(name("dir"), specsIndexTmpDir),
 										element(name("includes"), element(name("include"), "generate-specs-index.xsl")),
-										element(name("stylesheet"), xslFile.getAbsolutePath()),
-										element(name("outputDir"), specsDirPath),
+										element(name("stylesheet"),
+												this.getClass().getResource("/ro/kuberam/maven/expathPlugin/generate-specs-index.xsl").toString()),
+										element(name("outputDir"), specsIndexTmpDir),
 										element(name("parameters"),
 												element(name("parameter"), element(name("name"), "specsDir"),
 														element(name("value"), specsDir.getAbsolutePath())),
 												element(name("parameter"), element(name("name"), "includeSpecIds"),
 														element(name("value"), includeSpecIds)),
-												element(name("parameter"), element(name("name"), "outputDir"),
-														element(name("value"), specsDirPath)))))),
+												element(name("parameter"), element(name("name"), "outputDir"), element(name("value"), specsDirPath)))))),
 				executionEnvironment(project, session, pluginManager));
+
+		File transformedSpecFile = new File(specsIndexTmpDir + File.separator + "index.html");
+		transformedSpecFile.renameTo(new File(specsDirPath + File.separator + "index.html"));
 	}
 
 }
