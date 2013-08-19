@@ -28,8 +28,8 @@ import org.apache.maven.plugins.annotations.Parameter;
  * 
  */
 
-@Mojo(name = "transform-spec-to-html-format")
-public class TransformSpecToHtmlFormatMojo extends AbstractExpathMojo {
+@Mojo(name = "transform-spec-to-html")
+public class TransformSpecToHtmlMojo extends AbstractExpathMojo {
 
 	@Parameter(required = true)
 	private String specId;

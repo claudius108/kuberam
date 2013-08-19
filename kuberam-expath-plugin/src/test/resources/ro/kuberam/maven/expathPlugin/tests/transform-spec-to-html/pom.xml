@@ -4,10 +4,10 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>ro.kuberam.maven.plugins.maven-xar-plugin</groupId>
-	<artifactId>generate-lib-files-test</artifactId>
+	<artifactId>transform-spec-to-html-test</artifactId>
 	<version>0.1</version>
 	<packaging>jar</packaging>
-	<name>Test GenerateLibBasicsMojo</name>
+	<name>Test TransformSpecToHtmlFormatMojo</name>
 	<url>http://kuberam.ro/specs/expath/crypto/crypto.html</url>
 
 	<properties>
@@ -22,10 +22,10 @@
 				<version>0.2</version>
 				<executions>
 					<execution>
-						<id>generate-spec</id>
+						<id>transform-spec-to-html</id>
 						<phase>test</phase>
 						<goals>
-							<goal>transform-spec-to-html-format</goal>
+							<goal>transform-spec-to-html</goal>
 						</goals>
 						<configuration>
 							<specId>crypto</specId>
