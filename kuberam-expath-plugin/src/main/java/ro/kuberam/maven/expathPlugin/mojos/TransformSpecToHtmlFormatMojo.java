@@ -22,7 +22,7 @@ import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 
 /**
- * Transforms a EXPath specification to HTML format. <br/>
+ * Transforms an EXPath specification to HTML format. <br/>
  * 
  * @author <a href="mailto:claudius.teodorescu@gmail.com">Claudius Teodorescu</a>
  * 

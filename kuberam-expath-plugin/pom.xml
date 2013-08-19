@@ -10,13 +10,13 @@
 		<relativePath>../sourceforge/pom.xml</relativePath>
 	</parent>
 
-	<groupId>ro.kuberam.maven.plugins</groupId>
+	<groupId>ro.kuberam</groupId>
 	<artifactId>kuberam-expath-plugin</artifactId>
 	<version>0.2</version>
 	<packaging>maven-plugin</packaging>
 	<name>kuberam expath plugin</name>
 	<description>Plugin for EXPath related functionality.</description>
-	<url>http://kuberam.ro</url>
+	<url>http://kuberam.ro/maven/plugins/kuberam-expath-plugin</url>
 	<licenses>
 		<license>
 			<name>GNU Lesser General Public License</name>
