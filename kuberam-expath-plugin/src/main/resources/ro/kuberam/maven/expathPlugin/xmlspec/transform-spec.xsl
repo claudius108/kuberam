@@ -12,7 +12,7 @@
 		<xsl:next-match />
 	</xsl:template>
 
-	<xsl:template match="h:html/h:body[exists($analytics-id)]" mode="postproc">
+	<xsl:template match="h:html/h:body" mode="postproc">
 		<xsl:copy>
 			<xsl:copy-of select="@*" />
 			<xsl:apply-templates select="node()" mode="postproc" />

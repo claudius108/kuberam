@@ -1,13 +1,13 @@
 ------
  Introduction
  ------
- Author
+Claudius Teodorescu
  ------
- YYYY-MM-DD
+ 2013-08-19
  ------
 
 
-Plugin Name
+Kuberam EXPath Plugin
 
   Plugin introduction, description, and other relevant information.
 
@@ -19,7 +19,7 @@ Plugin Name
 
 * Usage
 
-  General instructions on how to use the Plugin Name can be found on the {{{usage.html}usage page}}. Some more
+  General instructions on how to use the EXPath Plugin can be found on the {{{usage.html}usage page}}. Some more
   specific use cases are described in the examples given below. Last but not least, users occasionally contribute
   additional examples, tips or errata to the
   {{{http://docs.codehaus.org/display/MAVENUSER/Plugin+Name}plugin's wiki page}}.
