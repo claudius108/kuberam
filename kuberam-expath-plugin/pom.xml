@@ -163,12 +163,17 @@
 					<updateReleaseInfo>true</updateReleaseInfo>
 				</configuration>
 			</plugin>
-<!-- 			<plugin> -->
-<!-- 				<groupId>org.apache.maven.plugins</groupId> -->
-<!-- 				<artifactId>maven-site-plugin</artifactId> -->
-<!-- 				<version>3.3</version> -->
-<!-- 			</plugin> -->
 		</plugins>
 	</build>
+
+	<reporting>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-plugin-plugin</artifactId>
+				<version>${mavenPluginVersion}</version>
+			</plugin>
+		</plugins>
+	</reporting>
 
 </project>

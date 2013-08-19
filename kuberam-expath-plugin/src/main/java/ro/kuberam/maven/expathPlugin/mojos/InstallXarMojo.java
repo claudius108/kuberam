@@ -7,7 +7,7 @@ import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.Mojo;
 
 /**
- * Installs a package. <br/>
+ * Installs a package (TBD). <br/>
  * 
  * @author <a href="mailto:claudius.teodorescu@gmail.com">Claudius Teodorescu</a>
  * 

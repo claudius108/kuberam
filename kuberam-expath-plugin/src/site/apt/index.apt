@@ -11,12 +11,6 @@ Kuberam EXPath Plugin
 
   Plugin introduction, description, and other relevant information.
 
-* Goals Overview
-
-  General information about the goals.
-
-  * {{{<goal>.html}prefix:goal}} short description for this plugin goal.
-
 * Usage
 
   General instructions on how to use the EXPath Plugin can be found on the {{{usage.html}usage page}}. Some more

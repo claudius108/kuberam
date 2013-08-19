@@ -7,7 +7,7 @@ import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.Mojo;
 
 /**
- * Deploys a package in a repository. <br/>
+ * Deploys a package in a repository (TBD). <br/>
  * 
  * @author <a href="mailto:claudius.teodorescu@gmail.com">Claudius Teodorescu</a>
  * 

@@ -7,7 +7,7 @@ import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.Mojo;
 
 /**
- * Generates the descriptors for a package. <br/>
+ * Generates the descriptors for a package (TBD). <br/>
  * 
  * @author <a href="mailto:claudius.teodorescu@gmail.com">Claudius Teodorescu</a>
  * 
