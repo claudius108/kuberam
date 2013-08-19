@@ -24,7 +24,7 @@
 	<distributionManagement>
 		<repository>
 			<id>sourceforge</id>
-			<url>sftp://${sourceforge-frs-host}${sourceforge-user-web-htdocs-path}</url>
+			<url>sftp://${sourceforge-frs-host}${sourceforge-user-web-htdocs-path}/repos/maven</url>
 		</repository>
 	</distributionManagement>
 
