@@ -37,7 +37,6 @@ public class TransformSpecToHtmlMojo extends AbstractExpathMojo {
 	 * 
 	 * @parameter
 	 */
-
 	@Parameter(required = true)
 	private File specFile;
 
@@ -46,9 +45,16 @@ public class TransformSpecToHtmlMojo extends AbstractExpathMojo {
 	 * 
 	 * @parameter
 	 */
-
 	@Parameter(required = true)
 	private File outputDir;
+
+	/**
+	 * Google Analytics account id, in case one needs to track the page.
+	 * 
+	 * @parameter
+	 */
+	@Parameter(defaultValue = "")
+	private String googleAnalyticsAccountId;
 
 	@Override
 	public void execute() throws MojoExecutionException, MojoFailureException {
@@ -57,7 +63,7 @@ public class TransformSpecToHtmlMojo extends AbstractExpathMojo {
 		if (!outputDir.exists()) {
 			outputDir.mkdir();
 		}
-		
+
 		String specFileBaseName = specFile.getName();
 		specFileBaseName = specFileBaseName.substring(0, specFileBaseName.lastIndexOf("."));
 		File specDir = specFile.getParentFile();
@@ -77,7 +83,10 @@ public class TransformSpecToHtmlMojo extends AbstractExpathMojo {
 										element(name("includes"), element(name("include"), specFileBaseName + ".xml")),
 										element(name("stylesheet"),
 												this.getClass().getResource("/ro/kuberam/maven/expathPlugin/xmlspec/transform-spec.xsl").toString()),
-										element(name("outputDir"), specTmpDir)))), executionEnvironment(project, session, pluginManager));
+										element(name("parameters"),
+												element(name("parameter"), element(name("name"), "googleAnalyticsAccountId"),
+														element(name("value"), googleAnalyticsAccountId))), element(name("outputDir"), specTmpDir)))),
+				executionEnvironment(project, session, pluginManager));
 
 		File transformedSpecFile = new File(specTmpDir + File.separator + specFileBaseName + ".xml");
 		transformedSpecFile.renameTo(new File(outputDir + File.separator + specFileBaseName + ".html"));
