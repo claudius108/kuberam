@@ -21,22 +21,31 @@ import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 
-
 /**
  * Transforms an EXPath specification to HTML format. <br/>
  * 
- * @author <a href="mailto:claudius.teodorescu@gmail.com">Claudius Teodorescu</a>
+ * @author <a href="mailto:claudius.teodorescu@gmail.com">Claudius
+ *         Teodorescu</a>
  * 
  */
 
 @Mojo(name = "transform-spec-to-html")
 public class TransformSpecToHtmlMojo extends AbstractExpathMojo {
 
-	@Parameter(required = true)
-	private String specId;
+	/**
+	 * Specification file.
+	 * 
+	 * @parameter
+	 */
 
 	@Parameter(required = true)
-	private File specDir;
+	private File specFile;
+
+	/**
+	 * Output directory.
+	 * 
+	 * @parameter
+	 */
 
 	@Parameter(required = true)
 	private File outputDir;
@@ -48,6 +57,10 @@ public class TransformSpecToHtmlMojo extends AbstractExpathMojo {
 		if (!outputDir.exists()) {
 			outputDir.mkdir();
 		}
+		
+		String specFileBaseName = specFile.getName();
+		specFileBaseName = specFileBaseName.substring(0, specFileBaseName.lastIndexOf("."));
+		File specDir = specFile.getParentFile();
 
 		String specTmpDir = projectBuildDirectory.getAbsolutePath() + File.separator + "spec-tmp-" + UUID.randomUUID();
 
@@ -61,13 +74,13 @@ public class TransformSpecToHtmlMojo extends AbstractExpathMojo {
 						element(name("transformationSets"),
 								element(name("transformationSet"),
 										element(name("dir"), specDir.getAbsolutePath()),
-										element(name("includes"), element(name("include"), specId + ".xml")),
+										element(name("includes"), element(name("include"), specFileBaseName + ".xml")),
 										element(name("stylesheet"),
 												this.getClass().getResource("/ro/kuberam/maven/expathPlugin/xmlspec/transform-spec.xsl").toString()),
 										element(name("outputDir"), specTmpDir)))), executionEnvironment(project, session, pluginManager));
 
-		File transformedSpecFile = new File(specTmpDir + File.separator + specId + ".xml");
-		transformedSpecFile.renameTo(new File(outputDir + File.separator + specId + ".html"));
+		File transformedSpecFile = new File(specTmpDir + File.separator + specFileBaseName + ".xml");
+		transformedSpecFile.renameTo(new File(outputDir + File.separator + specFileBaseName + ".html"));
 	}
 
 }
