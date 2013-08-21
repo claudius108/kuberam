@@ -34,11 +34,25 @@ import org.codehaus.plexus.util.io.RawInputStreamFacade;
 @Mojo(name = "generate-specs-index")
 public class GenerateSpecsIndexMojo extends AbstractExpathMojo {
 
+	/**
+	 * Directory containing the specifications.
+	 * 
+	 * @parameter
+	 * @since 0.2
+	 * 
+	 */
 	@Parameter(required = true)
 	private File specsDir;
 
+	/**
+	 * List of specification files' basenames.
+	 * 
+	 * @parameter
+	 * @since 0.2
+	 * 
+	 */
 	@Parameter(required = true)
-	private String includeSpecIds;
+	private String includeSpecs;
 
 	@Override
 	public void execute() throws MojoExecutionException, MojoFailureException {
@@ -74,8 +88,8 @@ public class GenerateSpecsIndexMojo extends AbstractExpathMojo {
 										element(name("parameters"),
 												element(name("parameter"), element(name("name"), "specsDir"),
 														element(name("value"), specsDir.getAbsolutePath())),
-												element(name("parameter"), element(name("name"), "includeSpecIds"),
-														element(name("value"), includeSpecIds)),
+												element(name("parameter"), element(name("name"), "includeSpecs"),
+														element(name("value"), includeSpecs)),
 												element(name("parameter"), element(name("name"), "outputDir"), element(name("value"), specsDirPath)))))),
 				executionEnvironment(project, session, pluginManager));
 

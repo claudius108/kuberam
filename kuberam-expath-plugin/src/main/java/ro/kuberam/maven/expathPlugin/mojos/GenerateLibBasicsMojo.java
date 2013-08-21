@@ -21,49 +21,94 @@ import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 
 /**
- * Generates the basic files needed for the library implementing the EXPath module. <br/>
+ * Generates the basic files needed for the library implementing the EXPath
+ * module. <br/>
  * 
- * @author <a href="mailto:claudius.teodorescu@gmail.com">Claudius Teodorescu</a>
+ * @author <a href="mailto:claudius.teodorescu@gmail.com">Claudius
+ *         Teodorescu</a>
  * 
  */
 
 @Mojo(name = "generate-lib-basics")
 public class GenerateLibBasicsMojo extends AbstractExpathMojo {
 
+	/**
+	 * Specification file.
+	 * 
+	 * @parameter
+	 * @since 0.3
+	 * 
+	 */
 	@Parameter(required = true)
-	private String specId;
+	private File specFile;
 
-	@Parameter(required = true)
-	private File specDir;
-
+	/**
+	 * Library's dir.
+	 * 
+	 * @parameter
+	 * @since 0.2
+	 * 
+	 */
 	@Parameter(required = true)
 	private File libDir;
 
+	/**
+	 * Library's java package name.
+	 * 
+	 * @parameter
+	 * @since 0.2
+	 * 
+	 */
 	@Parameter(required = true)
 	private String javaPackageName;
-	
+
+	/**
+	 * Library's version.
+	 * 
+	 * @parameter
+	 * @since 0.2
+	 * 
+	 */
 	@Parameter(required = true)
 	private String libVersion;
-	
+
+	/**
+	 * Library's URL.
+	 * 
+	 * @parameter
+	 * @since 0.2
+	 * 
+	 */
 	@Parameter(defaultValue = "${project.url}")
 	private String libUrl;
-	
+
+	/**
+	 * Library's artifactId for generating the pom file needed for library.
+	 * 
+	 * @parameter
+	 * @since 0.2
+	 * 
+	 */
 	@Parameter(required = true)
-	private String libId;
-	
+	private String libArtifactId;
+
+	/**
+	 * Library's name.
+	 * 
+	 * @parameter
+	 * @since 0.2
+	 * 
+	 */
 	@Parameter(required = true)
 	private String libName;
 
 	@Override
 	public void execute() throws MojoExecutionException, MojoFailureException {
 
-		// create the lib directory
-		if (!libDir.exists()) {
-			libDir.mkdir();
-		}
+		createOutputDir(libDir);
 
-		String libDirPath = libDir.getAbsolutePath();
-
+		String specFileBaseName = getFileBaseName(specFile);
+		
 		// generate java classes
 		executeMojo(
 				plugin(groupId("org.codehaus.mojo"), artifactId("xml-maven-plugin"), version("1.0"),
@@ -73,17 +118,16 @@ public class GenerateLibBasicsMojo extends AbstractExpathMojo {
 						element(name("forceCreation"), "true"),
 						element(name("transformationSets"),
 								element(name("transformationSet"),
-										element(name("dir"), specDir.getAbsolutePath()),
-										element(name("includes"), element(name("include"), specId + ".xml")),
+										element(name("dir"), specFile.getParentFile().getAbsolutePath()),
+										element(name("includes"), element(name("include"), specFileBaseName + ".xml")),
 										element(name("stylesheet"),
 												this.getClass().getResource("/ro/kuberam/maven/expathPlugin/generate-lib-basics.xsl").toString()),
 										element(name("parameters"),
 												element(name("parameter"), element(name("name"), "javaPackageName"),
 														element(name("value"), javaPackageName)),
-												element(name("parameter"), element(name("name"), "specId"), element(name("value"), specId)),
-												element(name("parameter"), element(name("name"), "libDirPath"), element(name("value"), libDirPath)),
+												element(name("parameter"), element(name("name"), "libDirPath"), element(name("value"), libDir.getAbsolutePath())),
 												element(name("parameter"), element(name("name"), "libUrl"), element(name("value"), libUrl)),
-												element(name("parameter"), element(name("name"), "libId"), element(name("value"), libId)),
+												element(name("parameter"), element(name("name"), "libId"), element(name("value"), libArtifactId)),
 												element(name("parameter"), element(name("name"), "libName"), element(name("value"), libName)),
 												element(name("parameter"), element(name("name"), "libVersion"), element(name("value"), libVersion)))))),
 				executionEnvironment(project, session, pluginManager));

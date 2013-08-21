@@ -19,7 +19,7 @@
 			<plugin>
 				<groupId>ro.kuberam.maven.plugins</groupId>
 				<artifactId>kuberam-expath-plugin</artifactId>
-				<version>0.2</version>
+				<version>0.3</version>
 				<executions>
 					<execution>
 						<id>generate-lib-files</id>
@@ -28,11 +28,10 @@
 							<goal>generate-lib-basics</goal>
 						</goals>
 						<configuration>
-							<specId>crypto</specId>
-							<specDir>${basedir}</specDir>
+							<specFile>${basedir}/crypto.xml</specFile>
 							<libDir>${basedir}/crypto</libDir>
 							<libVersion>0.2.5</libVersion>
-							<libId>crypto</libId>
+							<libArtifactId>crypto</libArtifactId>
 							<libName>EXPath Cryptographic Library</libName>
 							<javaPackageName>crypto</javaPackageName>
 						</configuration>

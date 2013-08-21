@@ -5,7 +5,7 @@
 	<xsl:output method="html" />
 
 	<xsl:param name="specsDir" />
-	<xsl:param name="includeSpecIds" />
+	<xsl:param name="includeSpecs" />
 	<xsl:param name="outputDir" />
 
 	<xsl:template match="/">
@@ -16,7 +16,7 @@
 				</head>
 				<body>
 					<h2>EXPath Specifications Index</h2>
-					<xsl:for-each select="tokenize($includeSpecIds, ',')">
+					<xsl:for-each select="tokenize($includeSpecs, ',')">
 						<xsl:variable name="spec-name" select="." />
 						<xsl:variable name="spec-dir" select="concat($specsDir, '/', $spec-name, '/')" />
 						<xsl:variable name="spec" select="document(concat('file://', $spec-dir, $spec-name, '.html'))/html/body" />

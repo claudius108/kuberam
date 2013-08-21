@@ -36,6 +36,8 @@ public class TransformSpecToHtmlMojo extends AbstractExpathMojo {
 	 * Specification file.
 	 * 
 	 * @parameter
+	 * @since 0.3
+	 * 
 	 */
 	@Parameter(required = true)
 	private File specFile;
@@ -44,6 +46,8 @@ public class TransformSpecToHtmlMojo extends AbstractExpathMojo {
 	 * Output directory.
 	 * 
 	 * @parameter
+	 * @since 0.2
+	 * 
 	 */
 	@Parameter(required = true)
 	private File outputDir;
@@ -52,21 +56,18 @@ public class TransformSpecToHtmlMojo extends AbstractExpathMojo {
 	 * Google Analytics account id, in case one needs to track the page.
 	 * 
 	 * @parameter
+	 * @since 0.3
+	 * 
 	 */
 	@Parameter(defaultValue = "")
 	private String googleAnalyticsAccountId;
-
+	
 	@Override
 	public void execute() throws MojoExecutionException, MojoFailureException {
 
-		// create the outputDir directory
-		if (!outputDir.exists()) {
-			outputDir.mkdir();
-		}
+		createOutputDir(outputDir);
 
-		String specFileBaseName = specFile.getName();
-		specFileBaseName = specFileBaseName.substring(0, specFileBaseName.lastIndexOf("."));
-		File specDir = specFile.getParentFile();
+		String specFileBaseName = getFileBaseName(specFile);
 
 		String specTmpDir = projectBuildDirectory.getAbsolutePath() + File.separator + "spec-tmp-" + UUID.randomUUID();
 
@@ -79,7 +80,7 @@ public class TransformSpecToHtmlMojo extends AbstractExpathMojo {
 						element(name("forceCreation"), "true"),
 						element(name("transformationSets"),
 								element(name("transformationSet"),
-										element(name("dir"), specDir.getAbsolutePath()),
+										element(name("dir"), specFile.getParentFile().getAbsolutePath()),
 										element(name("includes"), element(name("include"), specFileBaseName + ".xml")),
 										element(name("stylesheet"),
 												this.getClass().getResource("/ro/kuberam/maven/expathPlugin/xmlspec/transform-spec.xsl").toString()),

@@ -4,11 +4,10 @@
 	<xsl:output method="text" />
 
 	<xsl:param name="javaPackageName" />
-	<xsl:param name="specId" />
 	<xsl:param name="libDirPath" />
 	<xsl:param name="libVersion" />
 	<xsl:param name="libUrl" />
-	<xsl:param name="libId" />
+	<xsl:param name="libArtifactId" />
 	<xsl:param name="libName" />
 
 	<xsl:variable name="javaPackageDirPath" select="concat($libDirPath, '/src/main/java/org/expath/', $javaPackageName, '/')" />
@@ -39,7 +38,7 @@
 					<version>1.0-SNAPSHOT</version>
 				</parent>
 
-				<artifactId><xsl:value-of select="$libId" /></artifactId>
+				<artifactId><xsl:value-of select="$libArtifactId" /></artifactId>
 				<version><xsl:value-of select="$libVersion" /></version>
 				<name><xsl:value-of select="$libName" /></name>
 				<url><xsl:value-of select="$libUrl" /></url>

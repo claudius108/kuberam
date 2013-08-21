@@ -23,8 +23,8 @@ import org.apache.maven.shared.filtering.MavenResourcesFiltering;
 
 public class AbstractExpathMojo extends AbstractMojo {
 
-	@Parameter(defaultValue = "${project}")
-	protected static MavenProject project;
+	@Component
+	protected MavenProject project;
 
 	@Component
 	protected MavenSession session;
@@ -35,10 +35,13 @@ public class AbstractExpathMojo extends AbstractMojo {
 	@Component(role = MavenResourcesFiltering.class, hint = "default")
 	protected MavenResourcesFiltering mavenResourcesFiltering;
 
-	@Parameter(property = "project.build.sourceEncoding", defaultValue = "UTF-8")
-	protected String encoding;
-	
-	@Parameter(defaultValue = "${project.build.directory}")
+	/**
+	 * The character encoding scheme to be applied when filtering resources.
+	 */
+	@Parameter(property = "encoding", defaultValue = "${project.build.sourceEncoding}", readonly = true)
+	private String encoding;
+
+	@Parameter(defaultValue = "${project.build.directory}", readonly = true)
 	protected File projectBuildDirectory;
 
 	private List<String> filters = Arrays.asList();
@@ -56,9 +59,8 @@ public class AbstractExpathMojo extends AbstractMojo {
 		resource.setFiltering(true);
 		resource.setTargetPath(targetPath);
 
-		MavenResourcesExecution mavenResourcesExecution = new MavenResourcesExecution(
-				Collections.singletonList(resource), outputDirectory, project, encoding, filters,
-				defaultNonFilteredFileExtensions, session);
+		MavenResourcesExecution mavenResourcesExecution = new MavenResourcesExecution(Collections.singletonList(resource), outputDirectory, project,
+				encoding, filters, defaultNonFilteredFileExtensions, session);
 
 		mavenResourcesExecution.setInjectProjectBuildFilters(false);
 		mavenResourcesExecution.setOverwrite(true);
@@ -92,6 +94,17 @@ public class AbstractExpathMojo extends AbstractMojo {
 			return true;
 		} catch (Exception e) {
 			throw new RuntimeException("Exception occured during unpacking of file '" + file.getName() + "'", e);
+		}
+	}
+
+	public String getFileBaseName(File file) {
+		String specFileBaseName = file.getName();
+		return (specFileBaseName.contains(".")) ? specFileBaseName.substring(0, specFileBaseName.lastIndexOf(".")) : specFileBaseName;
+	}
+
+	public void createOutputDir(File outputDir) {
+		if (!outputDir.exists()) {
+			outputDir.mkdir();
 		}
 	}
 

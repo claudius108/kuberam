@@ -91,7 +91,6 @@ public class MakeXarMojo extends AbstractExpathMojo {
 		String outputDirectoryPath = outputDirectory.getAbsolutePath();
 		String assemblyDescriptorName = descriptor.getName();
 		String archiveTmpDirectoryPath = project.getModel().getBuild().getDirectory() + File.separator + "xar-tmp";
-		String projectArtifactId = project.getArtifactId();
 		String components = "";
 		String descriptorsDirectoryPath = outputDirectoryPath + File.separator + "expath-descriptors-" + UUID.randomUUID();
 

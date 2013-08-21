@@ -19,17 +19,16 @@
 			<plugin>
 				<groupId>ro.kuberam.maven.plugins</groupId>
 				<artifactId>kuberam-expath-plugin</artifactId>
-				<version>0.2</version>
+				<version>0.3</version>
 				<executions>
 					<execution>
 						<id>generate-crypto.html</id>
 						<phase>test</phase>
 						<goals>
-							<goal>transform-spec-to-html-format</goal>
+							<goal>transform-spec-to-html</goal>
 						</goals>
 						<configuration>
-							<specId>crypto</specId>
-							<specDir>${basedir}/crypto</specDir>
+							<specFile>${basedir}/crypto/crypto.xml</specFile>
 							<outputDir>${basedir}/crypto</outputDir>
 						</configuration>
 					</execution>
@@ -37,11 +36,10 @@
 						<id>generate-datatype-conversion.html</id>
 						<phase>test</phase>
 						<goals>
-							<goal>transform-spec-to-html-format</goal>
+							<goal>transform-spec-to-html</goal>
 						</goals>
 						<configuration>
-							<specId>datatype-conversion</specId>
-							<specDir>${basedir}/datatype-conversion</specDir>
+							<specFile>${basedir}/datatype-conversion/datatype-conversion.xml</specFile>
 							<outputDir>${basedir}/datatype-conversion</outputDir>
 						</configuration>
 					</execution>
@@ -49,23 +47,22 @@
 						<id>generate-ft-client.html</id>
 						<phase>test</phase>
 						<goals>
-							<goal>transform-spec-to-html-format</goal>
+							<goal>transform-spec-to-html</goal>
 						</goals>
 						<configuration>
-							<specId>ft-client</specId>
-							<specDir>${basedir}/ft-client</specDir>
+							<specFile>${basedir}/ft-client/ft-client.xml</specFile>
 							<outputDir>${basedir}/ft-client</outputDir>
 						</configuration>
 					</execution>
 					<execution>
-						<id>generate-spec</id>
+						<id>generate-index</id>
 						<phase>test</phase>
 						<goals>
 							<goal>generate-specs-index</goal>
 						</goals>
 						<configuration>
 							<specsDir>${basedir}</specsDir>
-							<includeSpecIds>crypto,datatype-conversion,ft-client</includeSpecIds>
+							<includeSpecs>crypto,datatype-conversion,ft-client</includeSpecs>
 						</configuration>
 					</execution>
 				</executions>
