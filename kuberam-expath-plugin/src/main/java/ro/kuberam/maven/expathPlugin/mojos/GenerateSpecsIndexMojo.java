@@ -25,9 +25,11 @@ import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.io.RawInputStreamFacade;
 
 /**
- * Generates the HTML index for a directory containing EXPath specifications. <br/>
+ * Generates the HTML index for a directory containing EXPath specifications.
+ * The index will but generated in the directory containing the specifications. <br/>
  * 
- * @author <a href="mailto:claudius.teodorescu@gmail.com">Claudius Teodorescu</a>
+ * @author <a href="mailto:claudius.teodorescu@gmail.com">Claudius
+ *         Teodorescu</a>
  * 
  */
 
