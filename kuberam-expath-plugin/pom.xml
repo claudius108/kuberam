@@ -221,7 +221,7 @@
 					<reportSet>
 						<reports>
 							<report></report>
-<!-- 							<report>index</report> -->
+							<report>index</report>
 							<report>summary</report>
 							<report>dependencies</report>
 							<report>scm</report>
