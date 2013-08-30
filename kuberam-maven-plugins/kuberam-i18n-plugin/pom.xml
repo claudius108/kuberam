@@ -4,14 +4,13 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<groupId>ro.kuberam.maven</groupId>
-		<artifactId>sourceforge</artifactId>
-		<version>0.1-SNAPSHOT</version>
-		<relativePath>../sourceforge/pom.xml</relativePath>
+		<groupId>ro.kuberam.maven.plugins</groupId>
+		<artifactId>base</artifactId>
+		<version>0.1</version>
 	</parent>
 
-	<groupId>ro.kuberam.maven.plugins</groupId>
 	<artifactId>kuberam-i18n-plugin</artifactId>
+
 	<version>0.1</version>
 	<packaging>pom</packaging>
 	<name>kuberam i18n plugin</name>
@@ -47,22 +46,7 @@
 		</repository>
 	</repositories>
 
-	<properties>
-		<mavenVersion>3.0.5</mavenVersion>
-		<mavenPluginVersion>3.2</mavenPluginVersion>
-		<aetherVersion>1.13.1</aetherVersion>
-		<versionProjectInfoReportsPlugin>2.7</versionProjectInfoReportsPlugin>
-		<versionJavadocPlugin>2.9.1</versionJavadocPlugin>
-		<versionSurefirePlugin>2.16</versionSurefirePlugin>
-	</properties>
-
 	<dependencies>
-		<dependency>
-			<groupId>org.apache.maven.plugin-tools</groupId>
-			<artifactId>maven-plugin-annotations</artifactId>
-			<version>${mavenPluginVersion}</version>
-			<scope>provided</scope>
-		</dependency>
 
 	</dependencies>
 
