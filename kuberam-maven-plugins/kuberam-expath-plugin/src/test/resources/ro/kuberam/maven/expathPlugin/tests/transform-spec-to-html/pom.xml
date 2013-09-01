@@ -3,7 +3,7 @@
 
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>ro.kuberam.maven.plugins.maven-expath-plugin</groupId>
+	<groupId>ro.kuberam.maven.plugins.kuberam-expath-plugin</groupId>
 	<artifactId>transform-spec-to-html-test</artifactId>
 	<version>0.1</version>
 	<packaging>jar</packaging>

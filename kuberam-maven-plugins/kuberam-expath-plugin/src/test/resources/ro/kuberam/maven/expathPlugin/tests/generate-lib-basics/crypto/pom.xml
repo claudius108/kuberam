@@ -12,13 +12,7 @@
    <version>0.2.5</version>
    <name>EXPath Cryptographic Library</name>
    <url>http://kuberam.ro/specs/expath/crypto/crypto.html</url>
-   <dependencies>
-      <dependency>
-		       <groupId>org.kohsuke</groupId>
-		       <artifactId>geoip</artifactId>
-		       <version>1.2.5</version>
-	     </dependency>
-   </dependencies>
+   <dependencies/>
    <build>
       <plugins>
          <plugin>
