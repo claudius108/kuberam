@@ -20,6 +20,8 @@ import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 
+import ro.kuberam.maven.plugins.mojos.KuberamAbstractMojo;
+
 /**
  * Generates the basic files needed for the library implementing the EXPath
  * module. <br/>
@@ -30,7 +32,7 @@ import org.apache.maven.plugins.annotations.Parameter;
  */
 
 @Mojo(name = "generate-lib-basics")
-public class GenerateLibBasicsMojo extends AbstractExpathMojo {
+public class GenerateLibBasicsMojo extends KuberamAbstractMojo {
 
 	/**
 	 * Specification file.
