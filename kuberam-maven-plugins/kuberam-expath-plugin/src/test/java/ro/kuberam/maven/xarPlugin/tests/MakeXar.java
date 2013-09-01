@@ -8,7 +8,7 @@ import org.junit.Test;
 
 import ro.kuberam.maven.expathPlugin.mojos.MakeXarMojo;
 
-public class MakeXarTest extends AbstractMojoTestCase {
+public class MakeXar extends AbstractMojoTestCase {
 
 	@Override
 	protected void setUp() throws Exception {
