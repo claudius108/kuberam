@@ -33,14 +33,14 @@ import org.codehaus.plexus.archiver.ResourceIterator;
 import org.codehaus.plexus.archiver.zip.ZipArchiver;
 import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.xml.Xpp3DomBuilder;
-import org.sonatype.aether.RepositorySystem;
-import org.sonatype.aether.RepositorySystemSession;
-import org.sonatype.aether.artifact.Artifact;
-import org.sonatype.aether.repository.RemoteRepository;
-import org.sonatype.aether.resolution.ArtifactRequest;
-import org.sonatype.aether.resolution.ArtifactResolutionException;
-import org.sonatype.aether.resolution.ArtifactResult;
-import org.sonatype.aether.util.artifact.DefaultArtifact;
+import org.eclipse.aether.RepositorySystem;
+import org.eclipse.aether.RepositorySystemSession;
+import org.eclipse.aether.artifact.Artifact;
+import org.eclipse.aether.repository.RemoteRepository;
+import org.eclipse.aether.resolution.ArtifactRequest;
+import org.eclipse.aether.resolution.ArtifactResolutionException;
+import org.eclipse.aether.resolution.ArtifactResult;
+import org.eclipse.aether.artifact.DefaultArtifact;
 
 import ro.kuberam.maven.expathPlugin.DefaultFileSet;
 import ro.kuberam.maven.expathPlugin.DependencySet;
@@ -127,19 +127,19 @@ public class MakeXarMojo extends AbstractExpathMojo {
 			DependencySet dependencySet = dependencySets.get(i);
 
 			// define the artifact
-			Artifact artifactDefinition;
+			Artifact artifactReference;
 			try {
-				artifactDefinition = new DefaultArtifact(dependencySet.groupId + ":" + dependencySet.artifactId + ":" + dependencySet.version);
+				artifactReference = new DefaultArtifact(dependencySet.groupId + ":" + dependencySet.artifactId + ":" + dependencySet.version);
 			} catch (IllegalArgumentException e) {
 				throw new MojoFailureException(e.getMessage(), e);
 			}
 
-			String artifactIdentifier = artifactDefinition.toString();
-			getLog().info("Resolving artifact: " + artifactDefinition);
+			String artifactIdentifier = artifactReference.toString();
+			getLog().info("Resolving artifact: " + artifactReference);
 
 			// resolve the artifact
 			ArtifactRequest request = new ArtifactRequest();
-			request.setArtifact(artifactDefinition);
+			request.setArtifact(artifactReference);
 			request.setRepositories(remoteRepos);
 
 			ArtifactResult artifactResult;
@@ -149,7 +149,7 @@ public class MakeXarMojo extends AbstractExpathMojo {
 				throw new MojoExecutionException(e.getMessage(), e);
 			}
 
-			getLog().info("Resolved artifact: " + artifactDefinition);
+			getLog().info("Resolved artifact: " + artifactReference);
 
 			Artifact artifact = artifactResult.getArtifact();
 			File artifactFile = artifact.getFile();
