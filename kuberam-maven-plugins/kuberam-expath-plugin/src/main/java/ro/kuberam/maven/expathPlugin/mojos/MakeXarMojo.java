@@ -36,25 +36,26 @@ import org.codehaus.plexus.util.xml.Xpp3DomBuilder;
 import org.eclipse.aether.RepositorySystem;
 import org.eclipse.aether.RepositorySystemSession;
 import org.eclipse.aether.artifact.Artifact;
-import org.eclipse.aether.repository.RemoteRepository;
+import org.eclipse.aether.artifact.DefaultArtifact;
 import org.eclipse.aether.resolution.ArtifactRequest;
 import org.eclipse.aether.resolution.ArtifactResolutionException;
 import org.eclipse.aether.resolution.ArtifactResult;
-import org.eclipse.aether.artifact.DefaultArtifact;
 
 import ro.kuberam.maven.expathPlugin.DefaultFileSet;
 import ro.kuberam.maven.expathPlugin.DependencySet;
 import ro.kuberam.maven.expathPlugin.DescriptorConfiguration;
+import ro.kuberam.maven.plugins.mojos.KuberamAbstractMojo;
 
 /**
  * Assembles a package. <br/>
  * 
- * @author <a href="mailto:claudius.teodorescu@gmail.com">Claudius Teodorescu</a>
+ * @author <a href="mailto:claudius.teodorescu@gmail.com">Claudius
+ *         Teodorescu</a>
  * 
  */
 
 @Mojo(name = "make-xar")
-public class MakeXarMojo extends AbstractExpathMojo {
+public class MakeXarMojo extends KuberamAbstractMojo {
 
 	@Component(role = org.codehaus.plexus.archiver.Archiver.class, hint = "zip")
 	private ZipArchiver zipArchiver;
@@ -73,9 +74,6 @@ public class MakeXarMojo extends AbstractExpathMojo {
 
 	@Parameter(defaultValue = "${repositorySystemSession}", readonly = true)
 	private RepositorySystemSession repoSession;
-
-	@Parameter(defaultValue = "${project.remoteProjectRepositories}", readonly = true)
-	private static List<RemoteRepository> remoteRepos;
 
 	private static String componentsTemplateFileContent = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
 			+ "<package xmlns=\"http://exist-db.org/ns/expath-pkg\">${components}</package>";
@@ -140,7 +138,7 @@ public class MakeXarMojo extends AbstractExpathMojo {
 			// resolve the artifact
 			ArtifactRequest request = new ArtifactRequest();
 			request.setArtifact(artifactReference);
-			request.setRepositories(remoteRepos);
+			request.setRepositories(projectRepos);
 
 			ArtifactResult artifactResult;
 			try {
@@ -211,7 +209,8 @@ public class MakeXarMojo extends AbstractExpathMojo {
 								element(name("transformationSet"),
 										element(name("dir"), archiveTmpDirectoryPath),
 										element(name("includes"), element(name("include"), assemblyDescriptorName)),
-										element(name("stylesheet"), this.getClass().getResource("/ro/kuberam/maven/expathPlugin/generate-descriptors.xsl").toString()),
+										element(name("stylesheet"),
+												this.getClass().getResource("/ro/kuberam/maven/expathPlugin/generate-descriptors.xsl").toString()),
 										element(name("parameters"),
 												element(name("parameter"), element(name("name"), "package-dir"),
 														element(name("value"), descriptorsDirectoryPath)))))),
