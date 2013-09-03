@@ -20,6 +20,7 @@ import org.apache.maven.project.MavenProject;
 import org.apache.maven.shared.filtering.MavenFilteringException;
 import org.apache.maven.shared.filtering.MavenResourcesExecution;
 import org.apache.maven.shared.filtering.MavenResourcesFiltering;
+import org.eclipse.aether.repository.RemoteRepository;
 
 public class KuberamAbstractMojo extends AbstractMojo {
 
@@ -41,16 +42,27 @@ public class KuberamAbstractMojo extends AbstractMojo {
 	@Parameter(property = "encoding", defaultValue = "${project.build.sourceEncoding}", readonly = true)
 	private String encoding;
 
+	/**
+	 * Local Maven repository where artifacts are cached during the build
+	 * process.
+	 */
+	// @Parameter(defaultValue = "${localRepository}", required = true, readonly
+	// = true)
+	// private ArtifactRepository localRepository;
+
+	/**
+	 * The project's remote repositories to use for the resolution of project
+	 * dependencies.
+	 */
+	@Parameter(defaultValue = "${project.remoteProjectRepositories}", readonly = true)
+	protected List<RemoteRepository> projectRepos;
+
 	@Parameter(defaultValue = "${project.build.directory}", readonly = true)
 	protected File projectBuildDirectory;
 
 	private List<String> filters = Arrays.asList();
 
 	private List<String> defaultNonFilteredFileExtensions = Arrays.asList("jpg", "jpeg", "gif", "bmp", "png");
-
-	@Override
-	public void execute() throws MojoExecutionException, MojoFailureException {
-	}
 
 	public void filterResource(String directory, String include, String targetPath, File outputDirectory) {
 		Resource resource = new Resource();
@@ -108,6 +120,9 @@ public class KuberamAbstractMojo extends AbstractMojo {
 		if (!outputDir.exists()) {
 			outputDir.mkdir();
 		}
+	}
+
+	public void execute() throws MojoExecutionException, MojoFailureException {
 	}
 
 }
