@@ -20,6 +20,7 @@ import org.apache.maven.project.MavenProject;
 import org.apache.maven.shared.filtering.MavenFilteringException;
 import org.apache.maven.shared.filtering.MavenResourcesExecution;
 import org.apache.maven.shared.filtering.MavenResourcesFiltering;
+import org.eclipse.aether.RepositorySystemSession;
 import org.eclipse.aether.repository.RemoteRepository;
 
 public class KuberamAbstractMojo extends AbstractMojo {
@@ -56,6 +57,12 @@ public class KuberamAbstractMojo extends AbstractMojo {
 	 */
 	@Parameter(defaultValue = "${project.remoteProjectRepositories}", readonly = true)
 	protected List<RemoteRepository> projectRepos;
+
+	/**
+	 * The current repository/network configuration of Maven.
+	 */
+	@Parameter(defaultValue = "${project.repositorySystemSession}", readonly = true)
+	private RepositorySystemSession repoSession;
 
 	@Parameter(defaultValue = "${project.build.directory}", readonly = true)
 	protected File projectBuildDirectory;

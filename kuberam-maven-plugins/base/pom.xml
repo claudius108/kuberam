@@ -5,7 +5,7 @@
 
 	<groupId>ro.kuberam.maven.plugins</groupId>
 	<artifactId>base</artifactId>
-	<version>0.1.1</version>
+	<version>0.1.2</version>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -18,18 +18,18 @@
 		<versionSurefirePlugin>2.16</versionSurefirePlugin>
 	</properties>
 
-<!-- 	<build> -->
-<!-- 		<plugins> -->
-<!-- 			<plugin> -->
-<!-- 				<artifactId>maven-compiler-plugin</artifactId> -->
-<!-- 				<version>3.1</version> -->
-<!-- 				<configuration> -->
-<!-- 					<source>${java-version}</source> -->
-<!-- 					<target>${java-version}</target> -->
-<!-- 				</configuration> -->
-<!-- 			</plugin> -->
-<!-- 		</plugins> -->
-<!-- 	</build> -->
+	<!-- <build> -->
+	<!-- <plugins> -->
+	<!-- <plugin> -->
+	<!-- <artifactId>maven-compiler-plugin</artifactId> -->
+	<!-- <version>3.1</version> -->
+	<!-- <configuration> -->
+	<!-- <source>${java-version}</source> -->
+	<!-- <target>${java-version}</target> -->
+	<!-- </configuration> -->
+	<!-- </plugin> -->
+	<!-- </plugins> -->
+	<!-- </build> -->
 
 	<dependencies>
 		<dependency>
