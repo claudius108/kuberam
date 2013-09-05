@@ -19,7 +19,6 @@ import org.eclipse.aether.transport.file.FileTransporterFactory;
 import org.eclipse.aether.transport.http.HttpTransporterFactory;
 import org.junit.Test;
 
-
 public class GenerateIpL10nDataMojoTest extends TestCase {
 
 	private String basedir = PlexusTestCase.getBasedir() + File.separator;

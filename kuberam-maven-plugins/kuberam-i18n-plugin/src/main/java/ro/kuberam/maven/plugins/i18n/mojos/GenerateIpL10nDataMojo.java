@@ -34,18 +34,6 @@ import ro.kuberam.maven.plugins.mojos.KuberamAbstractMojo;
 @Mojo(name = "generate-ip-l10n-data")
 public class GenerateIpL10nDataMojo extends KuberamAbstractMojo {
 
-	public void setProject(MavenProject project) {
-		this.project = project;
-	}
-
-	public void setRepoSession(RepositorySystemSession repoSession) {
-		this.repoSession = repoSession;
-	}
-
-	public void setProjectBuildDirectory(File projectBuildDirectory) {
-		this.projectBuildDirectory = projectBuildDirectory;
-	}
-
 	@Override
 	public void execute() throws MojoExecutionException, MojoFailureException {
 
@@ -66,7 +54,7 @@ public class GenerateIpL10nDataMojo extends KuberamAbstractMojo {
 			connection.setRequestMethod("GET");
 			connection.setRequestProperty("content-type", "binary/data");
 			InputStream in = connection.getInputStream();
-			ip2countryFile = File.createTempFile("ip2country", ".zip");
+			ip2countryFile = File.createTempFile("ip2country", ".zip", outputDirectory);
 			FileOutputStream out = new FileOutputStream(ip2countryFile);
 
 			byte[] b = new byte[BUFFER];
@@ -77,6 +65,8 @@ public class GenerateIpL10nDataMojo extends KuberamAbstractMojo {
 			}
 			out.close();
 			in.close();
+			
+			System.out.println(ip2countryFile.getAbsolutePath());
 
 			// unzip the database
 			ZipFile ip2countryZipFile = new ZipFile(ip2countryFile);
