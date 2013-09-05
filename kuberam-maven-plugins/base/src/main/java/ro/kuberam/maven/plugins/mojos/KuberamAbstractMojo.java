@@ -21,6 +21,7 @@ import org.apache.maven.shared.filtering.MavenFilteringException;
 import org.apache.maven.shared.filtering.MavenResourcesExecution;
 import org.apache.maven.shared.filtering.MavenResourcesFiltering;
 import org.eclipse.aether.RepositorySystemSession;
+import org.eclipse.aether.repository.ArtifactRepository;
 import org.eclipse.aether.repository.RemoteRepository;
 
 public class KuberamAbstractMojo extends AbstractMojo {
@@ -47,9 +48,8 @@ public class KuberamAbstractMojo extends AbstractMojo {
 	 * Local Maven repository where artifacts are cached during the build
 	 * process.
 	 */
-	// @Parameter(defaultValue = "${localRepository}", required = true, readonly
-	// = true)
-	// private ArtifactRepository localRepository;
+	@Parameter(defaultValue = "${localRepository}", required = true, readonly = true)
+	private ArtifactRepository localRepository;
 
 	/**
 	 * The project's remote repositories to use for the resolution of project
@@ -64,8 +64,23 @@ public class KuberamAbstractMojo extends AbstractMojo {
 	@Parameter(defaultValue = "${project.repositorySystemSession}", readonly = true)
 	private RepositorySystemSession repoSession;
 
+	/**
+	 * The output directory of the assembled distribution file.
+	 */
 	@Parameter(defaultValue = "${project.build.directory}", readonly = true)
 	protected File projectBuildDirectory;
+
+	/**
+	 * The filename of the assembled distribution file.
+	 */
+	@Parameter(defaultValue = "${project.build.finalName}", required = true)
+	private String finalName;
+
+	/**
+	 * Base directory of the project.
+	 */
+	@Parameter(defaultValue = "${project.basedir}", required = true, readonly = true)
+	private File basedir;
 
 	private List<String> filters = Arrays.asList();
 
