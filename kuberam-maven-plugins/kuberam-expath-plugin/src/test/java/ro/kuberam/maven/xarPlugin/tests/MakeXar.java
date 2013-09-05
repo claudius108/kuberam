@@ -6,7 +6,7 @@ import org.apache.maven.plugin.testing.AbstractMojoTestCase;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import ro.kuberam.maven.expathPlugin.mojos.MakeXarMojo;
+import ro.kuberam.maven.plugins.expath.mojos.MakeXarMojo;
 
 public class MakeXar extends AbstractMojoTestCase {
 

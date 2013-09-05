@@ -1,4 +1,4 @@
-package ro.kuberam.maven.expathPlugin.mojos;
+package ro.kuberam.maven.plugins.expath.mojos;
 
 import static org.twdata.maven.mojoexecutor.MojoExecutor.artifactId;
 import static org.twdata.maven.mojoexecutor.MojoExecutor.configuration;

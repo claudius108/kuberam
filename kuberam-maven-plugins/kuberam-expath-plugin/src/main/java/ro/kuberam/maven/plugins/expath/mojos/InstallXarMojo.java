@@ -1,4 +1,4 @@
-package ro.kuberam.maven.expathPlugin.mojos;
+package ro.kuberam.maven.plugins.expath.mojos;
 
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;

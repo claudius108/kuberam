@@ -1,4 +1,4 @@
-package ro.kuberam.maven.expathPlugin;
+package ro.kuberam.maven.plugins.expath;
 
 /**
  * 

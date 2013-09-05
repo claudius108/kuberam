@@ -1,4 +1,4 @@
-package ro.kuberam.maven.expathPlugin;
+package ro.kuberam.maven.plugins.expath;
 
 public class DefaultFileSet extends org.codehaus.plexus.archiver.util.DefaultFileSet {
 	

@@ -62,7 +62,7 @@ public class KuberamAbstractMojo extends AbstractMojo {
 	 * The current repository/network configuration of Maven.
 	 */
 	@Parameter(defaultValue = "${project.repositorySystemSession}", readonly = true)
-	private RepositorySystemSession repoSession;
+	protected RepositorySystemSession repoSession;
 
 	/**
 	 * The output directory of the assembled distribution file.
@@ -138,13 +138,19 @@ public class KuberamAbstractMojo extends AbstractMojo {
 		return (specFileBaseName.contains(".")) ? specFileBaseName.substring(0, specFileBaseName.lastIndexOf(".")) : specFileBaseName;
 	}
 
-	public void createOutputDir(File outputDir) {
-		if (!outputDir.exists()) {
-			outputDir.mkdir();
-		}
+	public void execute() throws MojoExecutionException, MojoFailureException {
 	}
 
-	public void execute() throws MojoExecutionException, MojoFailureException {
+	public void setProjectBuildDirectory(File projectBuildDirectory) {
+		this.projectBuildDirectory = projectBuildDirectory;
+	}
+
+	public void setProject(MavenProject project) {
+		this.project = project;
+	}
+
+	public void setRepoSession(RepositorySystemSession repoSession) {
+		this.repoSession = repoSession;
 	}
 
 }

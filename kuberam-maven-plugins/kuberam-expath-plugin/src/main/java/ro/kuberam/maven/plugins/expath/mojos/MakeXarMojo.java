@@ -1,4 +1,4 @@
-package ro.kuberam.maven.expathPlugin.mojos;
+package ro.kuberam.maven.plugins.expath.mojos;
 
 import static org.twdata.maven.mojoexecutor.MojoExecutor.artifactId;
 import static org.twdata.maven.mojoexecutor.MojoExecutor.configuration;
@@ -41,9 +41,9 @@ import org.eclipse.aether.resolution.ArtifactRequest;
 import org.eclipse.aether.resolution.ArtifactResolutionException;
 import org.eclipse.aether.resolution.ArtifactResult;
 
-import ro.kuberam.maven.expathPlugin.DefaultFileSet;
-import ro.kuberam.maven.expathPlugin.DependencySet;
-import ro.kuberam.maven.expathPlugin.DescriptorConfiguration;
+import ro.kuberam.maven.plugins.expath.DefaultFileSet;
+import ro.kuberam.maven.plugins.expath.DependencySet;
+import ro.kuberam.maven.plugins.expath.DescriptorConfiguration;
 import ro.kuberam.maven.plugins.mojos.KuberamAbstractMojo;
 
 /**

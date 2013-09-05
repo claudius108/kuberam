@@ -1,4 +1,4 @@
-package ro.kuberam.maven.expathPlugin;
+package ro.kuberam.maven.plugins.expath;
 
 import java.io.File;
 import java.util.ArrayList;
