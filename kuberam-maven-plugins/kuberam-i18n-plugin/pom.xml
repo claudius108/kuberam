@@ -16,6 +16,7 @@
 	<description>Plugin to support internationalization</description>
 	<url>http://kuberam.ro/maven/plugins/kuberam-i18n-plugin</url>
 	<inceptionYear>2013</inceptionYear>
+
 	<licenses>
 		<license>
 			<name>GNU Lesser General Public License</name>
@@ -23,14 +24,17 @@
 			<distribution>repo</distribution>
 		</license>
 	</licenses>
+
 	<scm>
 		<connection>scm:git:https://github.com/claudius108/kuberam.git</connection>
 		<url>http://github.com/claudius108/kuberam/tree/master/kuberam-i18n-plugin</url>
 	</scm>
+
 	<organization>
 		<name>Teodorescu Claudius Marian PFA</name>
 		<url>http://kuberam.ro</url>
 	</organization>
+
 	<developers>
 		<developer>
 			<id>claudius</id>
@@ -38,6 +42,7 @@
 			<email>claudius.teodorescu@gmail.com</email>
 		</developer>
 	</developers>
+
 	<repositories>
 		<repository>
 			<id>kuberam</id>
@@ -51,6 +56,38 @@
 			<artifactId>base</artifactId>
 			<version>0.1.0</version>
 		</dependency>
+		<dependency>
+			<groupId>org.apache.maven.plugin-testing</groupId>
+			<artifactId>maven-plugin-testing-harness</artifactId>
+			<version>2.1</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.sonatype.aether</groupId>
+			<artifactId>aether-api</artifactId>
+			<version>1.13.1</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.aether</groupId>
+			<artifactId>aether-transport-file</artifactId>
+			<version>0.9.0.M3</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.aether</groupId>
+			<artifactId>aether-transport-http</artifactId>
+			<version>0.9.0.M3</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.aether</groupId>
+			<artifactId>aether-connector-basic</artifactId>
+			<version>0.9.0.M3</version>
+			<scope>test</scope>
+		</dependency>
+
+
 	</dependencies>
 
 	<build>
