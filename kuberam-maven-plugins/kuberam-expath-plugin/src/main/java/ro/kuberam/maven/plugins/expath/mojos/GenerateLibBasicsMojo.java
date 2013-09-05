@@ -20,6 +20,9 @@ import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 
+import ro.kuberam.maven.plugins.mojos.KuberamAbstractMojo;
+import ro.kuberam.maven.plugins.utils.KuberamMojoUtils;
+
 /**
  * Generates the basic files needed for the library implementing the EXPath
  * module. <br/>
@@ -105,9 +108,9 @@ public class GenerateLibBasicsMojo extends KuberamAbstractMojo {
 	@Override
 	public void execute() throws MojoExecutionException, MojoFailureException {
 
-		createOutputDir(libDir);
+		KuberamMojoUtils.createOutputDir(libDir);
 
-		String specFileBaseName = getFileBaseName(specFile);
+		String specFileBaseName = KuberamMojoUtils.getFileBaseName(specFile);
 		
 		// generate java classes
 		executeMojo(

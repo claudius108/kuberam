@@ -24,6 +24,8 @@ import org.apache.maven.plugins.annotations.Parameter;
 import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.io.RawInputStreamFacade;
 
+import ro.kuberam.maven.plugins.mojos.KuberamAbstractMojo;
+
 /**
  * Generates the HTML index for a directory containing EXPath specifications.
  * The index will but generated in the directory containing the specifications. <br/>

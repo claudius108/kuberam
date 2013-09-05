@@ -21,6 +21,9 @@ import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 
+import ro.kuberam.maven.plugins.mojos.KuberamAbstractMojo;
+import ro.kuberam.maven.plugins.utils.KuberamMojoUtils;
+
 /**
  * Transforms an EXPath specification to HTML format. <br/>
  * 
@@ -65,9 +68,9 @@ public class TransformSpecToHtmlMojo extends KuberamAbstractMojo {
 	@Override
 	public void execute() throws MojoExecutionException, MojoFailureException {
 
-		createOutputDir(outputDir);
+		KuberamMojoUtils.createOutputDir(outputDir);
 
-		String specFileBaseName = getFileBaseName(specFile);
+		String specFileBaseName = KuberamMojoUtils.getFileBaseName(specFile);
 
 		String specTmpDir = projectBuildDirectory.getAbsolutePath() + File.separator + "spec-tmp-" + UUID.randomUUID();
 

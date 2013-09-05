@@ -6,6 +6,8 @@ import org.apache.maven.plugin.MojoFailureException;
 
 import org.apache.maven.plugins.annotations.Mojo;
 
+import ro.kuberam.maven.plugins.mojos.KuberamAbstractMojo;
+
 /**
  * Deploys a package in a repository (TBD). <br/>
  * 

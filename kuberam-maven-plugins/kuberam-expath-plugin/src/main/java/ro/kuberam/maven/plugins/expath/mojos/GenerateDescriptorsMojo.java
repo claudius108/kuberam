@@ -6,6 +6,8 @@ import org.apache.maven.plugin.MojoFailureException;
 
 import org.apache.maven.plugins.annotations.Mojo;
 
+import ro.kuberam.maven.plugins.mojos.KuberamAbstractMojo;
+
 /**
  * Generates the descriptors for a package (TBD). <br/>
  * 
