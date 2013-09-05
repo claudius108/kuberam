@@ -14,7 +14,7 @@ import org.apache.maven.plugins.annotations.Mojo;
  */
 
 @Mojo(name = "install-xar")
-public class InstallXarMojo extends AbstractMojo {
+public class InstallXarMojo extends KuberamAbstractMojo {
 
 	@Override
 	public void execute() throws MojoExecutionException, MojoFailureException {

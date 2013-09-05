@@ -30,7 +30,7 @@ import org.apache.maven.plugins.annotations.Parameter;
  */
 
 @Mojo(name = "transform-spec-to-html")
-public class TransformSpecToHtmlMojo extends AbstractExpathMojo {
+public class TransformSpecToHtmlMojo extends KuberamAbstractMojo {
 
 	/**
 	 * Specification file.

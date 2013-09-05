@@ -34,7 +34,7 @@ import org.codehaus.plexus.util.io.RawInputStreamFacade;
  */
 
 @Mojo(name = "generate-specs-index")
-public class GenerateSpecsIndexMojo extends AbstractExpathMojo {
+public class GenerateSpecsIndexMojo extends KuberamAbstractMojo {
 
 	/**
 	 * Directory containing the specifications.

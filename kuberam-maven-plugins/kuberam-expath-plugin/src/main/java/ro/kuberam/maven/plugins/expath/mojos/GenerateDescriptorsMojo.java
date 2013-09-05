@@ -15,7 +15,7 @@ import org.apache.maven.plugins.annotations.Mojo;
 
 @Mojo(name = "generate-descriptors")
 //@Execute(goal = "generate-descriptors")
-public class GenerateDescriptorsMojo extends AbstractMojo {
+public class GenerateDescriptorsMojo extends KuberamAbstractMojo {
 
 	@Override
 	public void execute() throws MojoExecutionException, MojoFailureException {

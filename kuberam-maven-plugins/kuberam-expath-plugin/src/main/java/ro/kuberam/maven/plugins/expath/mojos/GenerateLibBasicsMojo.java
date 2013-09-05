@@ -30,7 +30,7 @@ import org.apache.maven.plugins.annotations.Parameter;
  */
 
 @Mojo(name = "generate-lib-basics")
-public class GenerateLibBasicsMojo extends AbstractExpathMojo {
+public class GenerateLibBasicsMojo extends KuberamAbstractMojo {
 
 	/**
 	 * Specification file.
