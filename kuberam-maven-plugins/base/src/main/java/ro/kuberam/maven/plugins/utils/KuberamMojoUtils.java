@@ -7,10 +7,12 @@ import java.net.URL;
 
 public class KuberamMojoUtils {
 
-	public static void createOutputDir(File outputDir) {
+	public static File createOutputDir(File outputDir) {
 		if (!outputDir.exists()) {
 			outputDir.mkdir();
 		}
+		
+		return outputDir;
 	}
 
 	public static boolean unpack(URL url, File file) {
