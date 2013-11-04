@@ -14,7 +14,6 @@ public class IpLocalisationFunctionsTest {
 	}
 
 	@Test
-	// (expected = Exception.class)
 	public void validateWrongIpAddressTest() {
 		IpLocalisationFunctions.validateIpAddress("192.162.16.1450");
 	}
@@ -56,6 +55,11 @@ public class IpLocalisationFunctionsTest {
 		assertTrue(IpLocalisationFunctions.getCountryName("RO").equals("Romania"));
 		assertTrue(IpLocalisationFunctions.getCountryName("US").equals("United States"));
 		assertTrue(IpLocalisationFunctions.getCountryName("GB").equals("United Kingdom"));
+	}
+	
+	@Test
+	public void getCountryNameWithWrongAlpha2CodeTest() {
+		IpLocalisationFunctions.getCountryName("PO");
 	}
 
 	// public static Collection<Object[]> data() {

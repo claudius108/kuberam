@@ -78,8 +78,7 @@ public class IpLocalisationFunctions {
 	}
 
 	public static String getCountryAlpha3Code(String countryAlpha2Code) {
-		String countryAlpha3Code = "";
-		countryAlpha3Code = countryIsoAlpha3CodesProperties.getProperty(countryAlpha2Code, "");
+		String countryAlpha3Code = countryIsoAlpha3CodesProperties.getProperty(countryAlpha2Code, "");
 
 		if (countryAlpha3Code.equals("")) {
 			try {
@@ -93,8 +92,7 @@ public class IpLocalisationFunctions {
 	}
 	
 	public static String getCountryName(String countryAlpha2Code) {
-		String countryName = "";
-		countryName = countryShortNamesGazetteerOrderEnUsProperties.getProperty(countryAlpha2Code, "");
+		String countryName = countryShortNamesGazetteerOrderEnUsProperties.getProperty(countryAlpha2Code, "");
 
 		if (countryName.equals("")) {
 			try {
