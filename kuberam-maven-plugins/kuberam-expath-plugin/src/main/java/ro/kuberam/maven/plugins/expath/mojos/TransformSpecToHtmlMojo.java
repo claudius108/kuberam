@@ -68,7 +68,7 @@ public class TransformSpecToHtmlMojo extends KuberamAbstractMojo {
 	@Override
 	public void execute() throws MojoExecutionException, MojoFailureException {
 
-		KuberamMojoUtils.createOutputDir(outputDir);
+		KuberamMojoUtils.createDir(outputDir);
 
 		String specFileBaseName = KuberamMojoUtils.getFileBaseName(specFile);
 

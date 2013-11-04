@@ -108,7 +108,7 @@ public class GenerateLibBasicsMojo extends KuberamAbstractMojo {
 	@Override
 	public void execute() throws MojoExecutionException, MojoFailureException {
 
-		KuberamMojoUtils.createOutputDir(libDir);
+		KuberamMojoUtils.createDir(libDir);
 
 		String specFileBaseName = KuberamMojoUtils.getFileBaseName(specFile);
 		
