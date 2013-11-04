@@ -82,4 +82,8 @@
 		</copy>
 	</target>
 
+	<target name="execute-query" description="Execute an XQuery script on an eXist server">
+		<xdb:xquery user="${eXist.test.server.admin-username}" password="${eXist.test.server.admin-password}" uri="${eXist-server-url}" query="${query}" />
+	</target>
+
 </project>
