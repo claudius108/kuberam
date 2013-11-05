@@ -1,9 +1,11 @@
-package ro.kuberam.ipLocalisation;
+package ro.kuberam.location.ipLocalisation;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
+
+import ro.kuberam.location.ipLocalisation.IpLocalisationFunctions;
 
 public class IpLocalisationFunctionsTest {
 

@@ -1,4 +1,4 @@
-package ro.kuberam.ipLocalisation;
+package ro.kuberam.location.ipLocalisation;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -9,6 +9,8 @@ import java.util.HashSet;
 import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import ro.kuberam.location.ErrorMessages;
 
 public class IpLocalisationFunctions {
 
@@ -119,7 +121,7 @@ public class IpLocalisationFunctions {
 	}
 
 	protected static void validateIpAddress(String ipAddress) {
-		// InetAddress.
+		// InetAddress.getByName(ipAddress)
 		matcher = pattern.matcher(ipAddress);
 		if (!matcher.matches()) {
 			try {
