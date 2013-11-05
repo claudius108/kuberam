@@ -34,7 +34,7 @@ import ro.kuberam.maven.plugins.mojos.KuberamAbstractMojo;
 import ro.kuberam.maven.plugins.utils.KuberamMojoUtils;
 
 /**
- * Generates the internationalization data. <br/>
+ * Generates the IP localisation datasets. <br/>
  * 
  * @author <a href="mailto:claudius.teodorescu@gmail.com">Claudius
  *         Teodorescu</a>
