@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<dependencies xmlns="http://maven.apache.org/POM/4.0.0">
+
+	<dependency>
+		<groupId>com.maxmind.geoip2</groupId>
+		<artifactId>geoip2</artifactId>
+		<version>0.4.1</version>
+	</dependency>
+
+</dependencies>
