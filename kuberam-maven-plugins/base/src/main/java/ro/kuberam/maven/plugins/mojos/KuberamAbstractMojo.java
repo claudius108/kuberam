@@ -45,8 +45,9 @@ public class KuberamAbstractMojo extends AbstractMojo {
 	 * Local Maven repository where artifacts are cached during the build
 	 * process.
 	 */
-	@Parameter(defaultValue = "${localRepository}", required = true, readonly = true)
-	private ArtifactRepository localRepository;
+	// @Parameter(defaultValue = "${localRepository}", required = true, readonly
+	// = true)
+	// private ArtifactRepository localRepository;
 
 	/**
 	 * The project's remote repositories to use for the resolution of project
@@ -58,7 +59,7 @@ public class KuberamAbstractMojo extends AbstractMojo {
 	/**
 	 * The current repository/network configuration of Maven.
 	 */
-	@Parameter(defaultValue = "${project.repositorySystemSession}", readonly = true)
+	@Parameter(defaultValue = "${repositorySystemSession}", readonly = true)
 	protected RepositorySystemSession repoSession;
 
 	/**
@@ -71,13 +72,13 @@ public class KuberamAbstractMojo extends AbstractMojo {
 	 * The filename of the assembled distribution file.
 	 */
 	@Parameter(defaultValue = "${project.build.finalName}", required = true)
-	private String finalName;
+	protected String finalName;
 
 	/**
 	 * Base directory of the project.
 	 */
 	@Parameter(defaultValue = "${project.basedir}", required = true, readonly = true)
-	private File basedir;
+	protected File basedir;
 
 	private List<String> filters = Arrays.asList();
 

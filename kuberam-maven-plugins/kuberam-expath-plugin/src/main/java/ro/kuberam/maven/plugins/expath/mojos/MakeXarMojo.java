@@ -34,7 +34,6 @@ import org.codehaus.plexus.archiver.zip.ZipArchiver;
 import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.xml.Xpp3DomBuilder;
 import org.eclipse.aether.RepositorySystem;
-import org.eclipse.aether.RepositorySystemSession;
 import org.eclipse.aether.artifact.Artifact;
 import org.eclipse.aether.artifact.DefaultArtifact;
 import org.eclipse.aether.resolution.ArtifactRequest;
@@ -66,14 +65,8 @@ public class MakeXarMojo extends KuberamAbstractMojo {
 	@Parameter(defaultValue = "${project.build.directory}")
 	private File outputDirectory;
 
-	@Parameter(defaultValue = "${project.artifactId}-${project.version}")
-	private String finalName;
-
 	@Component
 	private RepositorySystem repoSystem;
-
-	@Parameter(defaultValue = "${repositorySystemSession}", readonly = true)
-	private RepositorySystemSession repoSession;
 
 	private static String componentsTemplateFileContent = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
 			+ "<package xmlns=\"http://exist-db.org/ns/expath-pkg\">${components}</package>";
