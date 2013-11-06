@@ -37,9 +37,9 @@
 			<outputDirectory>${artifactId}</outputDirectory>
 		</dependencySet>
 		<dependencySet>
-			<groupId>org.exist-db</groupId>
-			<artifactId>exist-modules</artifactId>
-			<version>2.0-tech-preview</version>
+			<groupId>org.apache.maven.doxia</groupId>
+			<artifactId>doxia-module-apt</artifactId>
+			<version>1.4</version>
 			<outputDirectory>${artifactId}</outputDirectory>
 		</dependencySet>
 	</dependencySets>
