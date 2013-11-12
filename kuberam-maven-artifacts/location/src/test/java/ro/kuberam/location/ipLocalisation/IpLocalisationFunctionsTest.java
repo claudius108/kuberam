@@ -8,6 +8,11 @@ import org.junit.Test;
 import ro.kuberam.location.ipLocalisation.IpLocalisationFunctions;
 
 public class IpLocalisationFunctionsTest {
+	
+	@Test
+	public void getPackageNameTest() {
+		System.out.println(IpLocalisationFunctionsTest.class.getPackage().getName().replace(".", "/"));
+	}
 
 	@Test
 	public void validateIpAddressTest() {

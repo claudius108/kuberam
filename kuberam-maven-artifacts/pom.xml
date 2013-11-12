@@ -12,8 +12,4 @@
 	<artifactId>base</artifactId>
 	<packaging>pom</packaging>
 
-	<modules>
-		<module>ip-localisation</module>
-	</modules>
-	
 </project>

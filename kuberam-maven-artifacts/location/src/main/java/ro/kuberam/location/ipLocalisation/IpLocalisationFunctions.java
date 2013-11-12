@@ -15,6 +15,7 @@ import ro.kuberam.location.ErrorMessages;
 public class IpLocalisationFunctions {
 
 	private static ClassLoader classLoader = IpLocalisationFunctions.class.getClassLoader();
+	private static String packagePath = IpLocalisationFunctions.class.getPackage().getName().replace(".", "/");
 
 	private static long[] startRanges;
 	private static String[] countryIsoAlpha2Codes;
@@ -37,22 +38,22 @@ public class IpLocalisationFunctions {
 		ObjectInputStream languageTagsObjectInputStream = null;
 
 		try {
-			startRangeIpsInputStream = classLoader.getResourceAsStream("ro/kuberam/ipLocalisation/startRangeIps.ser");
+			startRangeIpsInputStream = classLoader.getResourceAsStream(packagePath + "/startRangeIps.ser");
 			startRangeIpsObjectInputStream = new ObjectInputStream(startRangeIpsInputStream);
 			startRanges = (long[]) startRangeIpsObjectInputStream.readObject();
 
-			countryAlpha2CodesInputStream = classLoader.getResourceAsStream("ro/kuberam/ipLocalisation/countryIsoAlpha2Codes.ser");
+			countryAlpha2CodesInputStream = classLoader.getResourceAsStream(packagePath + "/countryIsoAlpha2Codes.ser");
 			countryAlpha2CodesObjectInputStream = new ObjectInputStream(countryAlpha2CodesInputStream);
 			countryIsoAlpha2Codes = (String[]) countryAlpha2CodesObjectInputStream.readObject();
 
-			languageTagsInputStream = classLoader.getResourceAsStream("ro/kuberam/ipLocalisation/languageTags.ser");
+			languageTagsInputStream = classLoader.getResourceAsStream(packagePath + "/languageTags.ser");
 			languageTagsObjectInputStream = new ObjectInputStream(languageTagsInputStream);
 			@SuppressWarnings("unchecked")
 			HashSet<String> languageTagsObject = (HashSet<String>) languageTagsObjectInputStream.readObject();
 			languageTags = languageTagsObject;
 
-			countryIsoAlpha3CodesProperties.load(classLoader.getResourceAsStream("ro/kuberam/ipLocalisation/country-iso-alpha-3-codes.properties"));
-			countryShortNamesGazetteerOrderEnUsProperties.load(classLoader.getResourceAsStream("ro/kuberam/ipLocalisation/country-short-names-gazetteer-order-en-US.properties"));
+			countryIsoAlpha3CodesProperties.load(classLoader.getResourceAsStream(packagePath + "/country-iso-alpha-3-codes.properties"));
+			countryShortNamesGazetteerOrderEnUsProperties.load(classLoader.getResourceAsStream(packagePath + "/country-short-names-gazetteer-order-en-US.properties"));
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
