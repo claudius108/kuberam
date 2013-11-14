@@ -1,0 +1,43 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>ro.kuberam.maven.plugins</groupId>
+		<artifactId>parent-pom</artifactId>
+		<version>0.1.0</version>
+	</parent>
+
+	<artifactId>kuberam-xml-plugin</artifactId>
+	<version>0.0.1</version>
+	<packaging>maven-plugin</packaging>
+	<name>kuberam xml plugin</name>
+	<description>Plugin for processing XML</description>
+	<url>http://kuberam.ro/maven/plugins/kuberam-xml-plugin</url>
+	<inceptionYear>2013</inceptionYear>
+
+	<prerequisites>
+		<maven>${mavenVersion}</maven>
+	</prerequisites>
+
+	<scm>
+		<connection>scm:git:https://github.com/claudius108/kuberam.git</connection>
+		<url>http://github.com/claudius108/kuberam/tree/master/kuberam-xml-plugin</url>
+	</scm>
+
+	<build>
+		<plugins>
+			<plugin>
+				<artifactId>maven-plugin-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<artifactId>maven-deploy-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<artifactId>maven-site-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>
