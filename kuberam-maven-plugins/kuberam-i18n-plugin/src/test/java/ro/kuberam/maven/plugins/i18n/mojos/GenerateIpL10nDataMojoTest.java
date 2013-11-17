@@ -1,33 +1,15 @@
 package ro.kuberam.maven.plugins.i18n.mojos;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.util.Arrays;
-import java.util.HashSet;
 
 import org.apache.maven.project.MavenProject;
-import org.apache.maven.repository.internal.MavenRepositorySystemUtils;
-import org.codehaus.plexus.PlexusTestCase;
-import org.eclipse.aether.DefaultRepositorySystemSession;
-import org.eclipse.aether.RepositorySystem;
-import org.eclipse.aether.RepositorySystemSession;
-import org.eclipse.aether.connector.basic.BasicRepositoryConnectorFactory;
-import org.eclipse.aether.impl.DefaultServiceLocator;
-import org.eclipse.aether.repository.LocalRepository;
-import org.eclipse.aether.spi.connector.RepositoryConnectorFactory;
-import org.eclipse.aether.spi.connector.transport.TransporterFactory;
-import org.eclipse.aether.transport.file.FileTransporterFactory;
-import org.eclipse.aether.transport.http.HttpTransporterFactory;
 import org.junit.Test;
 
+import ro.kuberam.maven.plugins.utils.KuberamAbstractMojoTestBase;
 import ro.kuberam.maven.plugins.utils.KuberamMojoUtils;
 
-public class GenerateIpL10nDataMojoTest extends PlexusTestCase {
+public class GenerateIpL10nDataMojoTest extends KuberamAbstractMojoTestBase {
 
-	private String basedir = PlexusTestCase.getBasedir() + File.separator;
-	private File projectBuildDirectory = new File(basedir + File.separator + "target");
 	private File ip2countryZipFile = new File(projectBuildDirectory + File.separator + "ip2country.zip");
 	private File countryCodes2countryNameFile = new File(projectBuildDirectory + File.separator + "countrynames.txt");
 	private File cldrZipFile = new File(projectBuildDirectory + File.separator + "core.zip");
@@ -106,12 +88,11 @@ public class GenerateIpL10nDataMojoTest extends PlexusTestCase {
 	}
 
 	@Test
-	public void testParseSupplementalDataFileFunction() throws Exception {
+	public void testParseSupaetherVersionplementalDataFileFunction() throws Exception {
 		final GenerateIpL10nDataMojo mojo = this.mojo();
 		mojo.outputDirectory = new File(projectBuildDirectory + File.separator + "java");
 		mojo.parseSupplementalDataFile(supplementalDataFile);
 	}
-
 
 	@Test
 	public void testMojoGoal() throws Exception {
@@ -129,21 +110,4 @@ public class GenerateIpL10nDataMojoTest extends PlexusTestCase {
 		return mojo;
 	}
 
-	private static RepositorySystemSession newSession(RepositorySystem system) {
-		DefaultRepositorySystemSession session = MavenRepositorySystemUtils.newSession();
-
-		LocalRepository localRepo = new LocalRepository("target/local-repo");
-		session.setLocalRepositoryManager(system.newLocalRepositoryManager(session, localRepo));
-
-		return session;
-	}
-
-	private static RepositorySystem newRepositorySystem() {
-		DefaultServiceLocator locator = MavenRepositorySystemUtils.newServiceLocator();
-		locator.addService(RepositoryConnectorFactory.class, BasicRepositoryConnectorFactory.class);
-		locator.addService(TransporterFactory.class, FileTransporterFactory.class);
-		locator.addService(TransporterFactory.class, HttpTransporterFactory.class);
-
-		return locator.getService(RepositorySystem.class);
-	}
 }
