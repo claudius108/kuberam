@@ -1,9 +1,11 @@
 package ro.kuberam.maven.plugins.utils;
 
 import java.io.File;
+import java.lang.reflect.Field;
 
 import org.apache.maven.repository.internal.MavenRepositorySystemUtils;
 import org.codehaus.plexus.PlexusTestCase;
+import org.codehaus.plexus.util.ReflectionUtils;
 import org.eclipse.aether.DefaultRepositorySystemSession;
 import org.eclipse.aether.RepositorySystem;
 import org.eclipse.aether.RepositorySystemSession;
@@ -17,8 +19,8 @@ import org.eclipse.aether.transport.http.HttpTransporterFactory;
 
 public class KuberamAbstractMojoTestBase extends PlexusTestCase {
 
-	protected static String basedir = PlexusTestCase.getBasedir() + File.separator;
-	protected static File projectBuildDirectory = new File(basedir + File.separator + "target");
+	protected static String baseDir = PlexusTestCase.getBasedir() + File.separator;
+	protected static String projectBuildDirectory = baseDir + "target" + File.separator;
 
 	protected static RepositorySystem newRepositorySystem() {
 		DefaultServiceLocator locator = MavenRepositorySystemUtils.newServiceLocator();
@@ -32,10 +34,16 @@ public class KuberamAbstractMojoTestBase extends PlexusTestCase {
 	protected static RepositorySystemSession newSession(RepositorySystem system) {
 		DefaultRepositorySystemSession session = MavenRepositorySystemUtils.newSession();
 
-		LocalRepository localRepo = new LocalRepository(projectBuildDirectory + "target/local-repo");
+		LocalRepository localRepo = new LocalRepository(projectBuildDirectory + "local-repo");
 		session.setLocalRepositoryManager(system.newLocalRepositoryManager(session, localRepo));
 
 		return session;
+	}
+
+	protected void setVariableValueToObject(Object object, String variable, Object value) throws IllegalAccessException {
+		Field field = ReflectionUtils.getFieldByNameIncludingSuperclasses(variable, object.getClass());
+		field.setAccessible(true);
+		field.set(object, value);
 	}
 
 }

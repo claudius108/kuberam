@@ -10,10 +10,10 @@ import ro.kuberam.maven.plugins.utils.KuberamMojoUtils;
 
 public class GenerateIpL10nDataMojoTest extends KuberamAbstractMojoTestBase {
 
-	private File ip2countryZipFile = new File(projectBuildDirectory + File.separator + "ip2country.zip");
-	private File countryCodes2countryNameFile = new File(projectBuildDirectory + File.separator + "countrynames.txt");
-	private File cldrZipFile = new File(projectBuildDirectory + File.separator + "core.zip");
-	private File cldrFolder = new File(projectBuildDirectory + File.separator + "cldr");
+	private File ip2countryZipFile = new File(projectBuildDirectory + "ip2country.zip");
+	private File countryCodes2countryNameFile = new File(projectBuildDirectory + "countrynames.txt");
+	private File cldrZipFile = new File(projectBuildDirectory + "core.zip");
+	private File cldrFolder = new File(projectBuildDirectory + "cldr");
 	private File supplementalDataFile = new File(cldrFolder + File.separator + "common" + File.separator + "supplemental" + File.separator
 			+ "supplementalData.xml");
 
@@ -56,7 +56,7 @@ public class GenerateIpL10nDataMojoTest extends KuberamAbstractMojoTestBase {
 
 	@Test
 	public void testExtractIpToCountryDb() throws Exception {
-		KuberamMojoUtils.extract(ip2countryZipFile, projectBuildDirectory);
+		KuberamMojoUtils.extract(ip2countryZipFile, new File(projectBuildDirectory));
 	}
 
 	@Test
@@ -67,8 +67,8 @@ public class GenerateIpL10nDataMojoTest extends KuberamAbstractMojoTestBase {
 	@Test
 	public void testParseIpToCountryIsoAlpha2CodeDbFunction() throws Exception {
 		final GenerateIpL10nDataMojo mojo = this.mojo();
-		KuberamMojoUtils.extract(ip2countryZipFile, projectBuildDirectory);
-		mojo.parseIpToCountryIsoAlpha2CodeDb(new File(projectBuildDirectory + File.separator + "ip2country.db"));
+		KuberamMojoUtils.extract(ip2countryZipFile, new File(projectBuildDirectory));
+		mojo.parseIpToCountryIsoAlpha2CodeDb(new File(projectBuildDirectory + "ip2country.db"));
 	}
 
 	@Test
@@ -90,7 +90,7 @@ public class GenerateIpL10nDataMojoTest extends KuberamAbstractMojoTestBase {
 	@Test
 	public void testParseSupaetherVersionplementalDataFileFunction() throws Exception {
 		final GenerateIpL10nDataMojo mojo = this.mojo();
-		mojo.outputDirectory = new File(projectBuildDirectory + File.separator + "java");
+		mojo.outputDirectory = new File(projectBuildDirectory + "java");
 		mojo.parseSupplementalDataFile(supplementalDataFile);
 	}
 
@@ -103,7 +103,7 @@ public class GenerateIpL10nDataMojoTest extends KuberamAbstractMojoTestBase {
 	private GenerateIpL10nDataMojo mojo() throws Exception {
 		final GenerateIpL10nDataMojo mojo = new GenerateIpL10nDataMojo();
 
-		mojo.setProjectBuildDirectory(projectBuildDirectory);
+		mojo.setProjectBuildDirectory(new File(projectBuildDirectory));
 		mojo.setProject(new MavenProject());
 		mojo.setRepoSession(newSession(newRepositorySystem()));
 
