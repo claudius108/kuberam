@@ -10,8 +10,8 @@
 	<xsl:param name="libArtifactId" />
 	<xsl:param name="libName" />
 
-	<xsl:variable name="javaPackageDirPath" select="concat($libDirPath, '/src/main/java/org/expath/', $javaPackageName, '/')" />
-	<xsl:variable name="java-package-declaration" select="concat('package org.expath.', $javaPackageName, ';')" />
+	<xsl:variable name="javaPackageDirPath" select="concat($libDirPath, '/src/main/java/', translate($javaPackageName, '.', '/'), '/')" />
+	<xsl:variable name="java-package-declaration" select="concat('package ', $javaPackageName, ';')" />
 
 	<xsl:variable name="java-end-of-instruction-line">
 		<xsl:text>";
@@ -26,38 +26,38 @@
 			<xsl:copy-of select="//element()[@id = 'module-prefix']" />
 		</xsl:variable>
 
-		<xsl:result-document href="{concat($libDirPath, '/pom.xml')}" method="xml" indent="yes">
-			<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
-				xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<!-- 		<xsl:result-document href="{concat($libDirPath, '/pom.xml')}" method="xml" indent="yes"> -->
+<!-- 			<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" -->
+<!-- 				xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"> -->
 
-				<modelVersion>4.0.0</modelVersion>
+<!-- 				<modelVersion>4.0.0</modelVersion> -->
 
-				<parent>
-					<groupId>org.expath.libs</groupId>
-					<artifactId>base</artifactId>
-					<version>1.0-SNAPSHOT</version>
-				</parent>
+<!-- 				<parent> -->
+<!-- 					<groupId>org.expath.libs</groupId> -->
+<!-- 					<artifactId>base</artifactId> -->
+<!-- 					<version>1.0-SNAPSHOT</version> -->
+<!-- 				</parent> -->
 
-				<artifactId><xsl:value-of select="$libArtifactId" /></artifactId>
-				<version><xsl:value-of select="$libVersion" /></version>
-				<name><xsl:value-of select="$libName" /></name>
-				<url><xsl:value-of select="$libUrl" /></url>
+<!-- 				<artifactId><xsl:value-of select="$libArtifactId" /></artifactId> -->
+<!-- 				<version><xsl:value-of select="$libVersion" /></version> -->
+<!-- 				<name><xsl:value-of select="$libName" /></name> -->
+<!-- 				<url><xsl:value-of select="$libUrl" /></url> -->
 
-				<dependencies>
-					<xsl:copy-of select="document(concat('file://', $libDirPath, '/src/main/resources/org/expath/', $javaPackageName, '/dependencies.xml'))/element()/element()" />
-				</dependencies>
+<!-- 				<dependencies> -->
+<!-- 					<xsl:copy-of select="document(concat('file://', $libDirPath, '/src/main/resources/org/expath/', $javaPackageName, '/dependencies.xml'))/element()/element()" /> -->
+<!-- 				</dependencies> -->
 
-				<build>
-					<plugins>
-						<plugin>
-							<groupId>org.apache.maven.plugins</groupId>
-							<artifactId>maven-jar-plugin</artifactId>
-						</plugin>
-					</plugins>
-				</build>
+<!-- 				<build> -->
+<!-- 					<plugins> -->
+<!-- 						<plugin> -->
+<!-- 							<groupId>org.apache.maven.plugins</groupId> -->
+<!-- 							<artifactId>maven-jar-plugin</artifactId> -->
+<!-- 						</plugin> -->
+<!-- 					</plugins> -->
+<!-- 				</build> -->
 
-			</project>
-		</xsl:result-document>
+<!-- 			</project> -->
+<!-- 		</xsl:result-document> -->
 
 		<xsl:result-document href="{concat($javaPackageDirPath, 'ErrorMessages.java')}" method="text">
 			<xsl:value-of select="$java-package-declaration" />
