@@ -10,6 +10,7 @@ import java.io.InputStream;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Result;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
@@ -51,6 +52,16 @@ public class ProcessXincludeMojo extends KuberamAbstractMojo {
 	private File inputFile;
 
 	/**
+	 * The parameter for setting the output of the XML declaration in the
+	 * resulting file.
+	 * 
+	 * @parameter
+	 * 
+	 */
+	@Parameter(defaultValue = "no")
+	private String omitXmlDeclaration = "no";
+
+	/**
 	 * Output directory.
 	 * 
 	 * @parameter
@@ -63,7 +74,7 @@ public class ProcessXincludeMojo extends KuberamAbstractMojo {
 	public void execute() throws MojoExecutionException, MojoFailureException {
 
 		FileUtils.mkdir(outputDir.getAbsolutePath());
-		
+
 		String inputFileName = FileUtils.filename(inputFile.getAbsolutePath());
 
 		InputStream xmlStream = null;
@@ -106,6 +117,7 @@ public class ProcessXincludeMojo extends KuberamAbstractMojo {
 		Transformer transformer;
 		try {
 			transformer = transformerFactory.newTransformer();
+			transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, omitXmlDeclaration);
 			transformer.transform(source, result);
 		} catch (TransformerConfigurationException e) {
 			e.printStackTrace();

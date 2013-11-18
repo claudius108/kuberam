@@ -8,13 +8,22 @@ import ro.kuberam.maven.plugins.utils.KuberamAbstractMojoTestBase;
 
 public class ProcessXincludeMojoTest extends KuberamAbstractMojoTestBase {
 
-	public void testValidationSuccess() throws Exception {
+	public void testNormalProcessing() throws Exception {
 		final ProcessXincludeMojo mojo = this.mojo();
 		
 		setVariableValueToObject(mojo, "inputFile", new File(baseDir + "src/test/resources/ro/kuberam/maven/plugins/xml/mojos/process-xinclude/document.xml"));
 		setVariableValueToObject(mojo, "outputDir", new File(projectBuildDirectory + "process-xinclude"));
 		mojo.execute();
 	}
+	
+	public void testOmitXmlDeclaration() throws Exception {
+		final ProcessXincludeMojo mojo = this.mojo();
+		
+		setVariableValueToObject(mojo, "inputFile", new File(baseDir + "src/test/resources/ro/kuberam/maven/plugins/xml/mojos/process-xinclude/document.xml"));
+		setVariableValueToObject(mojo, "omitXmlDeclaration", "yes");
+		setVariableValueToObject(mojo, "outputDir", new File(projectBuildDirectory + "process-xinclude"));
+		mojo.execute();
+	}	
 
 	private ProcessXincludeMojo mojo() throws Exception {
 		final ProcessXincludeMojo mojo = new ProcessXincludeMojo();
