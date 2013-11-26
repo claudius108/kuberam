@@ -110,7 +110,7 @@ public class KuberamAbstractMojo extends AbstractMojo {
 
 	public void setProjectBuildDirectory(File projectBuildDirectory) {
 		String projectBuildDirectoryAbsolutePath = projectBuildDirectory.getAbsolutePath();
-		this.projectBuildDirectory = new File(projectBuildDirectoryAbsolutePath.substring(0, projectBuildDirectoryAbsolutePath.length() - 1));
+		this.projectBuildDirectory = new File(projectBuildDirectoryAbsolutePath.substring(0, projectBuildDirectoryAbsolutePath.length()));
 	}
 
 	public void setProject(MavenProject project) {
