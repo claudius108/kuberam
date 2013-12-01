@@ -24,7 +24,7 @@
 	</modules>
 
 	<properties>
-		<mavenVersion>3.1.1</mavenVersion>
+		<mavenVersion>3.1.0</mavenVersion>
 		<mavenPluginPluginVersion>3.2</mavenPluginPluginVersion>
 		<aetherVersion>0.9.0.M3</aetherVersion>
 		<versionProjectInfoReportsPlugin>2.7</versionProjectInfoReportsPlugin>
