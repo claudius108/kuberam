@@ -6,7 +6,9 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Iterator;
 
+import javax.xml.namespace.NamespaceContext;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -19,6 +21,11 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathExpression;
+import javax.xml.xpath.XPathExpressionException;
+import javax.xml.xpath.XPathFactory;
 
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -26,7 +33,11 @@ import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.codehaus.plexus.util.DirectoryScanner;
 import org.codehaus.plexus.util.FileUtils;
+import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import ro.kuberam.maven.plugins.mojos.KuberamAbstractMojo;
@@ -70,6 +81,8 @@ public class ProcessXincludeMojo extends KuberamAbstractMojo {
 	@Parameter(required = true)
 	private File outputDir;
 
+	private String xmlNamespace = "http://www.w3.org/XML/1998/namespace";
+
 	@Override
 	public void execute() throws MojoExecutionException, MojoFailureException {
 
@@ -110,7 +123,47 @@ public class ProcessXincludeMojo extends KuberamAbstractMojo {
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
-		// print result
+
+		// delete @xml:base
+		NamespaceContext nsContext = new NamespaceContext() {
+			public String getNamespaceURI(String prefix) {
+				String uri;
+				if (prefix.equals("xml"))
+					uri = xmlNamespace;
+				else
+					uri = null;
+				return uri;
+			}
+
+			public Iterator getPrefixes(String val) {
+				return null;
+			}
+
+			public String getPrefix(String uri) {
+				return null;
+			}
+		};
+
+		XPathFactory xPathfactory = XPathFactory.newInstance();
+		XPath xpath = xPathfactory.newXPath();
+		xpath.setNamespaceContext(nsContext);
+		XPathExpression expr = null;
+		NodeList nl = null;
+
+		try {
+			expr = xpath.compile("//*[@xml:base]");
+			nl = (NodeList) expr.evaluate(doc, XPathConstants.NODESET);
+		} catch (XPathExpressionException e) {
+			e.printStackTrace();
+		}
+
+		for (int i = 0, il = nl.getLength(); i < il; i++) {
+			Node attr = nl.item(i);
+			Element element = (Element) attr;
+			element.removeAttributeNS(xmlNamespace, "base");
+		}
+
+		// store result
 		Source source = new DOMSource(doc);
 		Result result = new StreamResult(new File(outputDir + File.separator + inputFileName));
 		TransformerFactory transformerFactory = TransformerFactory.newInstance();
@@ -125,5 +178,4 @@ public class ProcessXincludeMojo extends KuberamAbstractMojo {
 			e.printStackTrace();
 		}
 	}
-
 }
