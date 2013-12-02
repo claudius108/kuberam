@@ -19,8 +19,8 @@ import org.eclipse.aether.transport.http.HttpTransporterFactory;
 
 public class KuberamAbstractMojoTestBase extends PlexusTestCase {
 
-	protected static String baseDir = PlexusTestCase.getBasedir() + File.separator;
-	protected static String projectBuildDirectory = baseDir + "target" + File.separator;
+	protected static String baseDir = PlexusTestCase.getBasedir();
+	protected static String projectBuildDirectory = baseDir + File.separator + "target";
 
 	protected static RepositorySystem newRepositorySystem() {
 		DefaultServiceLocator locator = MavenRepositorySystemUtils.newServiceLocator();
@@ -34,7 +34,7 @@ public class KuberamAbstractMojoTestBase extends PlexusTestCase {
 	protected static RepositorySystemSession newSession(RepositorySystem system) {
 		DefaultRepositorySystemSession session = MavenRepositorySystemUtils.newSession();
 
-		LocalRepository localRepo = new LocalRepository(projectBuildDirectory + "local-repo");
+		LocalRepository localRepo = new LocalRepository(projectBuildDirectory + File.separator + "local-repo");
 		session.setLocalRepositoryManager(system.newLocalRepositoryManager(session, localRepo));
 
 		return session;

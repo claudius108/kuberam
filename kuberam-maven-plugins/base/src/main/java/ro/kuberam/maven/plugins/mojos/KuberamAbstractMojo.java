@@ -108,11 +108,6 @@ public class KuberamAbstractMojo extends AbstractMojo {
 	public void execute() throws MojoExecutionException, MojoFailureException {
 	}
 
-	public void setProjectBuildDirectory(File projectBuildDirectory) {
-		String projectBuildDirectoryAbsolutePath = projectBuildDirectory.getAbsolutePath();
-		this.projectBuildDirectory = new File(projectBuildDirectoryAbsolutePath.substring(0, projectBuildDirectoryAbsolutePath.length()));
-	}
-
 	public void setProject(MavenProject project) {
 		this.project = project;
 	}

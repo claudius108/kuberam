@@ -9,7 +9,6 @@ import java.io.IOException;
 import java.io.LineNumberReader;
 import java.io.ObjectOutputStream;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Properties;
 
@@ -24,8 +23,10 @@ import javax.xml.xpath.XPathFactory;
 
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
-import org.apache.maven.plugin.compiler.CompilerMojo;
+import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
+import org.apache.maven.plugins.annotations.Parameter;
+import org.codehaus.plexus.util.FileUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
@@ -41,53 +42,79 @@ import ro.kuberam.maven.plugins.utils.KuberamMojoUtils;
  * 
  */
 
-@Mojo(name = "generate-ip-l10n-data")
+@Mojo(name = "generate-ip-l10n-data", defaultPhase = LifecyclePhase.GENERATE_SOURCES)
 public class GenerateIpL10nDataMojo extends KuberamAbstractMojo {
 
-	protected static String ip2countryDbUrl = "http://madm.dfki.de/demo/ip-countryside/ip2country.zip";
-	protected static String countryCodes2countryNamesDbUrl = "http://opengeocode.org/download/countrynames.txt";
-	protected static String cldrDbUrl = "http://unicode.org/Public/cldr/24/core.zip";
-	protected File outputDirectory;
+	@Parameter(defaultValue = "${project.build.directory}")
+	private File outputDir;
+
+	private static String ip2countryDbUrl = "http://madm.dfki.de/demo/ip-countryside/ip2country.zip";
+	private static String countryCodes2countryNamesDbUrl = "http://opengeocode.org/download/countrynames.txt";
+	private static String cldrDbUrl = "http://unicode.org/Public/cldr/24/core.zip";
+
+	private File processingTempDir;
+
+	private File ip2countryZipFilePath;
+	private File countryCodes2countryNameFile;
+	private File cldrZipFileName;
+	private File supplementalDataFile;
 
 	@Override
 	public void execute() throws MojoExecutionException, MojoFailureException {
 
-		// make output directory
-		outputDirectory = KuberamMojoUtils.createDir(new File(projectBuildDirectory + File.separator + "java"));
-
-		// download and unzip the ip2country.db file
-		File ip2countryZipFile = KuberamMojoUtils.downloadFromUrl(ip2countryDbUrl, new File(outputDirectory + File.separator + "ip2country.zip"));
-		KuberamMojoUtils.extract(ip2countryZipFile, outputDirectory);
+		// make the temporary directory for processing the input data
+		processingTempDir = new File(outputDir + File.separator + "ip-l10n-input-data");
+		FileUtils.mkdir(processingTempDir.getAbsolutePath());
+		ip2countryZipFilePath = new File(processingTempDir + File.separator + "ip2country.zip");
+		countryCodes2countryNameFile = new File(processingTempDir + File.separator + "countrynames.txt");
+		cldrZipFileName = new File(processingTempDir + File.separator + "core.zip");
+		supplementalDataFile = new File(processingTempDir + File.separator + "common" + File.separator + "supplemental" + File.separator
+				+ "supplementalData.xml");
 
 		// process the ip2country.db file
-		File ip2CountryFile = new File(outputDirectory + File.separator + "ip2country.db");
-		parseIpToCountryIsoAlpha2CodeDb(ip2CountryFile);
-		ip2countryZipFile.deleteOnExit();
-
-		// download the countrynames.txt file
-		File countryCodes2countryNamesFile = KuberamMojoUtils.downloadFromUrl(countryCodes2countryNamesDbUrl, new File(outputDirectory
-				+ File.separator + "countrynames.txt"));
+		processIpToCountryIsoAlpha2CodeDb();
 
 		// process the countrynames.txt file
+		processCountryNamesDb();
+
+		// process cldr archive
+		processCldrArchive();
+
+		// delete the temporary directory for processing the input data
+		try {
+			FileUtils.deleteDirectory(processingTempDir);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private void processCldrArchive() {
+		// download and unzip the CLDR archive
+		File cldrZipFile = KuberamMojoUtils.downloadFromUrl(cldrDbUrl, cldrZipFileName);
+		KuberamMojoUtils.extract(cldrZipFile, processingTempDir);
+
+		// process the supplementalData.xml file
+		parseSupplementalDataFile(supplementalDataFile);
+	}
+
+	private void processCountryNamesDb() {
+		// download the countrynames.txt file
+		File countryCodes2countryNamesFile = KuberamMojoUtils.downloadFromUrl(countryCodes2countryNamesDbUrl, countryCodes2countryNameFile);
 		try {
 			parseCountryNamesDb(countryCodes2countryNamesFile);
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
+	}
 
-		// download and unzip the CLDR archive
-		File cldrFolder = new File(outputDirectory + File.separator + "core.zip");
-		File cldrZipFile = KuberamMojoUtils.downloadFromUrl(cldrDbUrl, cldrFolder);
-		KuberamMojoUtils.extract(cldrZipFile, outputDirectory);
+	private void processIpToCountryIsoAlpha2CodeDb() {
+		// download and unzip the ip2country.db file
+		File ip2countryZipFile = KuberamMojoUtils.downloadFromUrl(ip2countryDbUrl, ip2countryZipFilePath);
+		KuberamMojoUtils.extract(ip2countryZipFile, processingTempDir);
 
-		// process the supplementalData.xml file
-		parseSupplementalDataFile(new File(cldrFolder + File.separator + "common" + File.separator + "supplemental" + File.separator
-				+ "supplementalData.xml"));
-		cldrZipFile.deleteOnExit();
-
-		CompilerMojo compiler = new CompilerMojo();
-		compiler.setPluginContext(new HashMap());
-		compiler.execute();
+		// process the ip2country.db file
+		File ip2CountryFile = new File(processingTempDir + File.separator + "ip2country.db");
+		parseIpToCountryIsoAlpha2CodeDb(ip2CountryFile);
 	}
 
 	public void parseIpToCountryIsoAlpha2CodeDb(File ip2countryFile) {
@@ -143,10 +170,9 @@ public class GenerateIpL10nDataMojo extends KuberamAbstractMojo {
 			long[] trimmedStartRangeIps = Arrays.copyOf(processedStartRangeIps, trimmedArraysCounter);
 			String[] trimmedCountryAlpha2Codes = Arrays.copyOf(processedCountryAlpha2Codes, trimmedArraysCounter);
 
-			new ObjectOutputStream(new FileOutputStream(ip2countryFile.getParent() + File.separator + "java" + File.separator + "startRangeIps.ser"))
-					.writeObject(trimmedStartRangeIps);
-			new ObjectOutputStream(new FileOutputStream(ip2countryFile.getParent() + File.separator + "java" + File.separator
-					+ "countryIsoAlpha2Codes.ser")).writeObject(trimmedCountryAlpha2Codes);
+			new ObjectOutputStream(new FileOutputStream(outputDir + File.separator + "startRangeIps.ser")).writeObject(trimmedStartRangeIps);
+			new ObjectOutputStream(new FileOutputStream(outputDir + File.separator + "countryIsoAlpha2Codes.ser"))
+					.writeObject(trimmedCountryAlpha2Codes);
 		} catch (Exception e) {
 		}
 
@@ -205,16 +231,14 @@ public class GenerateIpL10nDataMojo extends KuberamAbstractMojo {
 			countryShortNamesGazetteerOrderFrFrProperties.setProperty(countryAlpha2Code, data[7].toString());
 		}
 
-		storePropertyFile(countryIsoAlpha3CodesProperties, "country iso alpha-2 code = country iso alpha-3 code", new File(
-				countryCodes2countryNamesFile.getParent() + File.separator + "java" + File.separator + "country-iso-alpha-3-codes.properties"));
-		storePropertyFile(countryIsoNumericCodesProperties, "country iso alpha-2 code = country iso numeric code", new File(
-				countryCodes2countryNamesFile.getParent() + File.separator + "java" + File.separator + "country-iso-numeric-codes.properties"));
+		storePropertyFile(countryIsoAlpha3CodesProperties, "country iso alpha-2 code = country iso alpha-3 code", new File(outputDir + File.separator
+				+ "country-iso-alpha-3-codes.properties"));
+		storePropertyFile(countryIsoNumericCodesProperties, "country iso alpha-2 code = country iso numeric code", new File(outputDir
+				+ File.separator + "country-iso-numeric-codes.properties"));
 		storePropertyFile(countryShortNamesGazetteerOrderEnUsProperties, "country iso alpha-2 code = country short name, gazetteer order, en-US",
-				new File(countryCodes2countryNamesFile.getParent() + File.separator + "java" + File.separator
-						+ "country-short-names-gazetteer-order-en-US.properties"));
+				new File(outputDir + File.separator + "country-short-names-gazetteer-order-en-US.properties"));
 		storePropertyFile(countryShortNamesGazetteerOrderFrFrProperties, "country iso alpha-2 code = country short name, gazetteer order, fr-FR",
-				new File(countryCodes2countryNamesFile.getParent() + File.separator + "java" + File.separator
-						+ "country-short-names-gazetteer-order-fr-FR.properties"));
+				new File(outputDir + File.separator + "country-short-names-gazetteer-order-fr-FR.properties"));
 	}
 
 	public void parseSupplementalDataFile(File supplementalDataFile) {
@@ -228,6 +252,7 @@ public class GenerateIpL10nDataMojo extends KuberamAbstractMojo {
 		} catch (ParserConfigurationException e1) {
 			e1.printStackTrace();
 		}
+
 		try {
 			doc = docBuilder.parse(supplementalDataFile);
 		} catch (SAXException e) {
@@ -259,7 +284,7 @@ public class GenerateIpL10nDataMojo extends KuberamAbstractMojo {
 		}
 
 		try {
-			new ObjectOutputStream(new FileOutputStream(outputDirectory + File.separator + "languageTags.ser")).writeObject(languageTagHs);
+			new ObjectOutputStream(new FileOutputStream(outputDir + File.separator + "languageTags.ser")).writeObject(languageTagHs);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
