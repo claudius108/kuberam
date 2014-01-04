@@ -4,7 +4,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Properties;
 import java.util.regex.Matcher;
@@ -12,16 +11,16 @@ import java.util.regex.Pattern;
 
 import ro.kuberam.location.ErrorMessages;
 
-public class IpLocalisationFunctions {
+public class IpLocalisation {
 
-	private static ClassLoader classLoader = IpLocalisationFunctions.class.getClassLoader();
-	private static String packagePath = IpLocalisationFunctions.class.getPackage().getName().replace(".", "/");
+	private static ClassLoader classLoader = IpLocalisation.class.getClassLoader();
+	private static String packagePath = IpLocalisation.class.getPackage().getName().replace(".", "/");
 
-	private static long[] startRanges;
-	private static String[] countryIsoAlpha2Codes;
+	public static long[] startRanges;
+	public static String[] countryIsoAlpha2Codes;
 	private static HashSet<String> languageTags;
-	private static Properties countryIsoAlpha3CodesProperties = new Properties();
-	private static Properties countryShortNamesGazetteerOrderEnUsProperties = new Properties();
+	public static Properties countryIsoAlpha3CodesProperties = new Properties();
+	public static Properties countryShortNamesGazetteerOrderEnUsProperties = new Properties();
 
 	private static Pattern pattern;
 	private static Matcher matcher;
@@ -65,51 +64,8 @@ public class IpLocalisationFunctions {
 		pattern = Pattern.compile(IPADDRESS_PATTERN);
 	}
 
-	public static String getCountryAlpha2Code(String ipAddress) {
-
-		validateIpAddress(ipAddress);
-
-		long ipV4AddressAsLong = ipAddressToLong(ipAddress);
-
-		int ipRangeIndex = Arrays.binarySearch(startRanges, ipV4AddressAsLong);
-
-		ipRangeIndex = (ipRangeIndex >= 0) ? ipRangeIndex : ((-1) * ipRangeIndex) - 2;
-
-		String countryAlpha2Code = countryIsoAlpha2Codes[ipRangeIndex];
-
-		return countryAlpha2Code;
-	}
-
-	public static String getCountryAlpha3Code(String countryAlpha2Code) {
-		String countryAlpha3Code = countryIsoAlpha3CodesProperties.getProperty(countryAlpha2Code, "");
-
-		if (countryAlpha3Code.equals("")) {
-			try {
-				throw new Exception(ErrorMessages.err_LOC04);
-			} catch (Exception e1) {
-				e1.printStackTrace();
-			}
-		}
-
-		return countryAlpha3Code;
-	}
-	
-	public static String getCountryName(String countryAlpha2Code) {
-		String countryName = countryShortNamesGazetteerOrderEnUsProperties.getProperty(countryAlpha2Code, "");
-
-		if (countryName.equals("")) {
-			try {
-				throw new Exception(ErrorMessages.err_LOC04);
-			} catch (Exception e1) {
-				e1.printStackTrace();
-			}
-		}
-
-		return countryName;
-	}
-
 	// ancillary functions
-	protected static long ipAddressToLong(String ipAddress) {
+	public static long ipAddressToLong(String ipAddress) {
 		String[] addrArray = ipAddress.split("\\.");
 
 		long num = 0;
@@ -121,7 +77,7 @@ public class IpLocalisationFunctions {
 		return num;
 	}
 
-	protected static void validateIpAddress(String ipAddress) {
+	public static void validateIpAddress(String ipAddress) {
 		// InetAddress.getByName(ipAddress)
 		matcher = pattern.matcher(ipAddress);
 		if (!matcher.matches()) {

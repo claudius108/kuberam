@@ -12,4 +12,7 @@
 	<artifactId>base</artifactId>
 	<packaging>pom</packaging>
 
+	<modules>
+		<module>exist-location</module>
+	</modules>
 </project>
