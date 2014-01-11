@@ -1,4 +1,4 @@
-package ro.kuberam.maven.xarPlugin.tests;
+package ro.kuberam.maven.plugins.expath;
 
 import java.io.File;
 
