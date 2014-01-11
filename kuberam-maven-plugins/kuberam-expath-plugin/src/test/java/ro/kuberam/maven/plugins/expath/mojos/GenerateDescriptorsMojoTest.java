@@ -1,8 +1,8 @@
-package ro.kuberam.maven.plugins.expath;
+package ro.kuberam.maven.plugins.expath.mojos;
 
 import org.junit.Test;
 
-public class GenerateDescriptorsMojo {
+public class GenerateDescriptorsMojoTest {
 
 	// protected void setUp() throws Exception {
 	// super.setUp();
