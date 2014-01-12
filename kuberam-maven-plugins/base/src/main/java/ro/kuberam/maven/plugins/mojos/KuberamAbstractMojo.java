@@ -1,9 +1,15 @@
 package ro.kuberam.maven.plugins.mojos;
 
 import java.io.File;
+import java.net.URL;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.stream.StreamSource;
 
 import org.apache.maven.execution.MavenSession;
 import org.apache.maven.model.Resource;
@@ -81,7 +87,8 @@ public class KuberamAbstractMojo extends AbstractMojo {
 
 	private List<String> filters = Arrays.asList();
 
-	private List<String> defaultNonFilteredFileExtensions = Arrays.asList("jpg", "jpeg", "gif", "bmp", "png");
+	private List<String> defaultNonFilteredFileExtensions = Arrays.asList("jpg", "jpeg", "gif", "bmp",
+			"png");
 
 	public void filterResource(String directory, String include, String targetPath, File outputDirectory) {
 		Resource resource = new Resource();
@@ -90,8 +97,9 @@ public class KuberamAbstractMojo extends AbstractMojo {
 		resource.setFiltering(true);
 		resource.setTargetPath(targetPath);
 
-		MavenResourcesExecution mavenResourcesExecution = new MavenResourcesExecution(Collections.singletonList(resource), outputDirectory, project,
-				encoding, filters, defaultNonFilteredFileExtensions, session);
+		MavenResourcesExecution mavenResourcesExecution = new MavenResourcesExecution(
+				Collections.singletonList(resource), outputDirectory, project, encoding, filters,
+				defaultNonFilteredFileExtensions, session);
 
 		mavenResourcesExecution.setInjectProjectBuildFilters(false);
 		mavenResourcesExecution.setOverwrite(true);
@@ -114,6 +122,17 @@ public class KuberamAbstractMojo extends AbstractMojo {
 
 	public void setRepoSession(RepositorySystemSession repoSession) {
 		this.repoSession = repoSession;
+	}
+
+	public static void xsltTransform(File sourceFile, String xsltUrl, String resultDir) {
+		TransformerFactory tFactory = TransformerFactory.newInstance();
+		try {
+			Transformer transformer = tFactory.newTransformer(new StreamSource(xsltUrl));
+
+			transformer.transform(new StreamSource(sourceFile), new StreamResult(new File(resultDir)));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 }
