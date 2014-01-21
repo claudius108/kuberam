@@ -69,7 +69,7 @@ public class GenerateSpecsIndexMojo extends KuberamAbstractMojo {
 		try {
 			FileUtils
 					.copyStreamToFile(
-							new RawInputStreamFacade(this.getClass().getResourceAsStream("/ro/kuberam/maven/expathPlugin/generate-specs-index.xsl")),
+							new RawInputStreamFacade(this.getClass().getResourceAsStream("/ro/kuberam/maven/plugins/expath/generate-specs-index.xsl")),
 							xslFile);
 		} catch (IOException e2) {
 			e2.printStackTrace();
@@ -87,7 +87,7 @@ public class GenerateSpecsIndexMojo extends KuberamAbstractMojo {
 										element(name("dir"), specsIndexTmpDir),
 										element(name("includes"), element(name("include"), "generate-specs-index.xsl")),
 										element(name("stylesheet"),
-												this.getClass().getResource("/ro/kuberam/maven/expathPlugin/generate-specs-index.xsl").toString()),
+												this.getClass().getResource("/ro/kuberam/maven/plugins/expath/generate-specs-index.xsl").toString()),
 										element(name("outputDir"), specsIndexTmpDir),
 										element(name("parameters"),
 												element(name("parameter"), element(name("name"), "specsDir"),
@@ -99,6 +99,12 @@ public class GenerateSpecsIndexMojo extends KuberamAbstractMojo {
 
 		File transformedSpecFile = new File(specsIndexTmpDir + File.separator + "index.html");
 		transformedSpecFile.renameTo(new File(specsDirPath + File.separator + "index.html"));
+		
+//		System.setProperty("javax.xml.transform.TransformerFactory", "net.sf.saxon.TransformerFactoryImpl");
+//
+//		xsltTransform(specFile,
+//				this.getClass().getResource("/ro/kuberam/maven/plugins/expath/generate-specs-index.xsl")
+//						.toString(), new File(outputDir + File.separator + specFileBaseName + ".html").getAbsolutePath());		
 	}
 
 }
