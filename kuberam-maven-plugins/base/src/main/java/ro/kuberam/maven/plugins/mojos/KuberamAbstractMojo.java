@@ -124,10 +124,17 @@ public class KuberamAbstractMojo extends AbstractMojo {
 		this.repoSession = repoSession;
 	}
 
-	public static void xsltTransform(File sourceFile, String xsltUrl, String resultDir) {
+	public static void xsltTransform(File sourceFile, String xsltUrl, String resultDir,
+			NameValuePair[] parameters) {
+		System.setProperty("javax.xml.transform.TransformerFactory", "net.sf.saxon.TransformerFactoryImpl");
+		
 		TransformerFactory tFactory = TransformerFactory.newInstance();
 		try {
 			Transformer transformer = tFactory.newTransformer(new StreamSource(xsltUrl));
+
+			for (NameValuePair parameter : parameters) {
+				transformer.setParameter(parameter.getName(), parameter.getValue());
+			}
 
 			transformer.transform(new StreamSource(sourceFile), new StreamResult(new File(resultDir)));
 		} catch (Exception e) {

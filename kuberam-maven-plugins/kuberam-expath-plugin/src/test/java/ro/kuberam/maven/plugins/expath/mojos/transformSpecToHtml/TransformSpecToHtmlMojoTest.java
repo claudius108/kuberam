@@ -16,6 +16,7 @@ public class TransformSpecToHtmlMojoTest extends KuberamAbstractMojoTestBase {
 		setVariableValueToObject(mojo, "specFile", new File(baseDir
 				+ "/src/test/resources/ro/kuberam/maven/plugins/expath/mojos/transformSpecToHtml/crypto.xml"));
 		setVariableValueToObject(mojo, "outputDir", new File(projectBuildDirectory));
+		setVariableValueToObject(mojo, "googleAnalyticsAccountId", "googleAnalyticsAccountId");
 		mojo.execute();
 	}
 

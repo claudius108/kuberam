@@ -20,8 +20,10 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
+import org.codehaus.plexus.util.FileUtils;
 
 import ro.kuberam.maven.plugins.mojos.KuberamAbstractMojo;
+import ro.kuberam.maven.plugins.mojos.NameValuePair;
 import ro.kuberam.maven.plugins.utils.KuberamMojoUtils;
 
 /**
@@ -68,51 +70,16 @@ public class TransformSpecToHtmlMojo extends KuberamAbstractMojo {
 	@Override
 	public void execute() throws MojoExecutionException, MojoFailureException {
 
-		// try {
-		// FileUtils.forceMkdir(outputDir);
-		// } catch (IOException e) {
-		// e.printStackTrace();
-		// }
-		// FileUtils.mkdir(outputDir.getAbsolutePath());
-		KuberamMojoUtils.createDir(outputDir);
+		FileUtils.mkdir(outputDir.getAbsolutePath());
 
-		String specFileBaseName = KuberamMojoUtils.getFileBaseName(specFile);
-
-		String specTmpDir = projectBuildDirectory.getAbsolutePath() + File.separator + "spec-tmp-"
-				+ UUID.randomUUID();
-
-		// transform the spec
-//		executeMojo(
-//				plugin(groupId("org.codehaus.mojo"), artifactId("xml-maven-plugin"), version("1.0"),
-//						dependencies(dependency("net.sf.saxon", "Saxon-HE", "9.4.0.7"))),
-//				goal("transform"),
-//				configuration(
-//						element(name("forceCreation"), "true"),
-//						element(name("transformationSets"),
-//								element(name("transformationSet"),
-//										element(name("dir"), specFile.getParentFile().getAbsolutePath()),
-//										element(name("includes"),
-//												element(name("include"), specFileBaseName + ".xml")),
-//										element(name("stylesheet"),
-//												this.getClass()
-//														.getResource(
-//																"/ro/kuberam/maven/expathPlugin/xmlspec/transform-spec.xsl")
-//														.toString()),
-//										element(name("parameters"),
-//												element(name("parameter"),
-//														element(name("name"), "googleAnalyticsAccountId"),
-//														element(name("value"), googleAnalyticsAccountId))),
-//										element(name("outputDir"), specTmpDir)))),
-//				executionEnvironment(project, session, pluginManager));
-//
-//		File transformedSpecFile = new File(specTmpDir + File.separator + specFileBaseName + ".xml");
-//		transformedSpecFile.renameTo(new File(outputDir + File.separator + specFileBaseName + ".html"));
-
-		System.setProperty("javax.xml.transform.TransformerFactory", "net.sf.saxon.TransformerFactoryImpl");
+		NameValuePair[] parameters = new NameValuePair[] { new NameValuePair("googleAnalyticsAccountId",
+				googleAnalyticsAccountId) };
 
 		xsltTransform(specFile,
 				this.getClass().getResource("/ro/kuberam/maven/plugins/expath/xmlspec/transform-spec.xsl")
-						.toString(), new File(outputDir + File.separator + specFileBaseName + ".html").getAbsolutePath());
+						.toString(),
+				new File(outputDir + File.separator + FileUtils.basename(specFile.getAbsolutePath())
+						+ "html").getAbsolutePath(), parameters);
 	}
 
 }
