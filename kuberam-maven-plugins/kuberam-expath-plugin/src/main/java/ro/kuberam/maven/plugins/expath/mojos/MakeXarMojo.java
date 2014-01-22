@@ -75,7 +75,7 @@ public class MakeXarMojo extends KuberamAbstractMojo {
 
 		// test if descriptor file exists
 		if (!descriptor.exists()) {
-			throw new MojoExecutionException("Global descriptor file does not exist.");
+			throw new MojoExecutionException("Global descriptor file '" + descriptor.getAbsolutePath() + "' does not exist.");
 		}
 
 		// set needed variables
@@ -203,7 +203,7 @@ public class MakeXarMojo extends KuberamAbstractMojo {
 										element(name("dir"), archiveTmpDirectoryPath),
 										element(name("includes"), element(name("include"), assemblyDescriptorName)),
 										element(name("stylesheet"),
-												this.getClass().getResource("/ro/kuberam/maven/expathPlugin/generate-descriptors.xsl").toString()),
+												this.getClass().getResource("/ro/kuberam/maven/plugins/expath/generate-descriptors.xsl").toString()),
 										element(name("parameters"),
 												element(name("parameter"), element(name("name"), "package-dir"),
 														element(name("value"), descriptorsDirectoryPath)))))),

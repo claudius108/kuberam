@@ -124,7 +124,7 @@ public class GenerateLibBasicsMojo extends KuberamAbstractMojo {
 										element(name("dir"), specFile.getParentFile().getAbsolutePath()),
 										element(name("includes"), element(name("include"), specFileBaseName + ".xml")),
 										element(name("stylesheet"),
-												this.getClass().getResource("/ro/kuberam/maven/expathPlugin/generate-lib-basics.xsl").toString()),
+												this.getClass().getResource("/ro/kuberam/maven/plugins/expath/generate-lib-basics.xsl").toString()),
 										element(name("parameters"),
 												element(name("parameter"), element(name("name"), "javaPackageName"),
 														element(name("value"), javaPackageName)),
