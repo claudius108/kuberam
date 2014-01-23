@@ -120,6 +120,10 @@ public class KuberamAbstractMojo extends AbstractMojo {
 		this.project = project;
 	}
 
+	public void setMavenResourcesFiltering(MavenResourcesFiltering mavenResourcesFiltering) {
+		this.mavenResourcesFiltering = mavenResourcesFiltering;
+	}
+	
 	public void setRepoSession(RepositorySystemSession repoSession) {
 		this.repoSession = repoSession;
 	}
