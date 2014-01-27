@@ -19,8 +19,10 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
+import org.codehaus.plexus.util.FileUtils;
 
 import ro.kuberam.maven.plugins.mojos.KuberamAbstractMojo;
+import ro.kuberam.maven.plugins.mojos.NameValuePair;
 import ro.kuberam.maven.plugins.utils.KuberamMojoUtils;
 
 /**
@@ -108,32 +110,17 @@ public class GenerateLibBasicsMojo extends KuberamAbstractMojo {
 	@Override
 	public void execute() throws MojoExecutionException, MojoFailureException {
 
-		KuberamMojoUtils.createDir(libDir);
+		FileUtils.mkdir(libDir.getAbsolutePath());
 
-		String specFileBaseName = KuberamMojoUtils.getFileBaseName(specFile);
-		
-		// generate java classes
-		executeMojo(
-				plugin(groupId("org.codehaus.mojo"), artifactId("xml-maven-plugin"), version("1.0"),
-						dependencies(dependency("net.sf.saxon", "Saxon-HE", "9.4.0.7"))),
-				goal("transform"),
-				configuration(
-						element(name("forceCreation"), "true"),
-						element(name("transformationSets"),
-								element(name("transformationSet"),
-										element(name("dir"), specFile.getParentFile().getAbsolutePath()),
-										element(name("includes"), element(name("include"), specFileBaseName + ".xml")),
-										element(name("stylesheet"),
-												this.getClass().getResource("/ro/kuberam/maven/plugins/expath/generate-lib-basics.xsl").toString()),
-										element(name("parameters"),
-												element(name("parameter"), element(name("name"), "javaPackageName"),
-														element(name("value"), javaPackageName)),
-												element(name("parameter"), element(name("name"), "libDirPath"), element(name("value"), libDir.getAbsolutePath())),
-												element(name("parameter"), element(name("name"), "libUrl"), element(name("value"), libUrl)),
-												element(name("parameter"), element(name("name"), "libArtifactId"), element(name("value"), libArtifactId)),
-												element(name("parameter"), element(name("name"), "libName"), element(name("value"), libName)),
-												element(name("parameter"), element(name("name"), "libVersion"), element(name("value"), libVersion)))))),
-				executionEnvironment(project, session, pluginManager));
+		NameValuePair[] parameters = new NameValuePair[] {
+				new NameValuePair("javaPackageName", javaPackageName),
+				new NameValuePair("libDirPath", libDir.getAbsolutePath()),
+				new NameValuePair("libUrl", libUrl), new NameValuePair("libArtifactId", libArtifactId),
+				new NameValuePair("libName", libName), new NameValuePair("libVersion", libVersion) };
+
+		xsltTransform(specFile,
+				this.getClass().getResource("/ro/kuberam/maven/plugins/expath/generate-lib-basics.xsl")
+						.toString(), libDir.getAbsolutePath(), parameters);
 	}
 
 }
