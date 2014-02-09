@@ -96,11 +96,11 @@ public class KuberamAbstractMojo extends AbstractMojo {
 		resource.addInclude(include);
 		resource.setFiltering(true);
 		resource.setTargetPath(targetPath);
-
+		
 		MavenResourcesExecution mavenResourcesExecution = new MavenResourcesExecution(
 				Collections.singletonList(resource), outputDirectory, project, encoding, filters,
 				defaultNonFilteredFileExtensions, session);
-
+		System.out.println("mavenResourcesExecution: " + mavenResourcesExecution);
 		mavenResourcesExecution.setInjectProjectBuildFilters(false);
 		mavenResourcesExecution.setOverwrite(true);
 		mavenResourcesExecution.setSupportMultiLineFiltering(true);
@@ -120,18 +120,26 @@ public class KuberamAbstractMojo extends AbstractMojo {
 		this.project = project;
 	}
 
+	public MavenProject getProject() {
+		return project;
+	}
+
 	public void setMavenResourcesFiltering(MavenResourcesFiltering mavenResourcesFiltering) {
 		this.mavenResourcesFiltering = mavenResourcesFiltering;
 	}
-	
+
 	public void setRepoSession(RepositorySystemSession repoSession) {
 		this.repoSession = repoSession;
+	}
+
+	public void setSession(MavenSession session) {
+		this.session = session;
 	}
 
 	public static void xsltTransform(File sourceFile, String xsltUrl, String resultDir,
 			NameValuePair[] parameters) {
 		System.setProperty("javax.xml.transform.TransformerFactory", "net.sf.saxon.TransformerFactoryImpl");
-		
+
 		TransformerFactory tFactory = TransformerFactory.newInstance();
 		try {
 			Transformer transformer = tFactory.newTransformer(new StreamSource(xsltUrl));
