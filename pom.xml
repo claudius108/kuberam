@@ -13,6 +13,7 @@
 		<module>sourceforge</module>
 		<module>kuberam-maven-plugins</module>
 		<module>kuberam-maven-artifacts</module>
+		<module>xars</module>
 	</modules>
 
 	<properties>
