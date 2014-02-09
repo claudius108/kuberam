@@ -25,6 +25,7 @@ import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.io.RawInputStreamFacade;
 
 import ro.kuberam.maven.plugins.mojos.KuberamAbstractMojo;
+import ro.kuberam.maven.plugins.mojos.NameValuePair;
 
 /**
  * Generates the HTML index for a directory containing EXPath specifications.
@@ -62,49 +63,61 @@ public class GenerateSpecsIndexMojo extends KuberamAbstractMojo {
 	public void execute() throws MojoExecutionException, MojoFailureException {
 
 		String specsDirPath = specsDir.getAbsolutePath();
-		String specsIndexTmpDir = projectBuildDirectory.getAbsolutePath() + File.separator + "specs-index-tmp-" + UUID.randomUUID();
+		String specsIndexTmpDir = projectBuildDirectory.getAbsolutePath() + File.separator
+				+ "specs-index-tmp-" + UUID.randomUUID();
 
 		// create a copy of the XSL file used for generation of index file
 		File xslFile = new File(specsIndexTmpDir + File.separator + "generate-specs-index.xsl");
 		try {
-			FileUtils
-					.copyStreamToFile(
-							new RawInputStreamFacade(this.getClass().getResourceAsStream("/ro/kuberam/maven/plugins/expath/generate-specs-index.xsl")),
-							xslFile);
+			FileUtils.copyStreamToFile(
+					new RawInputStreamFacade(this.getClass().getResourceAsStream(
+							"/ro/kuberam/maven/plugins/expath/generate-specs-index.xsl")), xslFile);
 		} catch (IOException e2) {
 			e2.printStackTrace();
 		}
 
 		// generate the index
-		executeMojo(
-				plugin(groupId("org.codehaus.mojo"), artifactId("xml-maven-plugin"), version("1.0"),
-						dependencies(dependency("net.sf.saxon", "Saxon-HE", "9.4.0.7"))),
-				goal("transform"),
-				configuration(
-						element(name("forceCreation"), "true"),
-						element(name("transformationSets"),
-								element(name("transformationSet"),
-										element(name("dir"), specsIndexTmpDir),
-										element(name("includes"), element(name("include"), "generate-specs-index.xsl")),
-										element(name("stylesheet"),
-												this.getClass().getResource("/ro/kuberam/maven/plugins/expath/generate-specs-index.xsl").toString()),
-										element(name("outputDir"), specsIndexTmpDir),
-										element(name("parameters"),
-												element(name("parameter"), element(name("name"), "specsDir"),
-														element(name("value"), specsDir.getAbsolutePath())),
-												element(name("parameter"), element(name("name"), "includeSpecs"),
-														element(name("value"), includeSpecs)),
-												element(name("parameter"), element(name("name"), "outputDir"), element(name("value"), specsDirPath)))))),
-				executionEnvironment(project, session, pluginManager));
-
-		File transformedSpecFile = new File(specsIndexTmpDir + File.separator + "index.html");
-		transformedSpecFile.renameTo(new File(specsDirPath + File.separator + "index.html"));
-		
-//		System.setProperty("javax.xml.transform.TransformerFactory", "net.sf.saxon.TransformerFactoryImpl");
+//		executeMojo(
+//				plugin(groupId("org.codehaus.mojo"), artifactId("xml-maven-plugin"), version("1.0"),
+//						dependencies(dependency("net.sf.saxon", "Saxon-HE", "9.4.0.7"))),
+//				goal("transform"),
+//				configuration(
+//						element(name("forceCreation"), "true"),
+//						element(name("transformationSets"),
+//								element(name("transformationSet"),
+//										element(name("dir"), specsIndexTmpDir),
+//										element(name("includes"),
+//												element(name("include"), "generate-specs-index.xsl")),
+//										element(name("stylesheet"),
+//												this.getClass()
+//														.getResource(
+//																"/ro/kuberam/maven/plugins/expath/generate-specs-index.xsl")
+//														.toString()),
+//										element(name("outputDir"), specsIndexTmpDir),
+//										element(name("parameters"),
+//												element(name("parameter"),
+//														element(name("name"), "specsDir"),
+//														element(name("value"), specsDir.getAbsolutePath())),
+//												element(name("parameter"),
+//														element(name("name"), "includeSpecs"),
+//														element(name("value"), includeSpecs)),
+//												element(name("parameter"),
+//														element(name("name"), "outputDir"),
+//														element(name("value"), specsDirPath)))))),
+//				executionEnvironment(project, session, pluginManager));
 //
-//		xsltTransform(specFile,
-//				this.getClass().getResource("/ro/kuberam/maven/plugins/expath/generate-specs-index.xsl")
-//						.toString(), new File(outputDir + File.separator + specFileBaseName + ".html").getAbsolutePath());		
+//		File transformedSpecFile = new File(specsIndexTmpDir + File.separator + "index.html");
+//		transformedSpecFile.renameTo(new File(specsDirPath + File.separator + "index.html"));
+
+		NameValuePair[] parameters = new NameValuePair[] {
+				new NameValuePair("specsDir", specsDir.getAbsolutePath()),
+				new NameValuePair("includeSpecs", includeSpecs),
+				new NameValuePair("outputDir", specsDirPath) };
+
+		xsltTransform(xslFile,
+				this.getClass().getResource("/ro/kuberam/maven/plugins/expath/generate-specs-index.xsl")
+						.toString(),
+				new File(specsDirPath + File.separator + "index.html").getAbsolutePath(), parameters);
 	}
 
 }

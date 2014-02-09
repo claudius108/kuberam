@@ -1,18 +1,5 @@
 package ro.kuberam.maven.plugins.expath.mojos;
 
-import static org.twdata.maven.mojoexecutor.MojoExecutor.artifactId;
-import static org.twdata.maven.mojoexecutor.MojoExecutor.configuration;
-import static org.twdata.maven.mojoexecutor.MojoExecutor.dependencies;
-import static org.twdata.maven.mojoexecutor.MojoExecutor.dependency;
-import static org.twdata.maven.mojoexecutor.MojoExecutor.element;
-import static org.twdata.maven.mojoexecutor.MojoExecutor.executeMojo;
-import static org.twdata.maven.mojoexecutor.MojoExecutor.executionEnvironment;
-import static org.twdata.maven.mojoexecutor.MojoExecutor.goal;
-import static org.twdata.maven.mojoexecutor.MojoExecutor.groupId;
-import static org.twdata.maven.mojoexecutor.MojoExecutor.name;
-import static org.twdata.maven.mojoexecutor.MojoExecutor.plugin;
-import static org.twdata.maven.mojoexecutor.MojoExecutor.version;
-
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
@@ -44,6 +31,7 @@ import ro.kuberam.maven.plugins.expath.DefaultFileSet;
 import ro.kuberam.maven.plugins.expath.DependencySet;
 import ro.kuberam.maven.plugins.expath.DescriptorConfiguration;
 import ro.kuberam.maven.plugins.mojos.KuberamAbstractMojo;
+import ro.kuberam.maven.plugins.mojos.NameValuePair;
 
 /**
  * Assembles a package. <br/>
@@ -56,14 +44,14 @@ import ro.kuberam.maven.plugins.mojos.KuberamAbstractMojo;
 @Mojo(name = "make-xar")
 public class MakeXarMojo extends KuberamAbstractMojo {
 
-	@Component(role = org.codehaus.plexus.archiver.Archiver.class, hint = "zip")
-	private ZipArchiver zipArchiver;
-
 	@Parameter(required = true)
 	private File descriptor;
 
 	@Parameter(defaultValue = "${project.build.directory}")
-	private File outputDirectory;
+	private File outputDir;
+
+	@Component(role = org.codehaus.plexus.archiver.Archiver.class, hint = "zip")
+	private ZipArchiver zipArchiver;
 
 	@Component
 	private RepositorySystem repoSystem;
@@ -75,29 +63,32 @@ public class MakeXarMojo extends KuberamAbstractMojo {
 
 		// test if descriptor file exists
 		if (!descriptor.exists()) {
-			throw new MojoExecutionException("Global descriptor file '" + descriptor.getAbsolutePath() + "' does not exist.");
+			throw new MojoExecutionException("Global descriptor file '" + descriptor.getAbsolutePath()
+					+ "' does not exist.");
 		}
 
 		// set needed variables
-		String outputDirectoryPath = outputDirectory.getAbsolutePath();
+		String outputDirectoryPath = outputDir.getAbsolutePath();
 		String assemblyDescriptorName = descriptor.getName();
-		String archiveTmpDirectoryPath = project.getModel().getBuild().getDirectory() + File.separator + "xar-tmp";
+		String archiveTmpDirectoryPath = projectBuildDirectory + File.separator + "make-xar-tmp";
 		String components = "";
-		String descriptorsDirectoryPath = outputDirectoryPath + File.separator + "expath-descriptors-" + UUID.randomUUID();
+		String descriptorsDirectoryPath = outputDirectoryPath + File.separator + "expath-descriptors-"
+				+ UUID.randomUUID();
 
 		// Plugin xarPlugin =
 		// project.getPlugin("ro.kuberam.maven.plugins:kuberam-xar-plugin");
 		// DescriptorConfiguration mainConfig = new
 		// DescriptorConfiguration((Xpp3Dom) xarPlugin.getConfiguration());
-
+		
 		// filter the descriptor file
-		filterResource(descriptor.getParent(), assemblyDescriptorName, archiveTmpDirectoryPath, outputDirectory);
+		filterResource(descriptor.getParent(), assemblyDescriptorName, archiveTmpDirectoryPath, outputDir);
 
 		// get the execution configuration
 		FileReader fileReader;
 		DescriptorConfiguration executionConfig;
 		try {
-			fileReader = new FileReader(new File(archiveTmpDirectoryPath + File.separator + assemblyDescriptorName));
+			fileReader = new FileReader(new File(archiveTmpDirectoryPath + File.separator
+					+ assemblyDescriptorName));
 			executionConfig = new DescriptorConfiguration(Xpp3DomBuilder.build(fileReader));
 		} catch (Exception e) {
 			throw new MojoExecutionException(e.getMessage());
@@ -120,7 +111,8 @@ public class MakeXarMojo extends KuberamAbstractMojo {
 			// define the artifact
 			Artifact artifactReference;
 			try {
-				artifactReference = new DefaultArtifact(dependencySet.groupId + ":" + dependencySet.artifactId + ":" + dependencySet.version);
+				artifactReference = new DefaultArtifact(dependencySet.groupId + ":"
+						+ dependencySet.artifactId + ":" + dependencySet.version);
 			} catch (IllegalArgumentException e) {
 				throw new MojoFailureException(e.getMessage(), e);
 			}
@@ -177,42 +169,58 @@ public class MakeXarMojo extends KuberamAbstractMojo {
 			ArchiveEntry entry = itr.next();
 			String entryPath = entry.getName();
 			if (entryPath.endsWith(".jar")) {
-				components += "<resource><public-uri>" + moduleNamespace + "</public-uri><file>" + entryPath.substring(8) + "</file></resource>";
+				components += "<resource><public-uri>" + moduleNamespace + "</public-uri><file>"
+						+ entryPath.substring(8) + "</file></resource>";
 			}
 		}
 
 		project.getModel().addProperty("components", components);
 
 		// create and filter the components descriptor
+		File componentsTemplateFile = new File(archiveTmpDirectoryPath + File.separator + "components.xml");
 		try {
-			FileUtils.fileWrite(new File(archiveTmpDirectoryPath + File.separator + "components.xml"), "UTF-8", componentsTemplateFileContent);
+			FileUtils.fileWrite(componentsTemplateFile, "UTF-8", componentsTemplateFileContent);
 		} catch (IOException e2) {
 			e2.printStackTrace();
 		}
-		filterResource(archiveTmpDirectoryPath, "components.xml", descriptorsDirectoryPath, outputDirectory);
+		filterResource(archiveTmpDirectoryPath, "components.xml", descriptorsDirectoryPath, outputDir);
 
 		// generate the expath descriptors
-		executeMojo(
-				plugin(groupId("org.codehaus.mojo"), artifactId("xml-maven-plugin"), version("1.0"),
-						dependencies(dependency("net.sf.saxon", "Saxon-HE", "9.4.0.7"))),
-				goal("transform"),
-				configuration(
-						element(name("forceCreation"), "true"),
-						element(name("transformationSets"),
-								element(name("transformationSet"),
-										element(name("dir"), archiveTmpDirectoryPath),
-										element(name("includes"), element(name("include"), assemblyDescriptorName)),
-										element(name("stylesheet"),
-												this.getClass().getResource("/ro/kuberam/maven/plugins/expath/generate-descriptors.xsl").toString()),
-										element(name("parameters"),
-												element(name("parameter"), element(name("name"), "package-dir"),
-														element(name("value"), descriptorsDirectoryPath)))))),
-				executionEnvironment(project, session, pluginManager));
+		// executeMojo(
+		// plugin(groupId("org.codehaus.mojo"), artifactId("xml-maven-plugin"),
+		// version("1.0"),
+		// dependencies(dependency("net.sf.saxon", "Saxon-HE", "9.4.0.7"))),
+		// goal("transform"),
+		// configuration(
+		// element(name("forceCreation"), "true"),
+		// element(name("transformationSets"),
+		// element(name("transformationSet"),
+		// element(name("dir"), archiveTmpDirectoryPath),
+		// element(name("includes"),
+		// element(name("include"), assemblyDescriptorName)),
+		// element(name("stylesheet"),
+		// this.getClass()
+		// .getResource(
+		// "/ro/kuberam/maven/plugins/expath/generate-descriptors.xsl")
+		// .toString()),
+		// element(name("parameters"),
+		// element(name("parameter"),
+		// element(name("name"), "package-dir"),
+		// element(name("value"), descriptorsDirectoryPath)))))),
+		// executionEnvironment(project, session, pluginManager));
+
+		NameValuePair[] parameters = new NameValuePair[] { new NameValuePair("package-dir",
+				descriptorsDirectoryPath) };
+
+		xsltTransform(componentsTemplateFile,
+				this.getClass().getResource("/ro/kuberam/maven/plugins/expath/generate-descriptors.xsl")
+						.toString(), descriptorsDirectoryPath, parameters);
 
 		// add the expath descriptors
 		File descriptorsDirectory = new File(descriptorsDirectoryPath);
 		for (String descriptorFileName : descriptorsDirectory.list()) {
-			zipArchiver.addFile(new File(descriptorsDirectoryPath + File.separator + descriptorFileName), descriptorFileName);
+			zipArchiver.addFile(new File(descriptorsDirectoryPath + File.separator + descriptorFileName),
+					descriptorFileName);
 		}
 
 		try {
