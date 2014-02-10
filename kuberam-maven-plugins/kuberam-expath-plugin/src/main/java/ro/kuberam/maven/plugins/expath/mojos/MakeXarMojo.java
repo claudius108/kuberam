@@ -79,16 +79,17 @@ public class MakeXarMojo extends KuberamAbstractMojo {
 		// project.getPlugin("ro.kuberam.maven.plugins:kuberam-xar-plugin");
 		// DescriptorConfiguration mainConfig = new
 		// DescriptorConfiguration((Xpp3Dom) xarPlugin.getConfiguration());
-		
+
 		// filter the descriptor file
 		filterResource(descriptor.getParent(), assemblyDescriptorName, archiveTmpDirectoryPath, outputDir);
+		File filteredDescriptor = new File(archiveTmpDirectoryPath + File.separator
+				+ assemblyDescriptorName);
 
 		// get the execution configuration
 		FileReader fileReader;
 		DescriptorConfiguration executionConfig;
 		try {
-			fileReader = new FileReader(new File(archiveTmpDirectoryPath + File.separator
-					+ assemblyDescriptorName));
+			fileReader = new FileReader(filteredDescriptor);
 			executionConfig = new DescriptorConfiguration(Xpp3DomBuilder.build(fileReader));
 		} catch (Exception e) {
 			throw new MojoExecutionException(e.getMessage());
@@ -186,33 +187,11 @@ public class MakeXarMojo extends KuberamAbstractMojo {
 		filterResource(archiveTmpDirectoryPath, "components.xml", descriptorsDirectoryPath, outputDir);
 
 		// generate the expath descriptors
-		// executeMojo(
-		// plugin(groupId("org.codehaus.mojo"), artifactId("xml-maven-plugin"),
-		// version("1.0"),
-		// dependencies(dependency("net.sf.saxon", "Saxon-HE", "9.4.0.7"))),
-		// goal("transform"),
-		// configuration(
-		// element(name("forceCreation"), "true"),
-		// element(name("transformationSets"),
-		// element(name("transformationSet"),
-		// element(name("dir"), archiveTmpDirectoryPath),
-		// element(name("includes"),
-		// element(name("include"), assemblyDescriptorName)),
-		// element(name("stylesheet"),
-		// this.getClass()
-		// .getResource(
-		// "/ro/kuberam/maven/plugins/expath/generate-descriptors.xsl")
-		// .toString()),
-		// element(name("parameters"),
-		// element(name("parameter"),
-		// element(name("name"), "package-dir"),
-		// element(name("value"), descriptorsDirectoryPath)))))),
-		// executionEnvironment(project, session, pluginManager));
 
 		NameValuePair[] parameters = new NameValuePair[] { new NameValuePair("package-dir",
 				descriptorsDirectoryPath) };
 
-		xsltTransform(componentsTemplateFile,
+		xsltTransform(filteredDescriptor,
 				this.getClass().getResource("/ro/kuberam/maven/plugins/expath/generate-descriptors.xsl")
 						.toString(), descriptorsDirectoryPath, parameters);
 

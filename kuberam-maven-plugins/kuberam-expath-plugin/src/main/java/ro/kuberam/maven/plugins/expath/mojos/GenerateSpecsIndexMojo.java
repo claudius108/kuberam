@@ -1,18 +1,5 @@
 package ro.kuberam.maven.plugins.expath.mojos;
 
-import static org.twdata.maven.mojoexecutor.MojoExecutor.artifactId;
-import static org.twdata.maven.mojoexecutor.MojoExecutor.configuration;
-import static org.twdata.maven.mojoexecutor.MojoExecutor.dependencies;
-import static org.twdata.maven.mojoexecutor.MojoExecutor.dependency;
-import static org.twdata.maven.mojoexecutor.MojoExecutor.element;
-import static org.twdata.maven.mojoexecutor.MojoExecutor.executeMojo;
-import static org.twdata.maven.mojoexecutor.MojoExecutor.executionEnvironment;
-import static org.twdata.maven.mojoexecutor.MojoExecutor.goal;
-import static org.twdata.maven.mojoexecutor.MojoExecutor.groupId;
-import static org.twdata.maven.mojoexecutor.MojoExecutor.name;
-import static org.twdata.maven.mojoexecutor.MojoExecutor.plugin;
-import static org.twdata.maven.mojoexecutor.MojoExecutor.version;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.UUID;
@@ -75,39 +62,6 @@ public class GenerateSpecsIndexMojo extends KuberamAbstractMojo {
 		} catch (IOException e2) {
 			e2.printStackTrace();
 		}
-
-		// generate the index
-//		executeMojo(
-//				plugin(groupId("org.codehaus.mojo"), artifactId("xml-maven-plugin"), version("1.0"),
-//						dependencies(dependency("net.sf.saxon", "Saxon-HE", "9.4.0.7"))),
-//				goal("transform"),
-//				configuration(
-//						element(name("forceCreation"), "true"),
-//						element(name("transformationSets"),
-//								element(name("transformationSet"),
-//										element(name("dir"), specsIndexTmpDir),
-//										element(name("includes"),
-//												element(name("include"), "generate-specs-index.xsl")),
-//										element(name("stylesheet"),
-//												this.getClass()
-//														.getResource(
-//																"/ro/kuberam/maven/plugins/expath/generate-specs-index.xsl")
-//														.toString()),
-//										element(name("outputDir"), specsIndexTmpDir),
-//										element(name("parameters"),
-//												element(name("parameter"),
-//														element(name("name"), "specsDir"),
-//														element(name("value"), specsDir.getAbsolutePath())),
-//												element(name("parameter"),
-//														element(name("name"), "includeSpecs"),
-//														element(name("value"), includeSpecs)),
-//												element(name("parameter"),
-//														element(name("name"), "outputDir"),
-//														element(name("value"), specsDirPath)))))),
-//				executionEnvironment(project, session, pluginManager));
-//
-//		File transformedSpecFile = new File(specsIndexTmpDir + File.separator + "index.html");
-//		transformedSpecFile.renameTo(new File(specsDirPath + File.separator + "index.html"));
 
 		NameValuePair[] parameters = new NameValuePair[] {
 				new NameValuePair("specsDir", specsDir.getAbsolutePath()),
