@@ -3,7 +3,7 @@ xquery version "3.0";
 import module "http://expath.org/ns/http-client";
 declare option exist:serialize "method=html5 media-type=text/html encoding=utf-8 indent=yes";
 
-declare variable $redmine-server-url := "http://kjc-sv013.kjc.uni-heidelberg.de/redmine";
+declare variable $redmine-server-url := "http://" || request:get-parameter("redmine-server-url", "");
 
 declare function local:display-issue($issue as node()) as node() {
     let $id := $issue/*[local-name() = 'id']/text()
@@ -21,12 +21,12 @@ declare function local:display-issue($issue as node()) as node() {
         </div>    
 };
 
-let $query-string :=  "/issues.xml?project=" || request:get-parameter("project", "tamboti") || "&amp;fixed_version=" || request:get-parameter("version", "1.1.5") || "&amp;status_id=*&amp;limit=100" || "&amp;api-key=" || request:get-parameter("api-key", "")
+let $query-string :=  "/issues.xml?project_id=" || request:get-parameter("project", "") || "&amp;fixed_version=" || request:get-parameter("version", "") || "&amp;status_id=*&amp;limit=100" || "&amp;key=" || request:get-parameter("key", "")
 let $query-url := $redmine-server-url || $query-string
 let $issues := <issues xmlns="http://kuberam.ro/ns/redmine-scrum-board">{http:send-request(<http:request method="GET" href="{$query-url}" />)[2]/*/*}</issues>
 let $project-title := data($issues/*[1]/*[local-name() = 'project']/@name)
 let $user-stories :=
-    for $user-story in $issues/*[./*[local-name() = 'tracker' and @name = 'User story']]
+    for $user-story in $issues/*[./*[local-name() = 'tracker' and lower-case(@name) = 'user story']]
     order by $user-story/*[local-name() = 'subject']
     return $user-story
         
@@ -35,13 +35,13 @@ return
     <html xmlns="http://www.w3.org/1999/xhtml">
         <head>
             <title>{$project-title}</title>
-            <link href="http://fonts.googleapis.com/css?family=Reenie+Beanie" rel="stylesheet" type="text/css"/>
             <link href="redmine-scrum-board.css" rel="stylesheet" type="text/css"/>
+            <link href='http://fonts.googleapis.com/css?family=Lemon' rel='stylesheet' type='text/css'/>
             <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js">/**/</script>
             <script src="redmine-scrum-board.js">/**/</script>            
         </head>
         <body>
-            <h2>{$project-title}</h2>
+            <h2 id="project-title">{$project-title}</h2>
             <div class="issues">
             <table>
                 <tr>

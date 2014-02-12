@@ -1,0 +1,26 @@
+<package xmlns="http://expath.org/ns/pkg" name="http://kuberam.ro/ns/scrum-board" abbrev="${package-abbrev}"
+	version="${project.version}" spec="1.0">
+	<title>Kuberam Scrum Board</title>
+	<dependency processor="http://exist-db.org/" />
+	<author id="cteodorescu">Claudius Teodorescu</author>
+	<website>http://kuberam.ro</website>
+	<license>GNU-LGPL</license>
+	<copyright>true</copyright>
+	<type>application</type>
+	<target>${package-abbrev}</target>
+	<status>stable</status>
+	<tag>${package-abbrev}</tag>
+	<tag>application</tag>
+	<tag>exist</tag>
+	<category id="libs">Libraries</category>
+	<category id="exist">eXist extensions</category>
+	<fileSets>
+		<fileSet>
+			<directory>${basedir}/src</directory>
+			<excludes>
+				<exclude>assembly.xml</exclude>
+			</excludes>
+			<outputDirectory>/</outputDirectory>
+		</fileSet>
+	</fileSets>
+</package>

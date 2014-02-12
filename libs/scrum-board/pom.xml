@@ -10,5 +10,34 @@
 	</parent>
 
 	<artifactId>scrum-board</artifactId>
+	<version>0.2.0</version>
+	<packaging>pom</packaging>
+	
+	<properties>
+		<package-abbrev>kuberam-${project.artifactId}</package-abbrev>
+	</properties>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>ro.kuberam.maven.plugins</groupId>
+				<artifactId>kuberam-expath-plugin</artifactId>
+				<version>0.3</version>
+				<executions>
+					<execution>
+						<id>create-application-archive</id>
+						<phase>package</phase>
+						<goals>
+							<goal>make-xar</goal>
+						</goals>
+						<configuration>
+							<descriptor>src/assembly.xml</descriptor>
+							<finalName>${package-abbrev}-${project.version}</finalName>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
 
 </project>
