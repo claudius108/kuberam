@@ -1,0 +1,70 @@
+      /*
+      * scrum board styles
+      */
+
+      a {
+      color: black;
+      text-decoration: none;
+      }
+      body {
+      font-family: Arial, Helvetica,
+      sans-serif;
+      }
+      table {
+      border-collapse: collapse;
+      font-size: 11pt;
+      }
+      td {
+      border-bottom: 1px solid LightGrey;
+      border-right: 1px dashed LightGrey;
+      }
+      th {
+      border-bottom: 2px solid LightGrey;
+      border-right: 1px dashed LightGrey;
+      font-family: 'Reenie Beanie';
+      font-size: 2.5em;
+      }
+      .bug { background: Salmon; }
+      .feature { background: #FFFF99; }
+      .support { background: Lavender; }
+      .issue_id {
+      float: right;
+      font-size: 0.8em;
+      }
+      .assigned_to { visibility: hidden; }
+      .post-it {
+      box-shadow: 0px 4px 6px #333;
+      display:inline-block;
+      font-family: cursive;
+      margin: 5px;
+      max-width: 150px;
+      min-height: 100px;
+      min-width: 100px;
+      padding: 10px;
+      text-align:center;
+      word-wrap: break-word;
+      }
+      .recently_updated {
+      -moz-transform: rotate(+3deg);
+      -webkit-transform:rotate(+3deg)
+      }
+      .project, .story {
+      background: LightBlue;
+      font-size: 1.2em;
+      max-width: 200px;
+      min-height: 100px;
+      min-width: 200px;
+      }
+      .task { background: LightGrey; }
+      .feedback { opacity: 0.4; }
+      .icon {
+      float: left;
+      border-radius: 10px;
+      }
+      .estimate {
+        float: left;
+        background-color: blueViolet;
+        color: white;
+        border-radius: 20px;
+        width: 20px;
+      }
