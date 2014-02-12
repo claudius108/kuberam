@@ -14,6 +14,7 @@
 		<module>kuberam-maven-plugins</module>
 		<module>kuberam-maven-artifacts</module>
 		<module>xars</module>
+		<module>libs</module>
 	</modules>
 
 	<properties>
