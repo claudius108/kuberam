@@ -44,6 +44,16 @@ public class DescriptorConfiguration extends Xpp3Dom {
 					}
 					fileSet.setIncludes(includesString.substring(0, includesString.length() - 1));
 				}
+				fileSet.setExcludes(".project/,.settings/");
+				Xpp3Dom excludesElement = fileSetChild.getChild("excludes");
+				if (null != excludesElement) {
+					String excludesString = "";
+					Xpp3Dom[] excludeElements = excludesElement.getChildren("exclude");
+					for (Xpp3Dom excludeElement : excludeElements) {
+						excludesString += excludeElement.getValue() + ",";
+					}
+					fileSet.setExcludes(excludesString + ".project/,.settings/");
+				}				
 				fileSets.add(fileSet);
 			}
 		}
