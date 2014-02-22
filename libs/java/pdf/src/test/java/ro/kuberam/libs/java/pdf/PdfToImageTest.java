@@ -1,4 +1,4 @@
-package org.expath.libs.pdf;
+package ro.kuberam.libs.java.pdf;
 
 import java.awt.Image;
 import java.awt.image.BufferedImage;
