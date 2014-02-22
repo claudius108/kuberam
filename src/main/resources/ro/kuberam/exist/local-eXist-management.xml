@@ -1,6 +1,6 @@
 <project xmlns:xdb="http://exist-db.org/ant" name="Local eXist server management" basedir="." default="start-exist-local-server">
 
-	<property name="eXist.test.server.dir">/home/claudius/workspaces/repositories/git/exist</property>
+	<property name="eXist.test.server.dir">/home/claudius/eXist-2.2</property>
 	<property name="eXist.test.server.admin-username">admin</property>
 	<property name="eXist.test.server.admin-password">admin123</property>
 	<property name="kuberam.current.project.tmp.dir" value="${kuberam.current.project.dir}/../tmp" />
