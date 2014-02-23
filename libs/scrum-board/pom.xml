@@ -3,12 +3,18 @@
 
 	<modelVersion>4.0.0</modelVersion>
 
-	<artifactId>digital-library-collection-services</artifactId>
+	<parent>
+		<artifactId>base</artifactId>
+		<groupId>ro.kuberam.maven.libs</groupId>
+		<version>0.0.1</version>
+	</parent>
+
+	<artifactId>scrum-board</artifactId>
 	<version>0.2.0</version>
 	<packaging>pom</packaging>
-
+	
 	<properties>
-		<package-abbrev>richmond-univ-${project.artifactId}</package-abbrev>
+		<package-abbrev>kuberam-${project.artifactId}</package-abbrev>
 	</properties>
 
 	<build>
@@ -19,13 +25,13 @@
 				<version>0.3</version>
 				<executions>
 					<execution>
-						<id>create-app-archive</id>
+						<id>create-application-archive</id>
 						<phase>package</phase>
 						<goals>
 							<goal>make-xar</goal>
 						</goals>
 						<configuration>
-							<descriptor>build/app-assembly.xml</descriptor>
+							<descriptor>src/assembly.xml</descriptor>
 							<finalName>${package-abbrev}-${project.version}</finalName>
 						</configuration>
 					</execution>
