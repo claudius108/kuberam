@@ -5,7 +5,7 @@
 
 	<parent>
 		<artifactId>base</artifactId>
-		<groupId>ro.kuberam.maven.libs</groupId>
+		<groupId>ro.kuberam.libs</groupId>
 		<version>0.0.1</version>
 	</parent>
 

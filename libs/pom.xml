@@ -17,7 +17,6 @@
 	<url>http://expath.org</url>
 
 	<modules>
-		<module>scrum-board</module>
 		<module>java</module>
 		<module>js</module>
 	</modules>

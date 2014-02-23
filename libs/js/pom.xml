@@ -13,4 +13,7 @@
 	<groupId>ro.kuberam.libs.js</groupId>
 	<packaging>pom</packaging>
 
+	<modules>
+		<module>scrum-board</module>
+	</modules>
 </project>
