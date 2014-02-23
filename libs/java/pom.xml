@@ -10,7 +10,7 @@
 	</parent>
 
 	<artifactId>base</artifactId>
-	<groupId>ro.kuberam.maven.libs.java</groupId>
+	<groupId>ro.kuberam.libs.java</groupId>
 	<packaging>pom</packaging>
 
 	<modules>

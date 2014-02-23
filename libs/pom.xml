@@ -5,12 +5,12 @@
 
 	<parent>
 		<artifactId>base</artifactId>
-		<groupId>ro.kuberam.maven</groupId>
+		<groupId>ro.kuberam</groupId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>base</artifactId>
-	<groupId>ro.kuberam.maven.libs</groupId>
+	<groupId>ro.kuberam.libs</groupId>
 	<version>0.0.1</version>
 	<packaging>pom</packaging>
 	<name>EXPath libs</name>

@@ -5,9 +5,8 @@
 
 	<parent>
 		<artifactId>base</artifactId>
-		<groupId>ro.kuberam.maven</groupId>
+		<groupId>ro.kuberam</groupId>
 		<version>0.0.1-SNAPSHOT</version>
-		<relativePath>..</relativePath>
 	</parent>
 
 	<artifactId>base</artifactId>
