@@ -5,9 +5,8 @@
 
 	<parent>
 		<artifactId>base</artifactId>
-		<groupId>ro.kuberam.maven.libs.java</groupId>
+		<groupId>ro.kuberam.libs.java</groupId>
 		<version>0.0.1</version>
-		<relativePath>..</relativePath>
 	</parent>
 
 	<artifactId>pdf</artifactId>
