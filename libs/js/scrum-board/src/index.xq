@@ -23,10 +23,12 @@ declare function local:display-issue($issue as node()) as node() {
 
 let $query-string :=  "/issues.xml?project_id=" || request:get-parameter("project", "") || "&amp;fixed_version=" || request:get-parameter("version", "") || "&amp;status_id=*&amp;limit=100" || "&amp;key=" || request:get-parameter("key", "")
 let $query-url := $redmine-server-url || $query-string
+let $version := request:get-parameter("version", "")
 let $issues := <issues xmlns="http://kuberam.ro/ns/redmine-scrum-board">{http:send-request(<http:request method="GET" href="{$query-url}" />)[2]/*/*}</issues>
-let $project-title := data($issues/*[1]/*[local-name() = 'project']/@name)
+let $issues-filtered-by-version := $issues/*[./*[local-name() = 'fixed_version' and @name = $version]]
+let $project-title := data($issues-filtered-by-version/*[1]/*[local-name() = 'project']/@name)
 let $user-stories :=
-    for $user-story in $issues/*[./*[local-name() = 'tracker' and lower-case(@name) = 'user story']]
+    for $user-story in $issues-filtered-by-version[./*[local-name() = 'tracker' and lower-case(@name) = 'user story']]
     order by $user-story/*[local-name() = 'subject']
     return $user-story
         
@@ -55,12 +57,12 @@ return
                     for $user-story in $user-stories
                     let $id := $user-story/*[local-name() = 'id']/text()
                     let $sub-tasks :=
-                        for $sub-task in $issues/*[./*[local-name() = 'parent' and @id = $id]]
+                        for $sub-task in $issues-filtered-by-version[./*[local-name() = 'parent' and @id = $id]]
                         let $id := $sub-task/*[local-name() = 'id']/text()
                         order by $sub-task/*[local-name() = 'priority']/@id descending, $sub-task/*[local-name() = 'id']/text()
                         return
                             ($sub-task,
-                            for $sub-task in $issues/*[./*[local-name() = 'parent' and @id = $id]]
+                            for $sub-task in $issues-filtered-by-version[./*[local-name() = 'parent' and @id = $id]]
                             order by $sub-task/*[local-name() = 'priority']/@id descending, $sub-task/*[local-name() = 'id']/text()
                             return $sub-task
                             )
