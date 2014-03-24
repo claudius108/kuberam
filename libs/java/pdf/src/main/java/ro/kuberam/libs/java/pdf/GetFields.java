@@ -14,7 +14,7 @@ import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.interactive.form.PDAcroForm;
 import org.apache.pdfbox.pdmodel.interactive.form.PDField;
 
-public class ExtractFields {
+public class GetFields {
 
 	private static XMLStreamWriter writer;
 

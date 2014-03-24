@@ -1,6 +1,5 @@
 package ro.kuberam.libs.java.pdf;
 
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.OutputStreamWriter;
@@ -12,7 +11,7 @@ import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
-public class InsertFields {
+public class SetFields {
 
 	private static XMLStreamReader parser;
 
@@ -28,6 +27,7 @@ public class InsertFields {
 		while ((event = parser.next()) != XMLStreamConstants.END_DOCUMENT) {
 			switch (event) {
 			case XMLStreamConstants.START_ELEMENT:
+				System.out.println(parser.getLocalName());
 				break;
 			}
 		}

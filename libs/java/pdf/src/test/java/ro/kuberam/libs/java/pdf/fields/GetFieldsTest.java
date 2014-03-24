@@ -7,16 +7,16 @@ import javax.xml.stream.XMLStreamException;
 
 import org.junit.Test;
 
-import ro.kuberam.libs.java.pdf.ExtractFields;
+import ro.kuberam.libs.java.pdf.GetFields;
 
-public class ExtractFieldsTest {
+public class GetFieldsTest {
 
 	@Test
 	public void testExtractFields() throws IOException, XMLStreamException {
 
 		InputStream pdfIs = this.getClass().getResourceAsStream("SF.pdf");
 
-		System.out.println(ExtractFields.run(pdfIs));
+		System.out.println(GetFields.run(pdfIs));
 
 	}
 
