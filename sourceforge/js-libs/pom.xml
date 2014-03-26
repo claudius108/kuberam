@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<groupId>ro.kuberam.maven</groupId>
+		<groupId>ro.kuberam</groupId>
 		<artifactId>sourceforge</artifactId>
 		<version>0.1-SNAPSHOT</version>
 	</parent>
@@ -21,12 +21,18 @@
 		<project-archive-path>${project.build.directory}/${project-archive-name}</project-archive-path>
 		<js-libs-dir-path>${workspaces-dir-path}/js-libs</js-libs-dir-path>
 		<remote-ssh-input-string>
-			mkdir -p ${synchronizing-user-web-htdocs-path}/repos/maven/ro/kuberam/${project.artifactId}/{latest,${project.version}};
-			cp ${synchronizing-project-web-htdocs-path}/latest/target/${project-archive-name} ${synchronizing-user-web-htdocs-path}/repos/maven/ro/kuberam/${project.artifactId}/latest/${project.artifactId}-latest.zip;
-			cp ${synchronizing-project-web-htdocs-path}/latest/target/${project-archive-name} ${synchronizing-user-web-htdocs-path}/repos/maven/ro/kuberam/${project.artifactId}/${project.version}/${project-archive-name};
+			mkdir -p
+			${synchronizing-user-web-htdocs-path}/repos/maven/ro/kuberam/${project.artifactId}/{latest,${project.version}};
+			cp ${synchronizing-project-web-htdocs-path}/latest/target/${project-archive-name}
+			${synchronizing-user-web-htdocs-path}/repos/maven/ro/kuberam/${project.artifactId}/latest/${project.artifactId}-latest.zip;
+			cp ${synchronizing-project-web-htdocs-path}/latest/target/${project-archive-name}
+			${synchronizing-user-web-htdocs-path}/repos/maven/ro/kuberam/${project.artifactId}/${project.version}/${project-archive-name};
 			rm -rf ${synchronizing-project-web-htdocs-path}/latest/target;
-			mkdir -p ${synchronizing-project-web-htdocs-path}/stable/${project.version};
-			cp -r ${synchronizing-project-web-htdocs-path}/latest/* ${synchronizing-project-web-htdocs-path}/stable/${project.version};
+			mkdir -p
+			${synchronizing-project-web-htdocs-path}/stable/${project.version};
+			cp -r
+			${synchronizing-project-web-htdocs-path}/latest/*
+			${synchronizing-project-web-htdocs-path}/stable/${project.version};
 			exit;
 		</remote-ssh-input-string>
 	</properties>
@@ -97,12 +103,12 @@
 									</exec>
 									<echo>Synchronize project's resources with latest version</echo>
 									<exec executable="rsync">
-										<arg line=" -avP --delete ${synchronizing-excluded-resources} -e ${synchronizing-ssh-argument} ${synchronizing-source-dir} ${synchronizing-project-web-url}/latest/" />
+										<arg
+											line=" -avP --delete ${synchronizing-excluded-resources} -e ${synchronizing-ssh-argument} ${synchronizing-source-dir} ${synchronizing-project-web-url}/latest/" />
 									</exec>
-									<exec executable="ssh"
-										inputstring="${remote-ssh-input-string}">
+									<exec executable="ssh" inputstring="${remote-ssh-input-string}">
 										<arg line="${sourceforge-shell-arg-line}" />
-									</exec>									
+									</exec>
 								</target>
 							</configuration>
 						</execution>
@@ -117,42 +123,42 @@
 								</target>
 							</configuration>
 						</execution>
-						
+
 					</executions>
 				</plugin>
-<!-- 				<plugin> -->
-<!-- 					<groupId>org.codehaus.mojo</groupId> -->
-<!-- 					<artifactId>wagon-maven-plugin</artifactId> -->
-<!-- 					<executions> -->
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>wagon-maven-plugin</artifactId>
+					<executions>
 
-<!-- 						<execution> -->
-<!-- 							<id>publish-project-archive-to-frs</id> -->
-<!-- 							<phase>package</phase> -->
-<!-- 							<goals> -->
-<!-- 								<goal>upload-single</goal> -->
-<!-- 							</goals> -->
-<!-- 							<configuration> -->
-<!-- 								<serverId>sourceforge</serverId> -->
-<!-- 								<fromFile>${project-archive-path}</fromFile> -->
-<!-- 								<toFile>${project-archive-name}</toFile> -->
-<!-- 								<url>${sourceforge-frs-url}</url> -->
-<!-- 							</configuration> -->
-<!-- 						</execution> -->
-<!-- 						<execution> -->
-<!-- 							<id>publish-project-readme-to-frs</id> -->
-<!-- 							<phase>package</phase> -->
-<!-- 							<goals> -->
-<!-- 								<goal>upload-single</goal> -->
-<!-- 							</goals> -->
-<!-- 							<configuration> -->
-<!-- 								<serverId>sourceforge</serverId> -->
-<!-- 								<fromFile>${basedir}/documentation/readme</fromFile> -->
-<!-- 								<toFile>readme</toFile> -->
-<!-- 								<url>${sourceforge-frs-url}</url> -->
-<!-- 							</configuration> -->
-<!-- 						</execution> -->
-<!-- 					</executions> -->
-<!-- 				</plugin> -->
+						<execution>
+							<id>publish-project-archive-to-frs</id>
+							<phase>package</phase>
+							<goals>
+								<goal>upload-single</goal>
+							</goals>
+							<configuration>
+								<serverId>sourceforge</serverId>
+								<fromFile>${project-archive-path}</fromFile>
+								<toFile>${project-archive-name}</toFile>
+								<url>${sourceforge-frs-url}</url>
+							</configuration>
+						</execution>
+						<execution>
+							<id>publish-project-readme-to-frs</id>
+							<phase>package</phase>
+							<goals>
+								<goal>upload-single</goal>
+							</goals>
+							<configuration>
+								<serverId>sourceforge</serverId>
+								<fromFile>${basedir}/documentation/readme</fromFile>
+								<toFile>readme</toFile>
+								<url>${sourceforge-frs-url}</url>
+							</configuration>
+						</execution>
+					</executions>
+				</plugin>
 			</plugins>
 		</pluginManagement>
 	</build>
