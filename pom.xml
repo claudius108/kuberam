@@ -23,6 +23,9 @@
 		<workspaces-dir-path>/home/claudius/workspaces</workspaces-dir-path>
 		<main.basedir>${workspaces-dir-path}/a-model/models</main.basedir>
 		<local-eXist-management-build-file>${main.basedir}/src/main/resources/local-eXist-management.xml</local-eXist-management-build-file>
+		<sourceforge-frs-host>frs.sourceforge.net</sourceforge-frs-host>
+		<sourceforge-user-web-htdocs-path>/home/user-web/${sourceforge-username}/htdocs</sourceforge-user-web-htdocs-path>
+		<sourceforge-username>claudius108</sourceforge-username>
 	</properties>
 
 	<distributionManagement>
