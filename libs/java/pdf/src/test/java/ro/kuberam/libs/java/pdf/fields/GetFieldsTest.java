@@ -1,5 +1,8 @@
 package ro.kuberam.libs.java.pdf.fields;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -16,10 +19,16 @@ public class GetFieldsTest {
 
 		InputStream pdfIs = this.getClass().getResourceAsStream("SF.pdf");
 
-		System.out.println(GetFields.run(pdfIs));
+		ByteArrayOutputStream output = GetFields.run(pdfIs);
 
+		try {
+			FileOutputStream fos = new FileOutputStream(new File("target/result.xml"));
+			output.writeTo(fos);
+		} catch (IOException ioe) {
+			ioe.printStackTrace();
+		} finally {
+			output.close();
+		}
 	}
 
-
 }
- 

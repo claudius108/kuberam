@@ -21,7 +21,6 @@ public class GetFields {
 	public static ByteArrayOutputStream run(InputStream pdfIs) throws IOException, XMLStreamException {
 
 		PDDocument pdfDocument = PDDocument.load(pdfIs, true);
-
 		PDAcroForm acroForm = pdfDocument.getDocumentCatalog().getAcroForm();
 
 		List<PDField> fields = acroForm.getFields();
