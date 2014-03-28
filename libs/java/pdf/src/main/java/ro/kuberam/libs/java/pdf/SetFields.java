@@ -14,6 +14,7 @@ import javax.xml.stream.XMLStreamReader;
 
 import org.apache.pdfbox.exceptions.COSVisitorException;
 import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.common.COSObjectable;
 import org.apache.pdfbox.pdmodel.interactive.form.PDAcroForm;
 import org.apache.pdfbox.pdmodel.interactive.form.PDField;
 
@@ -73,9 +74,9 @@ public class SetFields {
 	}
 
 	private static void setField(PDField field, String sParent) throws IOException {
-		List<PDField> kids = field.getKids();
+		List<COSObjectable> kids = field.getKids();
 		if (kids != null) {
-			Iterator<PDField> kidsIter = kids.iterator();
+			Iterator<COSObjectable> kidsIter = kids.iterator();
 			if (!sParent.equals(field.getPartialName())) {
 				sParent = sParent + "." + field.getPartialName();
 			}

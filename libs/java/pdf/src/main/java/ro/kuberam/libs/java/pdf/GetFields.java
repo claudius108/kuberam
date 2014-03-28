@@ -11,6 +11,7 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.common.COSObjectable;
 import org.apache.pdfbox.pdmodel.interactive.form.PDAcroForm;
 import org.apache.pdfbox.pdmodel.interactive.form.PDField;
 
@@ -35,7 +36,7 @@ public class GetFields {
 		writer.writeStartElement("fields");
 
 		while (fieldsIter.hasNext()) {
-			PDField field = (PDField) fieldsIter.next();
+			PDField field = fieldsIter.next();
 			processField(field, field.getPartialName());
 		}
 
@@ -52,9 +53,9 @@ public class GetFields {
 
 	private static void processField(final PDField field, String sParent) throws IOException,
 			XMLStreamException {
-		List<PDField> kids = field.getKids();
+		List<COSObjectable> kids = field.getKids();
 		if (kids != null) {
-			Iterator<PDField> kidsIter = kids.iterator();
+			Iterator<COSObjectable> kidsIter = kids.iterator();
 			if (!sParent.equals(field.getPartialName())) {
 				sParent = sParent + "." + field.getPartialName();
 			}
