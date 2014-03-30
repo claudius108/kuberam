@@ -11,5 +11,5 @@ public class ModuleDescription {
       public final static String NAMESPACE_URI = "";
       public final static String PREFIX = "";
       public final static String MODULE_NAME = "Library for EXPath PDF Module";
-      public final static String MODULE_DESCRIPTION = "A ";
+      public final static String MODULE_DESCRIPTION = "A module comprising a set of functions for manipulation of PDF documents";
 }
