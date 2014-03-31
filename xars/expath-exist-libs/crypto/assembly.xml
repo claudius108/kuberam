@@ -15,14 +15,14 @@
 	<category id="exist">eXist extensions</category>
 	<dependencySets>
 		<dependencySet>
-			<groupId>org.expath.libs</groupId>
-			<artifactId>ft-client</artifactId>
-			<version>1.0</version>
+			<groupId>ro.kuberam.libs.java</groupId>
+			<artifactId>crypto</artifactId>
+			<version>1.2.0</version>
 		</dependencySet>
 		<dependencySet>
-			<groupId>com.jcraft</groupId>
-			<artifactId>jsch</artifactId>
-			<version>0.1.50</version>
+			<groupId>org.expath.exist</groupId>
+			<artifactId>crypto</artifactId>
+			<version>0.3.1</version>
 		</dependencySet>
 	</dependencySets>
 </package>
