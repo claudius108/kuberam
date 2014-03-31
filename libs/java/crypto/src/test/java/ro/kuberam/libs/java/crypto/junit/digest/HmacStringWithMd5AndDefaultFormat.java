@@ -3,22 +3,23 @@ package ro.kuberam.libs.java.crypto.junit.digest;
 import java.io.InputStream;
 
 import org.apache.commons.io.IOUtils;
-import ro.kuberam.libs.java.crypto.digest.Hmac;
 import org.junit.Assert;
 import org.junit.Test;
 
+import ro.kuberam.libs.java.crypto.digest.Hmac;
 import ro.kuberam.tests.junit.BaseTest;
 
-public class HmacStringWithSha256AndDefaultProvider extends BaseTest {
+public class HmacStringWithMd5AndDefaultFormat extends BaseTest {
 
 	@Test
-	public void hmacStringWithSha256() throws Exception {
+	public void hmacStringWithMd5() throws Exception {
 		String input = "Short string for tests.";
 		InputStream secretKeyIs = getClass().getResourceAsStream("../../resources/private-key.pem");
+		String secretKey = IOUtils.toString(secretKeyIs);
 
-		String result = Hmac.hmac(input, IOUtils.toString(secretKeyIs), "HMAC-SHA-256");
+		String result = Hmac.hmac(input, secretKey, "HMAC-MD5");
 
 		Assert.assertTrue(result
-				.equals("FfZidcLEUg4oJLIZfw6xHlPMz8KPHxo2liaBKgLfcOE="));
+				.equals("l4MY6Yosjo7W60VJeXB/PQ=="));
 	}
 }

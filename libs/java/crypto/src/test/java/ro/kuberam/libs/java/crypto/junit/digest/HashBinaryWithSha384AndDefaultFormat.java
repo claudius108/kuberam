@@ -8,13 +8,13 @@ import org.junit.Test;
 
 import ro.kuberam.tests.junit.BaseTest;
 
-public class HashBinaryWithSha512AndDefaultProvider extends BaseTest {
+public class HashBinaryWithSha384AndDefaultFormat extends BaseTest {
 
 	@Test
-	public void hashBinaryWithSha512() throws Exception {
+	public void hashBinaryWithSha384() throws Exception {
 		InputStream input = getClass().getResourceAsStream("../../resources/keystore");
-		String result = Hash.hashBinary(input, "SHA-512");
+		String result = Hash.hashBinary(input, "SHA-384");		
 
-		Assert.assertTrue(result.equals("Be+hlGy9TNibbaE+6DA2gu6kNj2GS+7b4egFcJDMzQSFQiGgFtTh/mD61ta4pDvc+jqHFlqOyJLH\r\nirkROd86Mw=="));
+		Assert.assertTrue(result.equals("DcQ3caBftiQCIQn96Pr8PC2vzs17Re0tZ8/CZnOoucu/N+818uqAXxR7l9oxYgoW"));
 	}
 }

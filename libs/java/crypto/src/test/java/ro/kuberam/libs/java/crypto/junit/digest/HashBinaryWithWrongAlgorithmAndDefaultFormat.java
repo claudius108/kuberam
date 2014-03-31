@@ -9,7 +9,7 @@ import org.junit.Test;
 
 import ro.kuberam.tests.junit.BaseTest;
 
-public class HashBinaryWithWrongAlgorithmAndDefaultProvider extends BaseTest {
+public class HashBinaryWithWrongAlgorithmAndDefaultFormat extends BaseTest {
 
 	@Test
 	public void hashBinaryWithWrongAlgorithm() throws Exception {

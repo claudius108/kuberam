@@ -6,7 +6,7 @@ import org.junit.Test;
 
 import ro.kuberam.tests.junit.BaseTest;
 
-public class HashStringWithMd5AndDefaultProvider extends BaseTest {
+public class HashStringWithMd5AndDefaultFormat extends BaseTest {
 
 	@Test
 	public void hashStringWithMd5hexOutput() throws Exception {

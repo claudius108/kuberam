@@ -6,7 +6,7 @@ import org.junit.Test;
 import ro.kuberam.libs.java.crypto.digest.Hmac;
 import ro.kuberam.tests.junit.BaseTest;
 
-public class HmacStringWithSha1AndDefaultProvider extends BaseTest {
+public class HmacStringWithSha1AndDefaultFormat extends BaseTest {
 
 	@Test
 	public void hmacStringWithSha1() throws Exception {

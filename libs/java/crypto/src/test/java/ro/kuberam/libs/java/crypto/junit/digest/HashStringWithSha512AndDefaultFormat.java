@@ -6,7 +6,7 @@ import org.junit.Test;
 
 import ro.kuberam.tests.junit.BaseTest;
 
-public class HashStringWithSha512AndDefaultProvider extends BaseTest {
+public class HashStringWithSha512AndDefaultFormat extends BaseTest {
 
 	@Test
 	public void hashStringWithSha512hexOutput() throws Exception {

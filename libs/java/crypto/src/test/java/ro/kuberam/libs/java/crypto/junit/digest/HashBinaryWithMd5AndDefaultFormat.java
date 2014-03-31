@@ -8,13 +8,13 @@ import org.junit.Test;
 import ro.kuberam.libs.java.crypto.digest.Hash;
 import ro.kuberam.tests.junit.BaseTest;
 
-public class HashBinaryWithSha1AndDefaultProvider extends BaseTest {
+public class HashBinaryWithMd5AndDefaultFormat extends BaseTest {
 
 	@Test
-	public void hashBinaryWithSha1() throws Exception {
+	public void hashBinaryWithMd5() throws Exception {
 		InputStream input = getClass().getResourceAsStream("../../resources/keystore");
-		String result = Hash.hashBinary(input, "SHA-1");
+		String result = Hash.hashBinary(input, "MD5");
 
-		Assert.assertTrue(result.equals("GyscHvnJKxInsBLgSg/FRAmQXYU="));
+		Assert.assertTrue(result.equals("UI/aOJodA6gtJPitQ6xcJA=="));
 	}
 }

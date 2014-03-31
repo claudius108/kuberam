@@ -9,16 +9,16 @@ import org.junit.Test;
 
 import ro.kuberam.tests.junit.BaseTest;
 
-public class HmacStringWithSha384AndDefaultProvider extends BaseTest {
+public class HmacStringWithSha256AndDefaultFormat extends BaseTest {
 
 	@Test
-	public void hmacStringWithSha384() throws Exception {
+	public void hmacStringWithSha256() throws Exception {
 		String input = "Short string for tests.";
 		InputStream secretKeyIs = getClass().getResourceAsStream("../../resources/private-key.pem");
-		
-		String result = Hmac.hmac(input, IOUtils.toString(secretKeyIs), "HMAC-SHA-384");
+
+		String result = Hmac.hmac(input, IOUtils.toString(secretKeyIs), "HMAC-SHA-256");
 
 		Assert.assertTrue(result
-				.equals("RRirKZTmx+cG8EXvgrRnpYFPEPYXaZBirY+LFmiUBAK61LCryDsL4clFRG5/BcBr"));
+				.equals("FfZidcLEUg4oJLIZfw6xHlPMz8KPHxo2liaBKgLfcOE="));
 	}
 }
