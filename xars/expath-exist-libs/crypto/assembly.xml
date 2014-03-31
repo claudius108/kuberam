@@ -1,0 +1,29 @@
+<package xmlns="http://expath.org/ns/pkg" name="${package-name}" abbrev="${package-abbrev}" version="${project.version}"
+	spec="1.0">
+	<title>${package-title}</title>
+	<author id="cteodorescu">Claudius Teodorescu</author>
+	<website>${project.url}</website>
+	<license>GNU-LGPL</license>
+	<copyright>true</copyright>
+	<type>application</type>
+	<status>stable</status>
+	<tag>${module-prefix}</tag>
+	<tag>expath</tag>
+	<tag>${package-type}</tag>
+	<tag>exist</tag>
+	<category id="libs">Libraries</category>
+	<category id="exist">eXist extensions</category>
+	<dependencySets>
+		<dependencySet>
+			<groupId>org.expath.libs</groupId>
+			<artifactId>ft-client</artifactId>
+			<version>1.0</version>
+		</dependencySet>
+		<dependencySet>
+			<groupId>com.jcraft</groupId>
+			<artifactId>jsch</artifactId>
+			<version>0.1.50</version>
+		</dependencySet>
+	</dependencySets>
+</package>
+

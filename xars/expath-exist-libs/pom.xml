@@ -14,4 +14,10 @@
 	<version>0.0.2</version>
 	<packaging>pom</packaging>
 
+	<properties>
+		<package-name>http://expath.org/lib/${project.artifactId}</package-name>
+		<package-abbrev>expath-${project.artifactId}-exist-lib</package-abbrev>
+		<package-type>application</package-type>
+	</properties>
+
 </project>

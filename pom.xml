@@ -8,18 +8,10 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
-	<modules>
-		<module>junit-tests</module>
-		<module>sourceforge</module>
-		<module>kuberam-maven-plugins</module>
-		<module>kuberam-maven-artifacts</module>
-		<module>xars</module>
-		<module>libs</module>
-	</modules>
-
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<java-version>1.6</java-version>
+		<mavenVersion>3.1.1</mavenVersion>
 		<workspaces-dir-path>/home/claudius/workspaces</workspaces-dir-path>
 		<main.basedir>${workspaces-dir-path}/a-model/models</main.basedir>
 		<local-eXist-management-build-file>${main.basedir}/src/main/resources/local-eXist-management.xml</local-eXist-management-build-file>
