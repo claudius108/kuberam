@@ -5,7 +5,7 @@
  *  Released under LGPL License - http://gnu.org/licenses/lgpl.html.
  *
  */
-package org.expath.crypto.digitalSignature;
+package ro.kuberam.libs.java.crypto.digitalSignature;
 
 import java.security.Key;
 import java.security.KeyException;

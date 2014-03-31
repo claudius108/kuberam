@@ -1,4 +1,4 @@
-package org.expath.crypto.secureStorage;
+package ro.kuberam.libs.java.crypto.secureStorage;
 
 import java.io.File;
 import java.io.FileInputStream;

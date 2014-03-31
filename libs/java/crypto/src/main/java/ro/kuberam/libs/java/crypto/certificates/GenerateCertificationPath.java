@@ -1,4 +1,4 @@
-package org.expath.crypto.certificates;
+package ro.kuberam.libs.java.crypto.certificates;
 
 import java.security.cert.CertPath;
 import java.security.cert.CertificateException;

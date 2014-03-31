@@ -1,4 +1,4 @@
-package org.expath.crypto.digitalSignature;
+package ro.kuberam.libs.java.crypto.digitalSignature;
 
 import java.io.FileInputStream;
 import java.io.IOException;

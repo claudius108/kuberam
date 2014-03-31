@@ -1,4 +1,4 @@
-package org.expath.crypto.providers.defaultProvider;
+package ro.kuberam.libs.java.crypto.providers.defaultProvider;
 
 import java.security.AccessController;
 import java.security.Provider;

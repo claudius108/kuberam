@@ -1,4 +1,4 @@
-package org.expath.crypto.certificates;
+package ro.kuberam.libs.java.crypto.certificates;
 
 public class ValidateCertificationRequest {
 

@@ -1,10 +1,9 @@
-package org.expath.crypto.keyManagement;
+package ro.kuberam.libs.java.crypto.keyManagement;
 
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
-import java.security.SecureRandom;
 
-import org.expath.crypto.randomSequencesGeneration.GenerateRandomNumber;
+import ro.kuberam.libs.java.crypto.randomSequencesGeneration.GenerateRandomNumber;
 
 public class GenerateKeyPair {
 	

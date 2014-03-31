@@ -1,4 +1,4 @@
-package org.expath.crypto.randomSequencesGeneration;
+package ro.kuberam.libs.java.crypto.randomSequencesGeneration;
 
 import java.security.SecureRandom;
 

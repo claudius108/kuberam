@@ -17,14 +17,10 @@
  *
  *  $Id$
  */
-package org.expath.crypto;
+package ro.kuberam.libs.java.crypto;
 
-import java.io.FileInputStream;
 import java.io.InputStream;
-import java.security.Provider;
 import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Properties;
 
 /**

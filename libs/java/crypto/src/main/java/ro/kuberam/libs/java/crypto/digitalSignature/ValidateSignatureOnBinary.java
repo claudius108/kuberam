@@ -1,11 +1,11 @@
-package org.expath.crypto.digitalSignature;
+package ro.kuberam.libs.java.crypto.digitalSignature;
 
 import java.security.KeyPair;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.Signature;
 
-import org.expath.crypto.keyManagement.GenerateKeyPair;
+import ro.kuberam.libs.java.crypto.keyManagement.GenerateKeyPair;
 
 public class ValidateSignatureOnBinary {
 

@@ -1,4 +1,4 @@
-package org.expath.crypto.secureStorage;
+package ro.kuberam.libs.java.crypto.secureStorage;
 
 import java.security.Key;
 import java.security.cert.Certificate;

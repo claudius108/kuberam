@@ -1,4 +1,4 @@
-package org.expath.crypto.utils;
+package ro.kuberam.libs.java.crypto.utils;
 
 import java.util.Arrays;
 

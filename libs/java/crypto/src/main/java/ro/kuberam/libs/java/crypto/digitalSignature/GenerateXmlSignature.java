@@ -5,7 +5,7 @@
  *  Released under LGPL License - http://gnu.org/licenses/lgpl.html.
  *
  */
-package org.expath.crypto.digitalSignature;
+package ro.kuberam.libs.java.crypto.digitalSignature;
 
 import java.io.InputStream;
 import java.security.KeyPair;
@@ -45,13 +45,14 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpression;
 import javax.xml.xpath.XPathFactory;
 
-import org.expath.crypto.ErrorMessages;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.bootstrap.DOMImplementationRegistry;
 import org.w3c.dom.ls.DOMImplementationLS;
 import org.w3c.dom.ls.LSSerializer;
+
+import ro.kuberam.libs.java.crypto.ErrorMessages;
 
 /**
  * Implements the module definition.

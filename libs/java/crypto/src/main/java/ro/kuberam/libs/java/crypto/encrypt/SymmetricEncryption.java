@@ -18,7 +18,7 @@
  *  $Id$
  */
 
-package org.expath.crypto.encrypt;
+package ro.kuberam.libs.java.crypto.encrypt;
 
 import java.io.ByteArrayOutputStream;
 import java.security.InvalidKeyException;
@@ -32,7 +32,7 @@ import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
-import org.expath.crypto.ErrorMessages;
+import ro.kuberam.libs.java.crypto.ErrorMessages;
 
 /**
  * 

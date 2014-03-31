@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package org.expath.crypto.toDo;
+package ro.kuberam.libs.java.crypto.toDo;
 
 /**
  *

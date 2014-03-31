@@ -1,4 +1,4 @@
-package org.expath.crypto.utils;
+package ro.kuberam.libs.java.crypto.utils;
 
 public class ByteArray2HexString {
 	
