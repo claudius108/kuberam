@@ -19,6 +19,10 @@ public class Hmac {
 
 	private final static Logger log = Logger.getLogger(Hmac.class);
 
+	public static String hmac(String data, String secretKey, String algorithm) throws Exception {
+		return hmac(data, secretKey, algorithm, "");
+	}
+
 	public static String hmac(String data, String secretKey, String algorithm, String format)
 			throws Exception {
 

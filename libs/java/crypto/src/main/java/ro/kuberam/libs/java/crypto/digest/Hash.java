@@ -68,7 +68,7 @@ public class Hash {
 	}
 
 	public static String hashBinary(InputStream data, String algorithm) throws Exception {
-		return hashBinary(data, algorithm);
+		return hashBinary(data, algorithm, "");
 	}
 
 	public static String hashBinary(InputStream data, String algorithm, String format) throws Exception {
