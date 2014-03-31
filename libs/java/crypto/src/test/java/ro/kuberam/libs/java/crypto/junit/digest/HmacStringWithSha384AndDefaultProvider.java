@@ -16,7 +16,7 @@ public class HmacStringWithSha384AndDefaultProvider extends BaseTest {
 		String input = "Short string for tests.";
 		InputStream secretKeyIs = getClass().getResourceAsStream("../../resources/private-key.pem");
 		
-		String result = Hmac.hmac(input, IOUtils.toString(secretKeyIs), "HMAC-SHA-384", "SunJCE");
+		String result = Hmac.hmac(input, IOUtils.toString(secretKeyIs), "HMAC-SHA-384");
 
 		Assert.assertTrue(result
 				.equals("RRirKZTmx+cG8EXvgrRnpYFPEPYXaZBirY+LFmiUBAK61LCryDsL4clFRG5/BcBr"));

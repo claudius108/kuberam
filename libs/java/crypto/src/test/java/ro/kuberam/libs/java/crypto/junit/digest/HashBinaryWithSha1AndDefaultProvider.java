@@ -13,7 +13,7 @@ public class HashBinaryWithSha1AndDefaultProvider extends BaseTest {
 	@Test
 	public void hashBinaryWithSha1() throws Exception {
 		InputStream input = getClass().getResourceAsStream("../../resources/keystore");
-		String result = Hash.hashBinary(input, "SHA-1", "");
+		String result = Hash.hashBinary(input, "SHA-1");
 
 		Assert.assertTrue(result.equals("GyscHvnJKxInsBLgSg/FRAmQXYU="));
 	}

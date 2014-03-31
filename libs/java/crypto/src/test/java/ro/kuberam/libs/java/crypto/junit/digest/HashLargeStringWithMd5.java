@@ -12,7 +12,7 @@ public class HashLargeStringWithMd5 extends BaseTest {
 	@Test
 	public void hashLargeStringWithMd5() throws Exception {
 		String input = IOUtils.toString(getClass().getResourceAsStream("../../resources/012886100224_01_01.flac"));
-		String result = Hash.hashString(input, "MD5", "SUN");
+		String result = Hash.hashString(input, "MD5", "base64");
 		
 		System.out.println(result);
 

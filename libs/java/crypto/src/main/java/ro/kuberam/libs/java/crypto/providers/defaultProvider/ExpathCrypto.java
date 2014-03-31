@@ -10,7 +10,7 @@ public class ExpathCrypto extends Provider {
 			+ "HMAC-SHA1)";
 
 	public ExpathCrypto() {
-		/* We are the "SunJCE" provider */
+		/* We are the "base64" provider */
 		super("ExpathCrypto", 1.4, info);
 
 		AccessController.doPrivileged(new java.security.PrivilegedAction() {

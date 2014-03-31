@@ -18,7 +18,7 @@ public class HmacStringWithMd5 extends BaseTest {
 		InputStream secretKeyIs = getClass().getResourceAsStream("../../resources/private-key.pem");
 		String secretKey = IOUtils.toString(secretKeyIs);
 
-		String result = Hmac.hmac(input, secretKey, "HMAC-MD5", "SunJCE");
+		String result = Hmac.hmac(input, secretKey, "HMAC-MD5", "base64");
 
 		Assert.assertTrue(result
 				.equals("l4MY6Yosjo7W60VJeXB/PQ=="));

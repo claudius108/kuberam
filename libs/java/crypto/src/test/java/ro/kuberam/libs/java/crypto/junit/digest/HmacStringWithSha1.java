@@ -16,7 +16,7 @@ public class HmacStringWithSha1 extends BaseTest {
 		String input = "Short string for tests.";
 		InputStream secretKeyIs = getClass().getResourceAsStream("../../resources/private-key.pem");
 		
-		String result = Hmac.hmac(input, IOUtils.toString(secretKeyIs), "HMAC-SHA-1", "SunJCE");
+		String result = Hmac.hmac(input, IOUtils.toString(secretKeyIs), "HMAC-SHA-1", "base64");
 
 		Assert.assertTrue(result
 				.equals("55LyDq7GFnqijauK4CQWR4AqyZk="));

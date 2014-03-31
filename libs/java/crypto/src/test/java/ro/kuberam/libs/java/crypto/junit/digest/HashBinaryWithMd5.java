@@ -13,7 +13,7 @@ public class HashBinaryWithMd5 extends BaseTest {
 	@Test
 	public void hashBinaryWithMd5() throws Exception {
 		InputStream input = getClass().getResourceAsStream("../../resources/keystore");
-		String result = Hash.hashBinary(input, "MD5", "SUN");
+		String result = Hash.hashBinary(input, "MD5", "base64");
 		
 		System.out.println(result);
 

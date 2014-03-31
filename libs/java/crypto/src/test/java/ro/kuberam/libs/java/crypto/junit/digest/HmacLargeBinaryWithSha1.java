@@ -13,7 +13,7 @@ public class HmacLargeBinaryWithSha1 extends BaseTest {
 	public void hmacLargeBinaryWithSha1() throws Exception {
 		String input = IOUtils.toString(getClass().getResourceAsStream("../../resources/012886100224_01_01.flac"));
 		String secretKey = "/hWLmb8xRM75bOS6fyV9Pn0mf3Aiw+HphRCL8nOq";
-		String result = Hmac.hmac(input, secretKey, "HMAC-SHA-1", "SunJCE");
+		String result = Hmac.hmac(input, secretKey, "HMAC-SHA-1", "base64");
 		
 		System.out.println(result);
 

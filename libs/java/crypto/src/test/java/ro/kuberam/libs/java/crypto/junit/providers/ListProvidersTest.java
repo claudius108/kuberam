@@ -16,7 +16,7 @@ public class ListProvidersTest extends BaseTest {
 		StreamResult providers = ListProviders.listProviders();
 		String providersString = providers.getWriter().toString();
 		System.out.println(prettyPrintXmlString(providersString));
-		Assert.assertTrue(providersString.contains("SunJCE"));
+		Assert.assertTrue(providersString.contains("base64"));
 	}
 
 }

@@ -16,7 +16,7 @@ public class GenerateKeyPair {
 	
 	public static void main(String args[]) throws Exception {
 
-		KeyPair keyPair = generateKeyPair(1008, "SHA1PRNG", "SUN");
+		KeyPair keyPair = generateKeyPair(1008, "SHA1PRNG", "base64");
 
 		System.out.println("Private key:\n" + keyPair.getPrivate());
 

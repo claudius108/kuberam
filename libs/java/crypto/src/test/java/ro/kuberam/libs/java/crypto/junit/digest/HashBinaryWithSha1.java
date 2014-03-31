@@ -13,7 +13,7 @@ public class HashBinaryWithSha1 extends BaseTest {
 	@Test
 	public void hashBinaryWithSha1() throws Exception {
 		InputStream input = getClass().getResourceAsStream("../../resources/keystore");
-		String result = Hash.hashBinary(input, "SHA-1", "SUN");
+		String result = Hash.hashBinary(input, "SHA-1", "base64");
 
 		Assert.assertTrue(result.equals("GyscHvnJKxInsBLgSg/FRAmQXYU="));
 	}

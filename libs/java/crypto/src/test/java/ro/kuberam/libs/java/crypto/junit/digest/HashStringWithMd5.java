@@ -12,7 +12,7 @@ public class HashStringWithMd5 extends BaseTest {
 	public void hashStringWithMd5hexOutput() throws Exception {
 		String input = "Short string for tests.";
 		
-		String result = Hash.hashString(input, "MD5", "SUN");
+		String result = Hash.hashString(input, "MD5", "base64");
 
 		Assert.assertTrue(result
 				.equals("use1oAoe8vIgnFgygz2OKw=="));

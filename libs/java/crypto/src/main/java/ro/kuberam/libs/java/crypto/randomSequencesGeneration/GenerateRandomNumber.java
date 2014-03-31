@@ -13,7 +13,7 @@ public class GenerateRandomNumber {
 	
 	public static void main(String args[]) throws Exception {
 
-		SecureRandom randomNumber = generateRandomNumber(1008, "SHA1PRNG", "SUN");
+		SecureRandom randomNumber = generateRandomNumber(1008, "SHA1PRNG", "base64");
 
 		System.out.println("Random number:\n" + randomNumber);
 	}

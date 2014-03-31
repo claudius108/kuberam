@@ -13,7 +13,7 @@ public class HashLargeBinaryWithMd5 extends BaseTest {
 	@Test
 	public void hashLargeBinaryWithMd5() throws Exception {
 		InputStream input = getClass().getResourceAsStream("../../resources/012886100224_01_01.flac");
-		String result = Hash.hashBinary(input, "MD5", "SUN");
+		String result = Hash.hashBinary(input, "MD5", "base64");
 		
 		System.out.println(result);
 

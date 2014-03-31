@@ -17,7 +17,7 @@ public class ListServicesTest extends BaseTest {
 	// StreamResult providers = ListProviders.listProviders();
 	// String providersString = providers.getWriter().toString();
 	// System.out.println(providersString);
-	// Assert.assertTrue(providersString.contains("SunJCE"));
+	// Assert.assertTrue(providersString.contains("base64"));
 	// }
 
 	private static String[] getServiceTypes() {

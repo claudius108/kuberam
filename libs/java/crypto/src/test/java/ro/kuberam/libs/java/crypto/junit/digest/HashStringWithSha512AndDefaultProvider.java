@@ -12,7 +12,7 @@ public class HashStringWithSha512AndDefaultProvider extends BaseTest {
 	public void hashStringWithSha512hexOutput() throws Exception {
 		String input = "Short string for tests.";
 		
-		String result = Hash.hashString(input, "SHA-512", null);
+		String result = Hash.hashString(input, "SHA-512");
 
 		Assert.assertTrue(result
 				.equals("+YpeZRBrctlL1xr6plZOScp/6ArUw3GihjtKys1e3qQ6/aWLFjoOFEfuiUJA3uLIkebH1OG+rDdM\r\nFZ0+/JFK2g=="));

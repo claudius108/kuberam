@@ -12,7 +12,7 @@ public class HashStringWithSha1AndDefaultProvider extends BaseTest {
 	public void hashStringWithSha1hexOutput() throws Exception {
 		String input = "Short string for tests.";
 		
-		String result = Hash.hashString(input, "SHA-1", null);
+		String result = Hash.hashString(input, "SHA-1");
 
 		Assert.assertTrue(result
 				.equals("cV2wx17vo8eH2TaFRvCIIvJjNqU="));		

@@ -13,7 +13,7 @@ public class HashBinaryWithSha512 extends BaseTest {
 	@Test
 	public void hashBinaryWithSha512() throws Exception {
 		InputStream input = getClass().getResourceAsStream("../../resources/keystore");
-		String result = Hash.hashBinary(input, "SHA-512", "SUN");
+		String result = Hash.hashBinary(input, "SHA-512", "base64");
 
 		Assert.assertTrue(result.equals("Be+hlGy9TNibbaE+6DA2gu6kNj2GS+7b4egFcJDMzQSFQiGgFtTh/mD61ta4pDvc+jqHFlqOyJLH\r\nirkROd86Mw=="));
 	}

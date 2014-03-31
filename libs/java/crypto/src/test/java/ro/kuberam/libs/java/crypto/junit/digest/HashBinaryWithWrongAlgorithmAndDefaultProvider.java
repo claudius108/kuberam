@@ -16,7 +16,7 @@ public class HashBinaryWithWrongAlgorithmAndDefaultProvider extends BaseTest {
 		InputStream input = getClass().getResourceAsStream("../../resources/keystore");
 		
 		try {
-			String result = Hash.hashBinary(input, "SHA-17", "");
+			String result = Hash.hashBinary(input, "SHA-17");
 			Assert.assertTrue(false);
 		} catch (Exception e) {
 			Assert.assertTrue(e.getLocalizedMessage().equals(ErrorMessages.err_CX21));
