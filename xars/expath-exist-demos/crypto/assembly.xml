@@ -14,6 +14,7 @@
 	<category id="libs">Libraries</category>
 	<category id="exist">eXist extensions</category>
 	<dependency processor="http://exist-db.org/" />
+	<dependency package="http://expath.org/lib/crypto" />
 	<dependencySets>
 		<dependencySet>
 			<groupId>ro.kuberam.libs.java</groupId>
