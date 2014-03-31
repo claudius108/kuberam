@@ -5,17 +5,13 @@
 
 	<parent>
 		<artifactId>base</artifactId>
-		<groupId>ro.kuberam.maven.xars</groupId>
+		<groupId>ro.kuberam.xars</groupId>
 		<version>0.0.1</version>
 	</parent>
 
 	<artifactId>base</artifactId>
-	<groupId>ro.kuberam.maven.xars.expath-exist-libs</groupId>
+	<groupId>ro.kuberam.xars.expath-exist-libs</groupId>
 	<version>0.0.2</version>
 	<packaging>pom</packaging>
-
-	<modules>
-		<module>ft-client</module>
-	</modules>
 
 </project>
