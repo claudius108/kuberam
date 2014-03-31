@@ -7,6 +7,7 @@
 	<copyright>true</copyright>
 	<type>application</type>
 	<status>stable</status>
+	<target>expath-${project.artifactId}</target>
 	<tag>${module-prefix}</tag>
 	<tag>expath</tag>
 	<tag>${package-type}</tag>
