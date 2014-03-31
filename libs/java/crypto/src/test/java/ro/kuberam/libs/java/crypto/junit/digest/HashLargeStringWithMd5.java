@@ -11,11 +11,10 @@ public class HashLargeStringWithMd5 extends BaseTest {
 
 	@Test
 	public void hashLargeStringWithMd5() throws Exception {
-		String input = IOUtils.toString(getClass().getResourceAsStream("../../resources/012886100224_01_01.flac"));
-		String result = Hash.hashString(input, "MD5", "base64");
+		String result = Hash.hashString(generate5MbTempString(), "MD5", "base64");
 		
 		System.out.println(result);
 
-		Assert.assertTrue(result.equals("ufUQavUYKXqjisb14jMwNw=="));
+		Assert.assertTrue(result.equals("0oZeT8dy8rR/aqDYUz3sCw=="));
 	}
 }

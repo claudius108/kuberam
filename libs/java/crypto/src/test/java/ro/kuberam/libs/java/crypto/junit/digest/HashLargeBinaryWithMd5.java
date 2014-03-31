@@ -1,22 +1,21 @@
 package ro.kuberam.libs.java.crypto.junit.digest;
 
-import java.io.InputStream;
+import java.io.FileInputStream;
 
-import ro.kuberam.libs.java.crypto.digest.Hash;
 import org.junit.Assert;
 import org.junit.Test;
 
+import ro.kuberam.libs.java.crypto.digest.Hash;
 import ro.kuberam.tests.junit.BaseTest;
 
 public class HashLargeBinaryWithMd5 extends BaseTest {
 
 	@Test
 	public void hashLargeBinaryWithMd5() throws Exception {
-		InputStream input = getClass().getResourceAsStream("../../resources/012886100224_01_01.flac");
-		String result = Hash.hashBinary(input, "MD5", "base64");
+		String result = Hash.hashBinary(new FileInputStream(generate5MbTempFile()), "MD5", "base64");
 		
 		System.out.println(result);
 
-		Assert.assertTrue(result.equals("ufUQavUYKXqjisb14jMwNw=="));
+		Assert.assertTrue(result.equals("fSAcOQGKiTzr20UUJWNpaQ=="));
 	}
 }

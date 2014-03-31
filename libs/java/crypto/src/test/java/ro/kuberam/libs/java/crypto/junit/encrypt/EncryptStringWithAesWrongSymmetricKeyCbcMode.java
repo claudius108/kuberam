@@ -17,7 +17,7 @@ public class EncryptStringWithAesWrongSymmetricKeyCbcMode extends BaseTest {
 		String iv = Hash.hashString("initialization vector", "MD5", "");		
 
 		try {
-			String result = SymmetricEncryption.encryptString(input, plainKey, "AES/CBC/PKCS5Padding", iv, "base64");
+			String result = SymmetricEncryption.encryptString(input, plainKey, "AES/CBC/PKCS5Padding", iv, "SunJCE");
 			Assert.assertTrue(false);
 		} catch (Exception e) {
 			Assert.assertTrue(e.getLocalizedMessage().equals(ErrorMessages.err_CX19));

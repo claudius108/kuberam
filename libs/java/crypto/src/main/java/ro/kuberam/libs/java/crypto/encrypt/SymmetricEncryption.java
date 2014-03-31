@@ -44,7 +44,7 @@ public class SymmetricEncryption {
 
 		IvParameterSpec ivSpec = null;
 		String algorithm = (transformationName.contains("/")) ? transformationName.substring(0, transformationName.indexOf("/")) : transformationName;
-		provider = provider.equals("") ? "base64" : provider;
+		provider = provider.equals("") ? "SunJCE" : provider;
 		Cipher cipher = null;
 
 		try {
@@ -88,7 +88,7 @@ public class SymmetricEncryption {
 
 		IvParameterSpec ivSpec = null;
 		String algorithm = (transformationName.contains("/")) ? transformationName.substring(0, transformationName.indexOf("/")) : transformationName;
-		provider = provider.equals("") ? "base64" : provider;
+		provider = provider.equals("") ? "SunJCE" : provider;
 		Cipher cipher = null;
 
 		try {

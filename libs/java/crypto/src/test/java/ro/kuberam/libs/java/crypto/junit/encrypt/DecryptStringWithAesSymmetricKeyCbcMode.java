@@ -15,7 +15,7 @@ public class DecryptStringWithAesSymmetricKeyCbcMode extends BaseTest {
 		String plainKey = "1234567890123456";
 		String iv = Hash.hashString("initialization vector", "MD5", "");
 		
-		String result = SymmetricEncryption.decryptString(input, plainKey, "AES/CBC/PKCS5Padding", iv, "base64");
+		String result = SymmetricEncryption.decryptString(input, plainKey, "AES/CBC/PKCS5Padding", iv, "SunJCE");
 
 		Assert.assertTrue(result.equals("Short string for tests."));
 	}
