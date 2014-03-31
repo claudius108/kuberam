@@ -18,7 +18,7 @@
  *  $Id$
  */
 
-package org.expath.crypto.digest;
+package ro.kuberam.libs.java.crypto.digest;
 
 /**
  * Implements the crypto:hash() function.
@@ -34,18 +34,23 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 import org.apache.log4j.Logger;
-import org.expath.crypto.ErrorMessages;
-import org.expath.crypto.utils.Base64;
+
+import ro.kuberam.libs.java.crypto.ErrorMessages;
+import ro.kuberam.libs.java.crypto.utils.Base64;
 
 public class Hash {
 
 	private final static Logger log = Logger.getLogger(Hash.class);
 	private final static String inputStringEncoding = "UTF-8";
 
+	public static String hashString(String data, String algorithm) throws Exception {
+		return hashString(data, algorithm, "");
+	}
+
 	public static String hashString(String data, String algorithm, String format) throws Exception {
 
 		// TODO: validate the format
-		// format = format.equals("") ? "SUN" : format;
+		format = format.equals("") ? "base64" : format;
 
 		MessageDigest messageDigester = getMessageDigester(algorithm);
 
@@ -60,6 +65,10 @@ public class Hash {
 
 			return bigInt.toString(16);
 		}
+	}
+
+	public static String hashBinary(InputStream data, String algorithm) throws Exception {
+		return hashBinary(data, algorithm);
 	}
 
 	public static String hashBinary(InputStream data, String algorithm, String format) throws Exception {

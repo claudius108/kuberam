@@ -1,4 +1,4 @@
-package org.expath.crypto.digest;
+package ro.kuberam.libs.java.crypto.digest;
 
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
@@ -10,9 +10,10 @@ import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 
 import org.apache.log4j.Logger;
-import org.expath.crypto.ErrorMessages;
-import org.expath.crypto.ExpathCryptoModule;
-import org.expath.crypto.utils.Base64;
+
+import ro.kuberam.libs.java.crypto.ErrorMessages;
+import ro.kuberam.libs.java.crypto.ExpathCryptoModule;
+import ro.kuberam.libs.java.crypto.utils.Base64;
 
 public class Hmac {
 
