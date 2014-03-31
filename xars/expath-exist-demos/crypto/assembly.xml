@@ -16,17 +16,51 @@
 	<category id="exist">eXist extensions</category>
 	<dependency processor="http://exist-db.org/" />
 	<dependency package="http://expath.org/lib/crypto" />
-	<dependencySets>
-		<dependencySet>
-			<groupId>ro.kuberam.libs.java</groupId>
-			<artifactId>crypto</artifactId>
-			<version>1.2.0</version>
-		</dependencySet>
-		<dependencySet>
-			<groupId>org.expath.exist</groupId>
-			<artifactId>crypto</artifactId>
-			<version>0.3.1</version>
-		</dependencySet>
-	</dependencySets>
+	<fileSets>
+		<fileSet>
+			<directory>${basedir}</directory>
+			<includes>
+				<include>icon.png</include>
+				<include>index.xml</include>
+			</includes>
+			<outputDirectory>/</outputDirectory>
+		</fileSet>
+		<fileSet>
+			<directory>..</directory>
+			<includes>
+				<include>controller.xql</include>
+			</includes>
+			<outputDirectory>/</outputDirectory>
+		</fileSet>
+		<fileSet>
+			<directory>..</directory>
+			<includes>
+				<include>test-plan.xql</include>
+				<include>generate-tests-presentation.xsl</include>
+			</includes>
+			<outputDirectory>tests</outputDirectory>
+		</fileSet>		
+		<fileSet>
+			<directory>${unit-tests-dir-path}/java/org/expath/exist/${project.artifactId}/xquery</directory>
+			<includes>
+				<include>*.*</include>
+			</includes>
+			<outputDirectory>tests/unit-tests</outputDirectory>
+		</fileSet>
+		<fileSet>
+			<directory>${unit-tests-dir-path}/java/org/expath/exist/${project.artifactId}</directory>
+			<includes>
+				<include>test-plan.xml</include>
+			</includes>
+			<outputDirectory>tests</outputDirectory>
+		</fileSet>
+		<fileSet>
+			<directory>${unit-tests-dir-path}/resources/org/expath/exist/${project.artifactId}</directory>
+			<includes>
+				<include>*.*</include>
+			</includes>
+			<outputDirectory>tests/resources</outputDirectory>
+		</fileSet>		
+	</fileSets>
 </package>
 

@@ -18,6 +18,7 @@
 		<package-name>http://expath.org/demos/exist/${project.artifactId}</package-name>
 		<package-abbrev>expath-${project.artifactId}-exist-demos</package-abbrev>
 		<package-type>application</package-type>
+		<unit-tests-dir-path>/home/claudius/workspaces/repositories/git/expath-exist/${project.artifactId}/src/test</unit-tests-dir-path>
 	</properties>
 
 </project>
