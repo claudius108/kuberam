@@ -3,6 +3,9 @@ package ro.kuberam.maven.plugins.expath.mojos.makeXarMojo;
 import static org.mockito.Mockito.mock;
 
 import java.io.File;
+import java.net.JarURLConnection;
+import java.net.URL;
+import java.util.jar.Attributes;
 
 import org.apache.maven.execution.MavenSession;
 import org.apache.maven.project.MavenProject;

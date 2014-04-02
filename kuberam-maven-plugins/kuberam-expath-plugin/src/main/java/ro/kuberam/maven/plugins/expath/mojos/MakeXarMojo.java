@@ -5,6 +5,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.net.JarURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.jar.Attributes;
@@ -156,7 +157,9 @@ public class MakeXarMojo extends KuberamAbstractMojo {
 			// collect metadata about module's java main class for exist.xml
 			if (i == 0 && artifactIdentifier.contains(":jar:")) {
 				components += "<resource><public-uri>http://exist-db.org/ns/expath-pkg/module-main-class</public-uri><file>"
-						+ getMainClass(artifactFileAbsolutePath) + "</file></resource>";
+						+ getMainClass(artifactFileAbsolutePath).get(0) + "</file></resource>";
+				components += "<resource><public-uri>http://exist-db.org/ns/expath-pkg/module-namespace</public-uri><file>"
+						+ getMainClass(artifactFileAbsolutePath).get(1) + "</file></resource>";				
 			}
 		}
 
@@ -213,7 +216,9 @@ public class MakeXarMojo extends KuberamAbstractMojo {
 		project.getModel().addProperty("components", "");
 	}
 
-	private static String getMainClass(String firstDependencyAbsolutePath) {
+	private static List<String> getMainClass(String firstDependencyAbsolutePath) {
+		List<String> result = new ArrayList<String>();
+
 		URL u;
 		JarURLConnection uc;
 		Attributes attr = null;
@@ -224,7 +229,11 @@ public class MakeXarMojo extends KuberamAbstractMojo {
 		} catch (Exception e1) {
 			e1.printStackTrace();
 		}
-		return attr.getValue(Attributes.Name.MAIN_CLASS);
+
+		result.add(attr.getValue(Attributes.Name.MAIN_CLASS));
+		result.add(attr.getValue("ModuleNamespace"));
+
+		return result;
 	}
 
 }

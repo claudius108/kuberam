@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet xmlns="http://expath.org/ns/pkg" xmlns:pkg="http://expath.org/ns/pkg" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-	exclude-result-prefixes="pkg" version="2.0">
+<xsl:stylesheet xmlns="http://expath.org/ns/pkg" xmlns:pkg="http://expath.org/ns/pkg"
+	xmlns:xsl="http://www.w3.org/1999/XSL/Transform" exclude-result-prefixes="pkg" version="2.0">
 
 	<xsl:output method="xml" />
 
 	<xsl:param name="package-dir" />
 	<xsl:variable name="package-type" select="/*/pkg:type" />
-	<xsl:variable name="module-namespace" select="/*/*[local-name() = 'module-namespace']" />
 	<xsl:variable name="package-version" select="/*/@version" />
 
 	<xsl:variable name="abbrev" select="/*/@abbrev" />
 	<xsl:variable name="name" select="/*/@name" />
 	<xsl:variable name="title" select="/*/pkg:title" />
 	<xsl:variable name="authors" select="/*/pkg:author" />
-	<xsl:variable name="components" select="collection(concat('file://', $package-dir, '?select=components.xml'))/element()" />
+	<xsl:variable name="components"
+		select="collection(concat('file://', $package-dir, '?select=components.xml'))/element()" />
 
 	<xsl:template match="/">
 		<xsl:choose>
@@ -21,6 +21,7 @@
 				<!-- generate exist.xml -->
 				<xsl:result-document href="{concat($package-dir, '/exist.xml')}">
 					<package xmlns="http://exist-db.org/ns/expath-pkg">
+						<xsl:variable name="module-namespace" select="$components//element()[preceding-sibling::*[1] = 'http://exist-db.org/ns/expath-pkg/module-namespace']" />
 						<xsl:for-each select="$components/element()">
 							<xsl:choose>
 								<xsl:when test="element()[1] = 'http://exist-db.org/ns/expath-pkg/module-main-class'">

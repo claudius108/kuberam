@@ -5,7 +5,7 @@
 	<website>${project.url}</website>
 	<license>GNU-LGPL</license>
 	<copyright>true</copyright>
-	<type>application</type>
+	<type>library</type>
 	<status>stable</status>
 	<tag>${module-prefix}</tag>
 	<tag>expath</tag>
@@ -16,14 +16,14 @@
 	<dependency processor="http://exist-db.org/" />
 	<dependencySets>
 		<dependencySet>
-			<groupId>ro.kuberam.libs.java</groupId>
-			<artifactId>crypto</artifactId>
-			<version>1.2.0</version>
-		</dependencySet>
-		<dependencySet>
 			<groupId>org.expath.exist</groupId>
 			<artifactId>crypto</artifactId>
 			<version>0.3.1</version>
+		</dependencySet>
+		<dependencySet>
+			<groupId>ro.kuberam.libs.java</groupId>
+			<artifactId>crypto</artifactId>
+			<version>1.2.0</version>
 		</dependencySet>
 	</dependencySets>
 </package>
