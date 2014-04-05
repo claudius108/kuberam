@@ -1,34 +1,28 @@
 package ro.kuberam.libs.java.pdf.formControls;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.ObjectOutputStream;
+import java.util.Map;
 
 import javax.xml.stream.XMLStreamException;
 
 import org.junit.Test;
-
-import ro.kuberam.libs.java.pdf.formControls.GetTextFields;
 
 public class GetTextFieldsTest {
 
 	@Test
 	public void test1() throws IOException, XMLStreamException {
 
-		InputStream pdfIs = this.getClass().getResourceAsStream("SF.pdf");
+		InputStream pdfIs = this.getClass().getResourceAsStream("../SF.pdf");
 
-		ByteArrayOutputStream output = GetTextFields.run(pdfIs);
+		Map<String, String> result = GetTextFields.run(pdfIs);
 
-		try {
-			FileOutputStream fos = new FileOutputStream(new File("target/result.xml"));
-			output.writeTo(fos);
-		} catch (IOException ioe) {
-			ioe.printStackTrace();
-		} finally {
-			output.close();
-		}
+		FileOutputStream fos = new FileOutputStream("target/result.ser");
+		ObjectOutputStream oos = new ObjectOutputStream(fos);
+		oos.writeObject(result);
+		oos.close();
 	}
 
 }

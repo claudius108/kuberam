@@ -5,24 +5,34 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.ObjectInputStream;
+import java.util.Map;
 
 import javax.xml.stream.XMLStreamException;
 
 import org.apache.pdfbox.exceptions.COSVisitorException;
 import org.junit.Test;
 
-import ro.kuberam.libs.java.pdf.formControls.SetTextFields;
-
 public class SetTextFieldsTest {
 
+
+	@SuppressWarnings("unchecked")
 	@Test
 	public void test1() throws IOException, XMLStreamException, COSVisitorException {
 
-		InputStream pdfIs = this.getClass().getResourceAsStream("SF.pdf");
-		InputStream xfdfIs = this.getClass().getResourceAsStream("sf702-2014-01.xml");
-
-		ByteArrayOutputStream output = SetTextFields.run(pdfIs, xfdfIs);
+		InputStream pdfIs = this.getClass().getResourceAsStream("../SF.pdf");
 		
+		ObjectInputStream ois = new ObjectInputStream(this.getClass().getResourceAsStream("../fields.ser"));
+		Map<String, String> fieldsMap = null;
+		try {
+			fieldsMap = (Map<String, String>) ois.readObject();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		ois.close();
+
+		ByteArrayOutputStream output = SetTextFields.run(pdfIs, fieldsMap);
+
 		try {
 			FileOutputStream fos = new FileOutputStream(new File("target/result.pdf"));
 			output.writeTo(fos);
@@ -32,5 +42,6 @@ public class SetTextFieldsTest {
 			output.close();
 		}
 	}
+
 
 }
