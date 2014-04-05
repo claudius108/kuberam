@@ -10,16 +10,16 @@ import javax.xml.stream.XMLStreamException;
 
 import org.junit.Test;
 
-import ro.kuberam.libs.java.pdf.GetFields;
+import ro.kuberam.libs.java.pdf.GetTextFields;
 
-public class GetFieldsTest {
+public class GetTextFieldsTest {
 
 	@Test
-	public void testExtractFields() throws IOException, XMLStreamException {
+	public void test1() throws IOException, XMLStreamException {
 
 		InputStream pdfIs = this.getClass().getResourceAsStream("SF.pdf");
 
-		ByteArrayOutputStream output = GetFields.run(pdfIs);
+		ByteArrayOutputStream output = GetTextFields.run(pdfIs);
 
 		try {
 			FileOutputStream fos = new FileOutputStream(new File("target/result.xml"));

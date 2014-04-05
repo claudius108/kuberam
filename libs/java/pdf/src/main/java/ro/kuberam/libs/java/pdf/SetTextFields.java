@@ -18,7 +18,7 @@ import org.apache.pdfbox.pdmodel.common.COSObjectable;
 import org.apache.pdfbox.pdmodel.interactive.form.PDAcroForm;
 import org.apache.pdfbox.pdmodel.interactive.form.PDField;
 
-public class SetFields {
+public class SetTextFields {
 
 	private static XMLStreamReader parser;
 	private static ArrayList<String> fieldFullyQualifiedNameList = new ArrayList<String>();

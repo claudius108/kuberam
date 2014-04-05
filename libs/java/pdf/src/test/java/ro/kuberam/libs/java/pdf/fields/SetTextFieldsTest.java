@@ -11,9 +11,9 @@ import javax.xml.stream.XMLStreamException;
 import org.apache.pdfbox.exceptions.COSVisitorException;
 import org.junit.Test;
 
-import ro.kuberam.libs.java.pdf.SetFields;
+import ro.kuberam.libs.java.pdf.SetTextFields;
 
-public class SetFieldsTest {
+public class SetTextFieldsTest {
 
 	@Test
 	public void test1() throws IOException, XMLStreamException, COSVisitorException {
@@ -21,7 +21,7 @@ public class SetFieldsTest {
 		InputStream pdfIs = this.getClass().getResourceAsStream("SF.pdf");
 		InputStream xfdfIs = this.getClass().getResourceAsStream("sf702-2014-01.xml");
 
-		ByteArrayOutputStream output = SetFields.run(pdfIs, xfdfIs);
+		ByteArrayOutputStream output = SetTextFields.run(pdfIs, xfdfIs);
 		
 		try {
 			FileOutputStream fos = new FileOutputStream(new File("target/result.pdf"));

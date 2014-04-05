@@ -15,7 +15,7 @@ import org.apache.pdfbox.pdmodel.common.COSObjectable;
 import org.apache.pdfbox.pdmodel.interactive.form.PDAcroForm;
 import org.apache.pdfbox.pdmodel.interactive.form.PDField;
 
-public class GetFields {
+public class GetTextFields {
 
 	private static XMLStreamWriter writer;
 
