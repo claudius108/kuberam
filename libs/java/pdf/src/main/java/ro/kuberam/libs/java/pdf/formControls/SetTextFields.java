@@ -64,7 +64,7 @@ public class SetTextFields {
 
 		while (fieldsIterator.hasNext()) {
 			PDField field = fieldsIterator.next();
-			setField(field, field.getPartialName());
+			setTextField(field, field.getPartialName());
 		}
 
 		pdfDocument.save(output);
@@ -73,7 +73,7 @@ public class SetTextFields {
 		return output;
 	}
 
-	private static void setField(PDField field, String sParent) throws IOException {
+	private static void setTextField(PDField field, String sParent) throws IOException {
 		List<COSObjectable> kids = field.getKids();
 		if (kids != null) {
 			Iterator<COSObjectable> kidsIter = kids.iterator();
@@ -83,8 +83,10 @@ public class SetTextFields {
 			while (kidsIter.hasNext()) {
 				Object pdfObj = kidsIter.next();
 				PDField kid = (PDField) pdfObj;
+				System.out.println(kid.findFieldType());
 				if (pdfObj instanceof PDField) {
-					setField(kid, sParent);
+					System.out.println();
+					setTextField(kid, sParent);
 				}
 			}
 		} else {

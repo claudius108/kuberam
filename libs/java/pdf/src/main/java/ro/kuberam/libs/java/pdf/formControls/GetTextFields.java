@@ -37,7 +37,7 @@ public class GetTextFields {
 
 		while (fieldsIter.hasNext()) {
 			PDField field = fieldsIter.next();
-			processField(field, field.getPartialName());
+			getTextField(field, field.getPartialName());
 		}
 
 		writer.writeEndElement();
@@ -51,7 +51,7 @@ public class GetTextFields {
 		return oxygenParserOutput;
 	}
 
-	private static void processField(final PDField field, String sParent) throws IOException,
+	private static void getTextField(final PDField field, String sParent) throws IOException,
 			XMLStreamException {
 		List<COSObjectable> kids = field.getKids();
 		if (kids != null) {
@@ -65,7 +65,7 @@ public class GetTextFields {
 				Object pdfObj = kidsIter.next();
 				PDField kid = (PDField) pdfObj;
 				if (pdfObj instanceof PDField) {
-					processField(kid, sParent);
+					getTextField(kid, sParent);
 				}
 			}
 		} else {
