@@ -10,7 +10,7 @@ import javax.xml.stream.XMLStreamException;
 
 import org.junit.Test;
 
-import ro.kuberam.libs.java.pdf.GetTextFields;
+import ro.kuberam.libs.java.pdf.formControls.GetTextFields;
 
 public class GetTextFieldsTest {
 

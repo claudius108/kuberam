@@ -11,7 +11,7 @@ import javax.xml.stream.XMLStreamException;
 import org.apache.pdfbox.exceptions.COSVisitorException;
 import org.junit.Test;
 
-import ro.kuberam.libs.java.pdf.SetTextFields;
+import ro.kuberam.libs.java.pdf.formControls.SetTextFields;
 
 public class SetTextFieldsTest {
 
