@@ -1,7 +1,6 @@
 package ro.kuberam.libs.java.ftclient.SFTP;
 
 import java.net.URI;
-import java.util.Properties;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -17,8 +16,6 @@ public class RetrieveTextResourceFromSftpServer extends FTClientAbstractTest {
 
 	@Test
 	public void retrieveTextResourceFromSftpServer() throws Exception {
-		Properties connectionProperties = new Properties();
-		connectionProperties.load(this.getClass().getResourceAsStream("../connection.properties"));
 
 		Session connection = Connect.connect(new URI(connectionProperties.getProperty("sftp-server-connection-url")),
 				getBinaryResourceAsString("../resources/Open-Private-Key"));
@@ -27,7 +24,7 @@ public class RetrieveTextResourceFromSftpServer extends FTClientAbstractTest {
 
 		Disconnect.disconnect(connection);
 
-		String expectedResult = getBinaryResourceAsBase64String("../resources/test.txt");
+		String expectedResult = getBinaryResourceAsBase64String("../test.txt");
 
 		Assert.assertTrue(expectedResult.equals(actualResult));
 	}
