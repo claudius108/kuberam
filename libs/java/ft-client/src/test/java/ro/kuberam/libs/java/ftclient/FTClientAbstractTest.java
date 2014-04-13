@@ -1,4 +1,4 @@
-package org.expath.ftclient;
+package ro.kuberam.libs.java.ftclient;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -15,16 +15,16 @@ import javax.xml.transform.stream.StreamResult;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.net.ftp.FTPClient;
-import org.expath.ftclient.Connect;
-import org.expath.ftclient.DeleteResource;
-import org.expath.ftclient.Disconnect;
-import org.expath.ftclient.GetResourceMetadata;
-import org.expath.ftclient.ListResources;
-import org.expath.ftclient.RetrieveResource;
-import org.expath.ftclient.StoreResource;
-import org.expath.ftclient.FTP.FTP;
-import org.expath.ftclient.utils.Base64;
-import org.expath.ftclient.utils.InputStream2ByteArray;
+import ro.kuberam.libs.java.ftclient.Connect;
+import ro.kuberam.libs.java.ftclient.DeleteResource;
+import ro.kuberam.libs.java.ftclient.Disconnect;
+import ro.kuberam.libs.java.ftclient.GetResourceMetadata;
+import ro.kuberam.libs.java.ftclient.ListResources;
+import ro.kuberam.libs.java.ftclient.RetrieveResource;
+import ro.kuberam.libs.java.ftclient.StoreResource;
+import ro.kuberam.libs.java.ftclient.FTP.FTP;
+import ro.kuberam.libs.java.ftclient.utils.Base64;
+import ro.kuberam.libs.java.ftclient.utils.InputStream2ByteArray;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;

@@ -1,4 +1,4 @@
-package org.expath.ftclient;
+package ro.kuberam.libs.java.ftclient;
 
 
 public abstract class AbstractConnection {

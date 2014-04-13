@@ -1,14 +1,14 @@
-package org.expath.ftclient.FTP;
+package ro.kuberam.libs.java.ftclient.FTP;
 
 import java.io.InputStream;
 import java.net.URI;
 import java.util.Properties;
 
 import org.apache.commons.net.ftp.FTPClient;
-import org.expath.ftclient.Connect;
-import org.expath.ftclient.Disconnect;
-import org.expath.ftclient.FTClientAbstractTest;
-import org.expath.ftclient.ListResources;
+import ro.kuberam.libs.java.ftclient.Connect;
+import ro.kuberam.libs.java.ftclient.Disconnect;
+import ro.kuberam.libs.java.ftclient.FTClientAbstractTest;
+import ro.kuberam.libs.java.ftclient.ListResources;
 import org.junit.Assert;
 import org.junit.Test;
 

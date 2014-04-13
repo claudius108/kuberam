@@ -1,11 +1,11 @@
-package org.expath.ftclient;
+package ro.kuberam.libs.java.ftclient;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.log4j.Logger;
-import org.expath.ftclient.FTP.FTP;
+import ro.kuberam.libs.java.ftclient.FTP.FTP;
 import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;

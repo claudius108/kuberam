@@ -1,4 +1,4 @@
-package org.expath.ftclient.utils;
+package ro.kuberam.libs.java.ftclient.utils;
 
 import java.io.IOException;
 import java.util.zip.CRC32;

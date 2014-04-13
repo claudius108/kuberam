@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package org.expath.ftclient.webdav;
+package ro.kuberam.libs.java.ftclient.webdav;
 
 //import com.googlecode.sardine.DavResource;
 //import com.googlecode.sardine.Sardine;

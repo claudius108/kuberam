@@ -17,7 +17,7 @@
  *
  *  $Id$
  */
-package org.expath.ftclient;
+package ro.kuberam.libs.java.ftclient;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -59,12 +59,12 @@ public class Connect {
         
         String protocol = scheme.toUpperCase();
         
-        if (!org.expath.ftclient.ExpathFTClientModule.SUPPORTED_PROTOCOLS.contains(" " + protocol + " ")) {
+        if (!ExpathFTClientModule.SUPPORTED_PROTOCOLS.contains(" " + protocol + " ")) {
             log.debug("err:FTC006: The protocol is not supported. Details: the protocol '" + protocol + "' is not implemented.");
             throw new Exception("err:FTC006: The protocol is not supported.");
         }
 
-        if (!org.expath.ftclient.ExpathFTClientModule.LOADED_PROTOCOLS.get(protocol)) {
+        if (!ExpathFTClientModule.LOADED_PROTOCOLS.get(protocol)) {
             log.debug("err:FTC006: The protocol is not supported. Details: the protocol jar is not loaded.");
             throw new Exception("err:FTC006: The protocol is not supported.");
         }

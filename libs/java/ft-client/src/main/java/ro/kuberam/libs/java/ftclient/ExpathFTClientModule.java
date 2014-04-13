@@ -17,7 +17,7 @@
  *
  *  $Id$
  */
-package org.expath.ftclient;
+package ro.kuberam.libs.java.ftclient;
 
 import java.io.File;
 import java.io.IOException;

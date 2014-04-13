@@ -1,14 +1,15 @@
-package org.expath.ftclient.SFTP;
+package ro.kuberam.libs.java.ftclient.SFTP;
 
 import java.net.URI;
 import java.util.Properties;
 
-import org.expath.ftclient.Connect;
-import org.expath.ftclient.Disconnect;
-import org.expath.ftclient.FTClientAbstractTest;
-import org.expath.ftclient.RetrieveResource;
 import org.junit.Assert;
 import org.junit.Test;
+
+import ro.kuberam.libs.java.ftclient.Connect;
+import ro.kuberam.libs.java.ftclient.Disconnect;
+import ro.kuberam.libs.java.ftclient.FTClientAbstractTest;
+import ro.kuberam.libs.java.ftclient.RetrieveResource;
 
 import com.jcraft.jsch.Session;
 

@@ -17,7 +17,7 @@
  *
  *  $Id$
  */
-package org.expath.ftclient.FTP;
+package ro.kuberam.libs.java.ftclient.FTP;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -38,10 +38,10 @@ import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPFile;
 import org.apache.commons.net.ftp.FTPReply;
 import org.apache.log4j.Logger;
-import org.expath.ftclient.AbstractConnection;
-import org.expath.ftclient.ErrorMessages;
-import org.expath.ftclient.ExpathFTClientModule;
-import org.expath.ftclient.utils.GenerateResourceElement;
+import ro.kuberam.libs.java.ftclient.AbstractConnection;
+import ro.kuberam.libs.java.ftclient.ErrorMessages;
+import ro.kuberam.libs.java.ftclient.ExpathFTClientModule;
+import ro.kuberam.libs.java.ftclient.utils.GenerateResourceElement;
 
 /**
  * Implements a public interface for a FTP connection.

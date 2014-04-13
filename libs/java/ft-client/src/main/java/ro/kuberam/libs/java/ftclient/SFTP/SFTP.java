@@ -17,7 +17,7 @@
  *
  *  $Id$
  */
-package org.expath.ftclient.SFTP;
+package ro.kuberam.libs.java.ftclient.SFTP;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -40,10 +40,10 @@ import javax.xml.stream.XMLStreamWriter;
 import javax.xml.transform.stream.StreamResult;
 
 import org.apache.log4j.Logger;
-import org.expath.ftclient.AbstractConnection;
-import org.expath.ftclient.ErrorMessages;
-import org.expath.ftclient.ExpathFTClientModule;
-import org.expath.ftclient.utils.GenerateResourceElement;
+import ro.kuberam.libs.java.ftclient.AbstractConnection;
+import ro.kuberam.libs.java.ftclient.ErrorMessages;
+import ro.kuberam.libs.java.ftclient.ExpathFTClientModule;
+import ro.kuberam.libs.java.ftclient.utils.GenerateResourceElement;
 
 import com.jcraft.jsch.Channel;
 import com.jcraft.jsch.ChannelSftp;

@@ -1,4 +1,4 @@
-package org.expath.ftclient.FTP;
+package ro.kuberam.libs.java.ftclient.FTP;
 
 import java.io.BufferedReader;
 import java.io.InputStream;

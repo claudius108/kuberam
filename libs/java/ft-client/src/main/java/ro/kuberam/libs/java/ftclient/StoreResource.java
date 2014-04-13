@@ -17,7 +17,7 @@
  *
  *  $Id$
  */
-package org.expath.ftclient;
+package ro.kuberam.libs.java.ftclient;
 
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
