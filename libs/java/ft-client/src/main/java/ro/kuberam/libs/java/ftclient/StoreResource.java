@@ -45,7 +45,7 @@ public class StoreResource {
         
         String protocol = ExpathFTClientModule.PROTOCOL_CLASS_CODES.get(remoteConnection.getClass().getName());
 
-        Class<?> clazz = Class.forName("org.expath.ftclient." + protocol + "." + protocol);
+        Class<?> clazz = Class.forName("ro.kuberam.libs.java.ftclient." + protocol + "." + protocol);
         Method method = clazz.getMethod("storeResource", new Class<?>[] {Object.class, String.class, String.class, InputStream.class});
         try {
             result = (Boolean) method.invoke(clazz.newInstance(), new Object[] {remoteConnection, remoteDirectoryPath, resourceName, resourceInputStream});

@@ -50,7 +50,7 @@ public class ExpathFTClientModule {
 		ClassLoader classLoader = Thread.currentThread()
 				.getContextClassLoader();
 		//TODO: put ACTUAL package name here
-		String modulePackageName = "org.expath.ftclient";
+		String modulePackageName = "ro.kuberam.libs.java.ftclient";
 
 		modulePackageName = modulePackageName.replace(".", "/")
 				+ "/";

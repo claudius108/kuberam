@@ -37,7 +37,7 @@ public class DeleteResource {
         Boolean result = true;
         String protocol = ExpathFTClientModule.PROTOCOL_CLASS_CODES.get(remoteConnection.getClass().getName());
 
-        Class<?> clazz = Class.forName("org.expath.ftclient." + protocol + "." + protocol);
+        Class<?> clazz = Class.forName("ro.kuberam.libs.java.ftclient." + protocol + "." + protocol);
         Method method = clazz.getMethod("deleteResource", new Class<?>[] {Object.class, String.class});
         try {
             result = (Boolean) method.invoke(clazz.newInstance(), new Object[] {remoteConnection, remoteResourcePath});

@@ -39,7 +39,7 @@ public class Disconnect {
 
 		String protocol = ExpathFTClientModule.PROTOCOL_CLASS_CODES
 				.get(remoteConnection.getClass().getName());
-		Class<?> clazz = Class.forName("org.expath.ftclient." + protocol + "."
+		Class<?> clazz = Class.forName("ro.kuberam.libs.java.ftclient." + protocol + "."
 				+ protocol);
 		Method method = clazz.getMethod("disconnect",
 				new Class<?>[] { Object.class });

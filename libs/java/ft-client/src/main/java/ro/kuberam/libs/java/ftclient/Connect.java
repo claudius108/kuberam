@@ -69,7 +69,7 @@ public class Connect {
             throw new Exception("err:FTC006: The protocol is not supported.");
         }
         
-        Class<?> clazz = Class.forName("org.expath.ftclient." + protocol + "." + protocol);
+        Class<?> clazz = Class.forName("ro.kuberam.libs.java.ftclient." + protocol + "." + protocol);
         Method method = clazz.getMethod("connect", new Class<?>[] {URI.class, String.class, String.class, String.class, int.class, String.class});
         try {
             connection = (X) method.invoke(clazz.newInstance(), new Object[] {remoteHostUri, username, password, remoteHost, remotePort, options});

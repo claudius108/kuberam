@@ -39,7 +39,7 @@ public class RetrieveResource {
     	StreamResult result = null;
         String protocol = ExpathFTClientModule.PROTOCOL_CLASS_CODES.get(remoteConnection.getClass().getName());
        
-        Class<?> clazz = Class.forName("org.expath.ftclient." + protocol + "." + protocol);
+        Class<?> clazz = Class.forName("ro.kuberam.libs.java.ftclient." + protocol + "." + protocol);
         Method method = clazz.getMethod("retrieveResource", new Class<?>[] {Object.class, String.class});
         try {
             result = (StreamResult) method.invoke(clazz.newInstance(), new Object[] {remoteConnection, remoteResourcePath});
@@ -55,7 +55,7 @@ public class RetrieveResource {
     	InputStream result = null;
         String protocol = ExpathFTClientModule.PROTOCOL_CLASS_CODES.get(remoteConnection.getClass().getName());
        
-        Class<?> clazz = Class.forName("org.expath.ftclient." + protocol + "." + protocol);
+        Class<?> clazz = Class.forName("ro.kuberam.libs.java.ftclient." + protocol + "." + protocol);
         Method method = clazz.getMethod("retrieveResource2", new Class<?>[] {Object.class, String.class});
         try {
             result = (InputStream) method.invoke(clazz.newInstance(), new Object[] {remoteConnection, remoteResourcePath});
