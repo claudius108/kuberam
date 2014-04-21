@@ -11,10 +11,10 @@ import ro.kuberam.libs.java.ftclient.Disconnect;
 import ro.kuberam.libs.java.ftclient.FTClientAbstractTest;
 import ro.kuberam.libs.java.ftclient.RetrieveResource;
 
-public class GetResourceMetadataFromFtpServer extends FTClientAbstractTest {
+public class GetBinaryResourceFromFtpServer extends FTClientAbstractTest {
 
 	@Test
-	public void getResourceMetadataFromFtpServer() throws Exception {
+	public void test() throws Exception {
 
 		FTPClient connection = Connect.connect(
 				new URI(connectionProperties.getProperty("ftp-server-connection-url")), "");

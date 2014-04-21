@@ -11,6 +11,7 @@ public class GenerateResourceElement {
 
 		xmlWriter.writeStartElement(modulePrefix + ":resource");
 		xmlWriter.writeNamespace(modulePrefix, moduleNsUri);
+
 		if (is != null) {
 			byte[] resourceBytes = InputStream2ByteArray.convert(is);
 			GenerateMetadataAttributes.run(xmlWriter, resourceName, resourceType, resourceAbsolutePath, lastModified, resourceSize, user, userGroup, permissions,
