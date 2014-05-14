@@ -28,7 +28,6 @@ package ro.kuberam.libs.java.crypto.digest;
 
 import java.io.BufferedInputStream;
 import java.io.InputStream;
-import java.math.BigInteger;
 import java.security.DigestInputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -61,9 +60,7 @@ public class Hash {
 		if (format.equals("base64")) {
 			return Base64.encodeToString(resultBytes, true);
 		} else {
-			BigInteger bigInt = new BigInteger(1, resultBytes);
-
-			return bigInt.toString(16);
+			return convertToHex(resultBytes);
 		}
 	}
 
@@ -88,9 +85,7 @@ public class Hash {
 		if (format.equals("base64")) {
 			return Base64.encodeToString(resultBytes, true);
 		} else {
-			BigInteger bigInt = new BigInteger(1, resultBytes);
-
-			return bigInt.toString(16);
+			return convertToHex(resultBytes);
 		}
 
 		// byte[] buffer = new byte[bufferSize];
@@ -115,5 +110,21 @@ public class Hash {
 		}
 
 		return messageDigester;
+	}
+
+	private static String convertToHex(byte[] data) {
+		StringBuffer buf = new StringBuffer();
+		for (int i = 0; i < data.length; i++) {
+			int halfbyte = (data[i] >>> 4) & 0x0F;
+			int two_halfs = 0;
+			do {
+				if ((0 <= halfbyte) && (halfbyte <= 9))
+					buf.append((char) ('0' + halfbyte));
+				else
+					buf.append((char) ('a' + (halfbyte - 10)));
+				halfbyte = data[i] & 0x0F;
+			} while (two_halfs++ < 1);
+		}
+		return buf.toString();
 	}
 }
