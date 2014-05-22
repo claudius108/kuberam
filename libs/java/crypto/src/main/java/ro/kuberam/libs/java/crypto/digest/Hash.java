@@ -72,6 +72,8 @@ public class Hash {
 
 		// TODO: validate the format
 		format = format.equals("") ? "base64" : format;
+		
+		String result = "";
 
 		BufferedInputStream bis = new BufferedInputStream(data);
 		MessageDigest messageDigester = getMessageDigester(algorithm);
@@ -83,10 +85,14 @@ public class Hash {
 		byte[] resultBytes = messageDigester.digest();
 
 		if (format.equals("base64")) {
-			return Base64.encodeToString(resultBytes, true);
+			result = Base64.encodeToString(resultBytes, true);
 		} else {
-			return convertToHex(resultBytes);
+			result = convertToHex(resultBytes);
 		}
+		
+		log.info("hash value is: '" + result);	
+		
+		return result;
 
 		// byte[] buffer = new byte[bufferSize];
 		// int sizeRead = -1;
