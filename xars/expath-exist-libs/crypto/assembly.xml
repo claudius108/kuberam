@@ -9,7 +9,7 @@
 	<status>stable</status>
 	<tag>${module-prefix}</tag>
 	<tag>expath</tag>
-	<tag>${package-type}</tag>
+	<tag>library</tag>
 	<tag>exist</tag>
 	<category id="libs">Libraries</category>
 	<category id="exist">eXist extensions</category>
