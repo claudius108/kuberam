@@ -16,7 +16,7 @@ import com.jcraft.jsch.Session;
 public class DeleteBinaryResourceOnSftpServer extends FTClientAbstractTest {
 
 	@Test
-	public void listResourcesFromSftpServer() throws Exception {
+	public void test() throws Exception {
 
 		Session remoteConnection = initializeSftpConnection(
 				connectionProperties.getProperty("sftp-server-connection-url"),
@@ -28,9 +28,9 @@ public class DeleteBinaryResourceOnSftpServer extends FTClientAbstractTest {
 				resourceInputStream);
 		Assert.assertTrue(stored);
 		System.out.println("Stored resource: " + remoteResourcePath + ".\n");
-		Boolean deleted = DeleteResource.deleteResource(remoteConnection, remoteResourcePath);
+		//Boolean deleted = DeleteResource.deleteResource(remoteConnection, remoteResourcePath);
 		Disconnect.disconnect(remoteConnection);
-		Assert.assertTrue(deleted);
+		//Assert.assertTrue(deleted);
 
 	}
 }

@@ -20,7 +20,7 @@ public class RetrieveMultipleResourcesFromFtpServer extends FTClientAbstractTest
 
 		FTPClient remoteConnection = initializeFtpConnection(connectionProperties
 				.getProperty("ftp-server-connection-url"));
-		String remoteResourcePath1 = "/dir-with-rights";
+		String remoteResourcePath1 = "/dir-with-rights/";
 		StreamResult resources = ListResources.listResources(remoteConnection, remoteResourcePath1);
 		String resourcesString = resources.getWriter().toString();
 		System.out.println(resourcesString);

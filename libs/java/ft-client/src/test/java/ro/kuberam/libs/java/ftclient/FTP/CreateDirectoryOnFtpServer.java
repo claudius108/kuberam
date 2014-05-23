@@ -15,9 +15,13 @@ public class CreateDirectoryOnFtpServer extends FTClientAbstractTest {
 
 		FTPClient remoteConnection = initializeFtpConnection(connectionProperties
 				.getProperty("ftp-server-connection-url"));
+		
 		String remoteResourcePath = "/dir-with-rights/tmp/tempFolder" + System.currentTimeMillis() + "/";
+		
 		Boolean stored = StoreResource.storeResource(remoteConnection, remoteResourcePath, null);
+		
 		Disconnect.disconnect(remoteConnection);
+		
 		Assert.assertTrue(stored);
 
 	}

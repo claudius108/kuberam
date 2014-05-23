@@ -16,6 +16,7 @@ import javax.xml.transform.stream.StreamResult;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.net.ftp.FTPClient;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.w3c.dom.Document;
 
@@ -38,7 +39,7 @@ public class FTClientAbstractTest extends BaseTest {
 			connectionProperties.load(FTClientAbstractTest.class
 					.getResourceAsStream("connection.properties"));
 			// clean the ftp temp directory
-			FileUtils.cleanDirectory(new File(sftpHomeDirPath));
+			FileUtils.cleanDirectory(new File(sftpTmpDirPath));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -88,6 +89,7 @@ public class FTClientAbstractTest extends BaseTest {
 		return Base64.encodeToString(InputStream2ByteArray.convert(resource), true).replace("\r", "");
 	}
 
+	@Ignore
 	@Test
 	public void _checkDirectoryWithRightsTest() throws URISyntaxException, Exception {
 		FTPClient remoteConnection = initializeFtpConnection(connectionProperties
@@ -103,6 +105,7 @@ public class FTClientAbstractTest extends BaseTest {
 		}
 	}
 
+	@Ignore
 	@Test
 	public void _checkDirectoryWithoutRightsTest() throws URISyntaxException, Exception {
 		FTPClient remoteConnection = initializeFtpConnection(connectionProperties
@@ -118,6 +121,7 @@ public class FTClientAbstractTest extends BaseTest {
 		}
 	}
 
+	@Ignore
 	@Test
 	public void _checkDirectoryNonExistingTest() throws URISyntaxException, Exception {
 		FTPClient remoteConnection = initializeFtpConnection(connectionProperties
@@ -133,6 +137,7 @@ public class FTClientAbstractTest extends BaseTest {
 		}
 	}
 
+	@Ignore
 	@Test
 	public void _checkFileWithRightsTest() throws URISyntaxException, Exception {
 		FTPClient remoteConnection = initializeFtpConnection(connectionProperties
@@ -148,6 +153,7 @@ public class FTClientAbstractTest extends BaseTest {
 		}
 	}
 
+	@Ignore
 	@Test
 	public void _checkFileWithoutRightsTest() throws URISyntaxException, Exception {
 		FTPClient remoteConnection = initializeFtpConnection(connectionProperties
@@ -163,6 +169,7 @@ public class FTClientAbstractTest extends BaseTest {
 		}
 	}
 
+	@Ignore
 	@Test
 	public void _checkFileNonExistingTest() throws URISyntaxException, Exception {
 		FTPClient remoteConnection = initializeFtpConnection(connectionProperties
