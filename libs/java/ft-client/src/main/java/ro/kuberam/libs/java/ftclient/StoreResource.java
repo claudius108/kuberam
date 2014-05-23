@@ -24,7 +24,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import org.apache.log4j.Logger;
-import org.w3c.dom.Element;
 
 /**
  * Implements a method for storing a resource to a remote directory.
