@@ -23,8 +23,6 @@ import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-import javax.xml.transform.stream.StreamResult;
-
 import org.apache.log4j.Logger;
 /**
  * Implements a method for retrieving a remote resource.
@@ -34,29 +32,13 @@ import org.apache.log4j.Logger;
 public class RetrieveResource {
 	private static final Logger log = Logger.getLogger(RetrieveResource.class);
 	private static final String moduleName = ExpathFTClientModule.MODULE_NAME;
-
-    public static StreamResult retrieveResource(Object remoteConnection, String remoteResourcePath) throws Exception {
-    	StreamResult result = null;
-        String protocol = ExpathFTClientModule.PROTOCOL_CLASS_CODES.get(remoteConnection.getClass().getName());
-       
-        Class<?> clazz = Class.forName("ro.kuberam.libs.java.ftclient." + protocol + "." + protocol);
-        Method method = clazz.getMethod("retrieveResource", new Class<?>[] {Object.class, String.class});
-        try {
-            result = (StreamResult) method.invoke(clazz.newInstance(), new Object[] {remoteConnection, remoteResourcePath});
-            log.info(moduleName + " retrieved the resource '" + remoteResourcePath + "'.");
-        } catch(InvocationTargetException ex) {
-            throw new Exception(ex.getCause().getMessage());
-        }
-        
-        return result;
-    }
     
-    public static InputStream retrieveResource2(Object remoteConnection, String remoteResourcePath) throws Exception {
+    public static InputStream retrieveResource(Object remoteConnection, String remoteResourcePath) throws Exception {
     	InputStream result = null;
         String protocol = ExpathFTClientModule.PROTOCOL_CLASS_CODES.get(remoteConnection.getClass().getName());
        
         Class<?> clazz = Class.forName("ro.kuberam.libs.java.ftclient." + protocol + "." + protocol);
-        Method method = clazz.getMethod("retrieveResource2", new Class<?>[] {Object.class, String.class});
+        Method method = clazz.getMethod("retrieveResource", new Class<?>[] {Object.class, String.class});
         try {
             result = (InputStream) method.invoke(clazz.newInstance(), new Object[] {remoteConnection, remoteResourcePath});
             log.info(moduleName + " retrieved the resource '" + remoteResourcePath + "'.");

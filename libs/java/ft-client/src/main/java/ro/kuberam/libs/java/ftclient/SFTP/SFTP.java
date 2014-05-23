@@ -76,7 +76,7 @@ public class SFTP extends AbstractConnection {
 		long startTime = new Date().getTime();
 		X abstractConnection = null;
 		remotePort = (remotePort == -1) ? (int) 22 : remotePort;
-		JSch.setLogger(new MyLogger());
+		//JSch.setLogger(new MyLogger());
 		JSch jSch = new JSch();
 		Session sftpConnection = null;
 
@@ -148,7 +148,7 @@ public class SFTP extends AbstractConnection {
 		} catch (JSchException ex) {
 			log.error(ex.getMessage(), ex);
 		}
-		List connectionObject = _checkResourcePath(connection, remoteResourcePath, false);
+		List<Object> connectionObject = _checkResourcePath(connection, remoteResourcePath, false);
 		connection = (ChannelSftp) connectionObject.get(1);
 		Vector<LsEntry> resources = (Vector<LsEntry>) connectionObject.get(2);
 
@@ -187,7 +187,7 @@ public class SFTP extends AbstractConnection {
 		return resultAsStreamResult;
 	}
 
-	public StreamResult retrieveResource(Object abstractConnection, String remoteResourcePath)
+	public InputStream retrieveResource(Object abstractConnection, String remoteResourcePath)
 			throws Exception {
 		long startTime = new Date().getTime();
 		Session session = (Session) abstractConnection;
@@ -205,55 +205,7 @@ public class SFTP extends AbstractConnection {
 			log.error(ex.getMessage(), ex);
 		}
 
-		List connectionObject = _checkResourcePath(connection, remoteResourcePath, true);
-
-		Vector<LsEntry> resources = (Vector<LsEntry>) connectionObject.get(2);
-
-		InputStream is = (InputStream) connectionObject.get(3);
-
-		StringWriter writer = new StringWriter();
-		XMLStreamWriter xmlWriter = null;
-
-		try {
-			xmlWriter = XMLOutputFactory.newInstance().createXMLStreamWriter(writer);
-			xmlWriter.setPrefix(modulePrefix, moduleNsUri);
-			xmlWriter.writeStartDocument();
-			for (LsEntry resource : resources) {
-				_generateResourceElement(xmlWriter, resource, is, remoteResourcePath, connection);
-			}
-			xmlWriter.writeEndDocument();
-			xmlWriter.close();
-		} catch (Exception ex) {
-			throw new Exception(ex.getMessage());
-		}
-
-		StreamResult resultAsStreamResult = new StreamResult(writer);
-
-		log.info("The SFTP sub-module retrieved the resource '" + remoteResourcePath + "' in "
-				+ (new Date().getTime() - startTime) + " ms.");
-
-		return resultAsStreamResult;
-	}
-
-	public InputStream retrieveResource2(Object abstractConnection, String remoteResourcePath)
-			throws Exception {
-		long startTime = new Date().getTime();
-		Session session = (Session) abstractConnection;
-		if (!session.isConnected()) {
-			throw new Exception(ErrorMessages.err_FTC002);
-		}
-
-		Channel channel = null;
-		ChannelSftp connection = null;
-		try {
-			channel = session.openChannel("sftp");
-			connection = (ChannelSftp) channel;
-			channel.connect();
-		} catch (JSchException ex) {
-			log.error(ex.getMessage(), ex);
-		}
-
-		List connectionObject = _checkResourcePath(connection, remoteResourcePath, true);
+		List<Object> connectionObject = _checkResourcePath(connection, remoteResourcePath, true);
 
 		Vector<LsEntry> resources = (Vector<LsEntry>) connectionObject.get(2);
 
@@ -311,7 +263,7 @@ public class SFTP extends AbstractConnection {
 
 	public boolean deleteResource(Object abstractConnection, String remoteResourcePath) throws Exception {
 		long startTime = new Date().getTime();
-		JSch.setLogger(new MyLogger());
+		//JSch.setLogger(new MyLogger());
 		Session session = (Session) abstractConnection;
 		if (!session.isConnected()) {
 			throw new Exception(ErrorMessages.err_FTC002);
@@ -328,7 +280,7 @@ public class SFTP extends AbstractConnection {
 			log.error(ex.getMessage(), ex);
 		}
 
-		List SFTPconnectionObject = _checkResourcePath(SFTPconnection, remoteResourcePath, false);
+		List<Object> SFTPconnectionObject = _checkResourcePath(SFTPconnection, remoteResourcePath, false);
 		SFTPconnection = (ChannelSftp) SFTPconnectionObject.get(1);
 
 		try {
@@ -378,11 +330,11 @@ public class SFTP extends AbstractConnection {
 		return result;
 	}
 
-	public static List _checkResourcePath(ChannelSftp connection, String remoteResourcePath,
+	public static List<Object> _checkResourcePath(ChannelSftp connection, String remoteResourcePath,
 			Boolean getInputStream) throws Exception, SftpException {
 		InputStream is = null;
 		Vector<LsEntry> resources = null;
-		List connectionObject = new LinkedList();
+		List<Object> connectionObject = new LinkedList<Object>();
 		SftpATTRS stat = null;
 
 		try {
@@ -454,7 +406,7 @@ public class SFTP extends AbstractConnection {
 	}
 
 	public static class MyLogger implements com.jcraft.jsch.Logger {
-		static java.util.Hashtable name = new java.util.Hashtable();
+		static java.util.Hashtable<Integer, String> name = new java.util.Hashtable<Integer, String>();
 		static {
 			name.put(new Integer(DEBUG), "DEBUG: ");
 			name.put(new Integer(INFO), "INFO: ");

@@ -181,50 +181,7 @@ public class FTP extends AbstractConnection {
 		return resultAsStreamResult;
 	}
 
-	public StreamResult retrieveResource(Object abstractConnection, String remoteResourcePath)
-			throws Exception {
-		long startTime = new Date().getTime();
-		FTPClient connection = (FTPClient) abstractConnection;
-		if (!connection.isConnected()) {
-			throw new Exception(ErrorMessages.err_FTC002);
-		}
-
-		List<Object> connectionObject = _checkResourcePath(connection, remoteResourcePath,
-				"retrieve-resource");
-
-		FTPFile[] resources = (FTPFile[]) connectionObject.get(1);
-
-		InputStream is = connection.retrieveFileStream(remoteResourcePath);
-
-		StringWriter writer = new StringWriter();
-		XMLStreamWriter xmlWriter = null;
-
-		try {
-			xmlWriter = XMLOutputFactory.newInstance().createXMLStreamWriter(writer);
-			xmlWriter.setPrefix(modulePrefix, moduleNsUri);
-			xmlWriter.writeStartDocument();
-			for (FTPFile resource : resources) {
-				_generateResourceElement(xmlWriter, resource, is, remoteResourcePath);
-			}
-			xmlWriter.writeEndDocument();
-			xmlWriter.close();
-		} catch (Exception ex) {
-			throw new Exception(ex.getMessage());
-		}
-
-		StreamResult resultAsStreamResult = new StreamResult(writer);
-
-		if (!connection.completePendingCommand()) {
-			throw new Exception(ErrorMessages.err_FTC007);
-		}
-
-		log.info("The FTP sub-module retrieved the resource '" + remoteResourcePath + "' in "
-				+ (new Date().getTime() - startTime) + " ms.");
-
-		return resultAsStreamResult;
-	}
-
-	public InputStream retrieveResource2(Object abstractConnection, String remoteResourcePath)
+	public InputStream retrieveResource(Object abstractConnection, String remoteResourcePath)
 			throws Exception {
 		long startTime = new Date().getTime();
 		FTPClient connection = (FTPClient) abstractConnection;
