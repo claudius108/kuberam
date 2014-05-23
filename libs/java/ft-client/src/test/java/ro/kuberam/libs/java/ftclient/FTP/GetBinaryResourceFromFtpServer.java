@@ -19,7 +19,7 @@ public class GetBinaryResourceFromFtpServer extends FTClientAbstractTest {
 		FTPClient connection = Connect.connect(
 				new URI(connectionProperties.getProperty("ftp-server-connection-url")), "");
 
-		String actualResult = getTextContent(RetrieveResource.retrieveResource(connection,
+		String actualResult = getBinaryResourceAsBase64String(RetrieveResource.retrieveResource(connection,
 				"/dir-with-rights/test.txt"));
 
 		Disconnect.disconnect(connection);
