@@ -6,7 +6,6 @@ import org.junit.Test;
 
 import ro.kuberam.libs.java.ftclient.Disconnect;
 import ro.kuberam.libs.java.ftclient.FTClientAbstractTest;
-import ro.kuberam.libs.java.ftclient.ListResources;
 import ro.kuberam.libs.java.ftclient.RetrieveResource;
 
 import com.jcraft.jsch.Session;
@@ -18,7 +17,7 @@ public class RetrieveNonExistingBinaryResourceFromSftpServer extends FTClientAbs
 
 		Session remoteConnection = initializeSftpConnection(
 				connectionProperties.getProperty("sftp-server-connection-url"),
-				IOUtils.toString(getClass().getResourceAsStream("Open-Private-Key")));
+				IOUtils.toString(getClass().getResourceAsStream("../Open-Private-Key")));
 		String remoteResourcePath = "/home/ftp-user/dir-with-rights/non-existing-image.gif";
 		try {
 			RetrieveResource.retrieveResource(remoteConnection, remoteResourcePath);

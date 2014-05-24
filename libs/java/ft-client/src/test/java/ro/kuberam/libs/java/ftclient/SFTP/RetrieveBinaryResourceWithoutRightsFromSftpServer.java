@@ -17,7 +17,7 @@ public class RetrieveBinaryResourceWithoutRightsFromSftpServer extends FTClientA
 
 		Session remoteConnection = initializeSftpConnection(
 				connectionProperties.getProperty("sftp-server-connection-url"),
-				IOUtils.toString(getClass().getResourceAsStream("Open-Private-Key")));
+				IOUtils.toString(getClass().getResourceAsStream("../Open-Private-Key")));
 		String remoteResourcePath = "/home/ftp-user/dir-with-rights/image-no-rights.gif";
 		try {
 			RetrieveResource.retrieveResource(remoteConnection, remoteResourcePath);
