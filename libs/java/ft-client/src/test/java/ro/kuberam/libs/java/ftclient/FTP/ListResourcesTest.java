@@ -1,6 +1,5 @@
 package ro.kuberam.libs.java.ftclient.FTP;
 
-import java.io.InputStream;
 import java.net.URI;
 
 import org.apache.commons.net.ftp.FTPClient;
@@ -30,39 +29,4 @@ public class ListResourcesTest extends FTClientAbstractTest {
 		Assert.assertTrue(actualResult.contains(expectedResult));
 	}
 
-	@Test
-	public void complexTest() throws Exception {
-
-		InputStream resource = this.getClass().getResourceAsStream("../image-with-rights.gif");
-
-		FTPClient connection = Connect.connect(new URI("ftp://127.0.0.1"), "");
-
-		// Boolean storeResourceResult = StoreResource.storeResource(connection,
-		// "/VOLUME1/FTP/nosql.sync-io.net/test.gif", resource);
-
-		String listResourcesResult = serializeToString(ListResources.listResources(connection,
-				"/VOLUME1/FTP/nosql.sync-io.net/"));
-
-		// String retrieveResourceResult =
-		// getTextContent(RetrieveResource.retrieveResource(connection,
-		// "/VOLUME1/FTP/nosql.sync-io.net/test.gif"));
-		//
-		// Boolean deleteResourceResult =
-		// DeleteResource.deleteResource(connection,
-		// "/VOLUME1/FTP/nosql.sync-io.net/test.gif");
-
-		Disconnect.disconnect(connection);
-
-		// String expectedRetrieveResourceResult =
-		// getBinaryResourceAsBase64String("../image-with-rights.gif");
-
-		System.out.println("listResourcesResult: " + listResourcesResult + "\n");
-		// System.out.println("storeResourceResult: " + storeResourceResult +
-		// "\n");
-		// System.out.println("retrieveResourceResult: "
-		// + expectedRetrieveResourceResult.equals(retrieveResourceResult) +
-		// "\n");
-		// System.out.println("deleteResourceResult: " + deleteResourceResult +
-		// "\n");
-	}
 }

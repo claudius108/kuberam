@@ -19,7 +19,7 @@ public class StoreBinaryResourceOnFtpServer extends FTClientAbstractTest {
 				.getProperty("ftp-server-connection-url"));
 		String remoteResourcePath = ftpTmpDirPath + "/image-with-rights" + System.currentTimeMillis()
 				+ ".gif";
-		InputStream resourceInputStream = getClass().getResourceAsStream("image-with-rights.gif");
+		InputStream resourceInputStream = getClass().getResourceAsStream("../image-with-rights.gif");
 		Boolean stored = StoreResource.storeResource(remoteConnection, remoteResourcePath,
 				resourceInputStream);
 		Disconnect.disconnect(remoteConnection);

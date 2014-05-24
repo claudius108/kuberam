@@ -14,14 +14,10 @@ public class CreateDirectoryOnFtpServer extends FTClientAbstractTest {
 	public void test() throws Exception {
 
 		FTPClient remoteConnection = initializeFtpConnection(connectionProperties
-				.getProperty("ftp-server-connection-url"));
-		
-		String remoteResourcePath = "/dir-with-rights/tmp/tempFolder" + System.currentTimeMillis() + "/";
-		
+				.getProperty("ftp-server-connection-url"));		
+		String remoteResourcePath = "/dir-with-rights/tmp/tempFolder" + System.currentTimeMillis() + "/";		
 		Boolean stored = StoreResource.storeResource(remoteConnection, remoteResourcePath, null);
-		System.out.println("stored: " + stored);
-		Disconnect.disconnect(remoteConnection);
-		
+		Disconnect.disconnect(remoteConnection);		
 		Assert.assertTrue(stored);
 
 	}

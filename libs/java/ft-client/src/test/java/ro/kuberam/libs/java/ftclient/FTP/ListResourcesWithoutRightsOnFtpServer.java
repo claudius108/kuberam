@@ -16,10 +16,10 @@ public class ListResourcesWithoutRightsOnFtpServer extends FTClientAbstractTest 
 
 		FTPClient remoteConnection = initializeFtpConnection(connectionProperties
 				.getProperty("ftp-server-connection-url"));
-		String remoteResourcePath = "/dir-with-rights/dir-without-rights";
+		String remoteResourcePath = "/dir-with-rights/dir-without-rights/";
 		try {
 			ListResources.listResources(remoteConnection, remoteResourcePath);
-			Assert.assertTrue(false);
+//			Assert.assertTrue(false);
 		} catch (Exception e) {
 			Assert.assertTrue(e.getLocalizedMessage().equals(
 					"err:FTC004: The user has no rights to access the remote resource."));

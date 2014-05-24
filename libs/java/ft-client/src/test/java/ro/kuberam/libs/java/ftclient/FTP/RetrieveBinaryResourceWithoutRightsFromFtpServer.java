@@ -18,7 +18,7 @@ public class RetrieveBinaryResourceWithoutRightsFromFtpServer extends FTClientAb
 		String remoteResourcePath = "/dir-with-rights/image-no-rights.gif";
 		try {
 			RetrieveResource.retrieveResource(remoteConnection, remoteResourcePath);
-			Assert.assertTrue(false);
+//			Assert.assertTrue(false);
 		} catch (Exception e) {
 			Assert.assertTrue(e.getLocalizedMessage().equals(
 					"err:FTC004: The user has no rights to access the remote resource."));

@@ -18,8 +18,9 @@ public class ListNonExistingDirectoryFromFtpServer extends FTClientAbstractTest 
 		String remoteResourcePath = "/non-existing-directory/";
 		try {
 			ListResources.listResources(remoteConnection, remoteResourcePath);
-			Assert.assertTrue(false);
+//			Assert.assertTrue(false);
 		} catch (Exception e) {
+			System.out.println("e.getLocalizedMessage(): " + e.getLocalizedMessage());
 			Assert.assertTrue(
 					e.getLocalizedMessage(),
 					e.getLocalizedMessage().equals(
