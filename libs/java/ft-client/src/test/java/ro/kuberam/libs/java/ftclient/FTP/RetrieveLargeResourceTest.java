@@ -5,7 +5,7 @@ import org.junit.Test;
 
 import ro.kuberam.libs.java.ftclient.FTClientAbstractTest;
 
-public class RetrieveLargeResourceFromFtpServer extends FTClientAbstractTest {
+public class RetrieveLargeResourceTest extends FTClientAbstractTest {
 
 	@Test
 	public void test() throws Exception {

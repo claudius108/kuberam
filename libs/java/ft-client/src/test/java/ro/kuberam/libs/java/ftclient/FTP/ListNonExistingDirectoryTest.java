@@ -8,7 +8,7 @@ import ro.kuberam.libs.java.ftclient.Disconnect;
 import ro.kuberam.libs.java.ftclient.FTClientAbstractTest;
 import ro.kuberam.libs.java.ftclient.ListResources;
 
-public class ListNonExistingDirectoryFromFtpServer extends FTClientAbstractTest {
+public class ListNonExistingDirectoryTest extends FTClientAbstractTest {
 
 	@Test
 	public void test() throws Exception {

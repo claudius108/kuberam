@@ -11,18 +11,18 @@ import ro.kuberam.libs.java.ftclient.Disconnect;
 import ro.kuberam.libs.java.ftclient.FTClientAbstractTest;
 import ro.kuberam.libs.java.ftclient.RetrieveResource;
 
-public class RetrieveTextResourceFromFtpServer extends FTClientAbstractTest {
+public class RetrieveBinaryResourceTest extends FTClientAbstractTest {
 
 	@Test
-	public void retrieveTextResourceFromFtpServer() throws Exception {
+	public void retrieveBinaryResourceFromFtpServer() throws Exception {
 
 		FTPClient connection = Connect.connect(new URI(connectionProperties.getProperty("ftp-server-connection-url")), "");
 
-		String actualResult = getBinaryResourceAsBase64String(RetrieveResource.retrieveResource(connection, "/dir-with-rights/test.txt"));
+		String actualResult = getBinaryResourceAsBase64String(RetrieveResource.retrieveResource(connection, "/dir-with-rights/image-with-rights.gif"));
 
 		Disconnect.disconnect(connection);
 
-		String expectedResult = getBinaryResourceAsBase64String("../test.txt");
+		String expectedResult = getBinaryResourceAsBase64String("../image-with-rights.gif");
 
 		Assert.assertTrue(expectedResult.equals(actualResult));
 	}

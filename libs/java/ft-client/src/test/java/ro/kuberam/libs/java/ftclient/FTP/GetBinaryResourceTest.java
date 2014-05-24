@@ -11,7 +11,7 @@ import ro.kuberam.libs.java.ftclient.Disconnect;
 import ro.kuberam.libs.java.ftclient.FTClientAbstractTest;
 import ro.kuberam.libs.java.ftclient.RetrieveResource;
 
-public class GetBinaryResourceFromFtpServer extends FTClientAbstractTest {
+public class GetBinaryResourceTest extends FTClientAbstractTest {
 
 	@Test
 	public void test() throws Exception {

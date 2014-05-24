@@ -13,7 +13,7 @@ import ro.kuberam.libs.java.ftclient.FTClientAbstractTest;
 import ro.kuberam.libs.java.ftclient.ListResources;
 import ro.kuberam.libs.java.ftclient.RetrieveResource;
 
-public class RetrieveMultipleResourcesFromFtpServer extends FTClientAbstractTest {
+public class RetrieveMultipleResourcesTest extends FTClientAbstractTest {
 
 	@Test
 	public void test() throws Exception {

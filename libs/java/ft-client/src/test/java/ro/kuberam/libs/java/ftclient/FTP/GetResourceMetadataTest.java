@@ -10,7 +10,7 @@ import ro.kuberam.libs.java.ftclient.Disconnect;
 import ro.kuberam.libs.java.ftclient.FTClientAbstractTest;
 import ro.kuberam.libs.java.ftclient.GetResourceMetadata;
 
-public class GetResourceMetadataFromFtpServer extends FTClientAbstractTest {
+public class GetResourceMetadataTest extends FTClientAbstractTest {
 
 	@Test
 	public void test() throws Exception {
