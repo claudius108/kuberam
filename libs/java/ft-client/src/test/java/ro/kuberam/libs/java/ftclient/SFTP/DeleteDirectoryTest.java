@@ -18,7 +18,7 @@ public class DeleteDirectoryTest extends FTClientAbstractTest {
 
 		Session remoteConnection = initializeSftpConnection(
 				connectionProperties.getProperty("sftp-server-connection-url"),
-				IOUtils.toString(getClass().getResourceAsStream("../Open-Private-Key")));
+				IOUtils.toString(getClass().getResourceAsStream("../sftp-private-key")));
 		String remoteResourcePath = "/home/ftp-user/dir-with-rights/tmp/tempFolder"
 				+ System.currentTimeMillis() + "/";
 		Boolean stored = StoreResource.storeResource(remoteConnection, remoteResourcePath, null);

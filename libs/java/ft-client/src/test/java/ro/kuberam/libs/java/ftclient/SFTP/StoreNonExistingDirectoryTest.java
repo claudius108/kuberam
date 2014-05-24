@@ -17,7 +17,7 @@ public class StoreNonExistingDirectoryTest extends FTClientAbstractTest {
 
 		Session remoteConnection = initializeSftpConnection(
 				connectionProperties.getProperty("sftp-server-connection-url"),
-				IOUtils.toString(getClass().getResourceAsStream("../Open-Private-Key")));
+				IOUtils.toString(getClass().getResourceAsStream("../sftp-private-key")));
 		String remoteResourcePath = "/non-existing-directory";
 		try {
 			ListResources.listResources(remoteConnection, remoteResourcePath);

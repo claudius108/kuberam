@@ -18,7 +18,7 @@ public class ListResourcesTest extends FTClientAbstractTest {
 	public void listResourcesFromSftpServer() throws Exception {
 
 		Session connection = Connect.connect(new URI(connectionProperties.getProperty("sftp-server-connection-url")),
-				getBinaryResourceAsString("../Open-Private-Key"));
+				getBinaryResourceAsString("../sftp-private-key"));
 
 		String actualResult = serializeToString(ListResources.listResources(connection, "/home/ftp-user/dir-with-rights"));
 

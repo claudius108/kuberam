@@ -18,7 +18,7 @@ public class RetrieveBinaryResourceTest extends FTClientAbstractTest {
 	public void retrieveBinaryResourceFromSftpServer() throws Exception {
 
 		Session connection = Connect.connect(new URI(connectionProperties.getProperty("sftp-server-connection-url")),
-				getBinaryResourceAsString("../Open-Private-Key"));
+				getBinaryResourceAsString("../sftp-private-key"));
 
 		String actualResult = getBinaryResourceAsBase64String(RetrieveResource.retrieveResource(connection, "/home/ftp-user/dir-with-rights/image-with-rights.gif"));
 
