@@ -7,7 +7,6 @@ import org.junit.Test;
 import ro.kuberam.libs.java.ftclient.Disconnect;
 import ro.kuberam.libs.java.ftclient.FTClientAbstractTest;
 import ro.kuberam.libs.java.ftclient.ListResources;
-import ro.kuberam.libs.java.ftclient.StoreResource;
 
 public class ListResourcesWithoutRightsOnFtpServer extends FTClientAbstractTest {
 
