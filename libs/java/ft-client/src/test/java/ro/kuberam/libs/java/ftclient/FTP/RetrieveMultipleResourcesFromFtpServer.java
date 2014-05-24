@@ -23,9 +23,11 @@ public class RetrieveMultipleResourcesFromFtpServer extends FTClientAbstractTest
 		String remoteResourcePath1 = "/dir-with-rights/";
 		StreamResult resources = ListResources.listResources(remoteConnection, remoteResourcePath1);
 		String resourcesString = resources.getWriter().toString();
-		System.out.println(resourcesString);
+
 		Assert.assertTrue(resourcesString.contains("image-with-rights.gif"));
+		
 		String remoteResourcePath2 = "/dir-with-rights/image-with-rights.gif";
+		
 		InputStream resource1 = RetrieveResource.retrieveResource(remoteConnection, remoteResourcePath2);
 		InputStream resource2 = RetrieveResource.retrieveResource(remoteConnection, remoteResourcePath2);
 		InputStream resource3 = RetrieveResource.retrieveResource(remoteConnection, remoteResourcePath2);

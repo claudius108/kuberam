@@ -19,7 +19,7 @@ public class CreateDirectoryOnFtpServer extends FTClientAbstractTest {
 		String remoteResourcePath = "/dir-with-rights/tmp/tempFolder" + System.currentTimeMillis() + "/";
 		
 		Boolean stored = StoreResource.storeResource(remoteConnection, remoteResourcePath, null);
-		
+		System.out.println("stored: " + stored);
 		Disconnect.disconnect(remoteConnection);
 		
 		Assert.assertTrue(stored);
