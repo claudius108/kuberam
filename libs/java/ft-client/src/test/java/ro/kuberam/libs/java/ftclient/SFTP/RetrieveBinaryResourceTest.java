@@ -12,7 +12,7 @@ import ro.kuberam.libs.java.ftclient.RetrieveResource;
 
 import com.jcraft.jsch.Session;
 
-public class RetrieveBinaryResourceFromSftpServer extends FTClientAbstractTest {
+public class RetrieveBinaryResourceTest extends FTClientAbstractTest {
 
 	@Test
 	public void retrieveBinaryResourceFromSftpServer() throws Exception {

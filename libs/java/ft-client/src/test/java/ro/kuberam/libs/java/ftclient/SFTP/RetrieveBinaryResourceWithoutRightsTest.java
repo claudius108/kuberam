@@ -6,11 +6,11 @@ import org.junit.Test;
 
 import ro.kuberam.libs.java.ftclient.Disconnect;
 import ro.kuberam.libs.java.ftclient.FTClientAbstractTest;
-import ro.kuberam.libs.java.ftclient.ListResources;
+import ro.kuberam.libs.java.ftclient.RetrieveResource;
 
 import com.jcraft.jsch.Session;
 
-public class ListResourcesWithoutRightsOnSftpServer extends FTClientAbstractTest {
+public class RetrieveBinaryResourceWithoutRightsTest extends FTClientAbstractTest {
 
 	@Test
 	public void listResourcesFromSftpServer() throws Exception {
@@ -18,9 +18,9 @@ public class ListResourcesWithoutRightsOnSftpServer extends FTClientAbstractTest
 		Session remoteConnection = initializeSftpConnection(
 				connectionProperties.getProperty("sftp-server-connection-url"),
 				IOUtils.toString(getClass().getResourceAsStream("../Open-Private-Key")));
-		String remoteResourcePath = "/home/ftp-user/dir-with-rights/dir-without-rights";
+		String remoteResourcePath = "/home/ftp-user/dir-with-rights/image-no-rights.gif";
 		try {
-			ListResources.listResources(remoteConnection, remoteResourcePath);
+			RetrieveResource.retrieveResource(remoteConnection, remoteResourcePath);
 			Assert.assertTrue(false);
 		} catch (Exception e) {
 			Assert.assertTrue(e.getLocalizedMessage().equals(

@@ -8,24 +8,24 @@ import org.junit.Test;
 import ro.kuberam.libs.java.ftclient.Connect;
 import ro.kuberam.libs.java.ftclient.Disconnect;
 import ro.kuberam.libs.java.ftclient.FTClientAbstractTest;
-import ro.kuberam.libs.java.ftclient.ListResources;
+import ro.kuberam.libs.java.ftclient.RetrieveResource;
 
 import com.jcraft.jsch.Session;
 
-public class ListResourcesFromSftpServer extends FTClientAbstractTest {
+public class RetrieveTextResourceTest extends FTClientAbstractTest {
 
 	@Test
-	public void listResourcesFromSftpServer() throws Exception {
+	public void retrieveTextResourceFromSftpServer() throws Exception {
 
 		Session connection = Connect.connect(new URI(connectionProperties.getProperty("sftp-server-connection-url")),
 				getBinaryResourceAsString("../Open-Private-Key"));
 
-		String actualResult = serializeToString(ListResources.listResources(connection, "/home/ftp-user/dir-with-rights"));
+		String actualResult = getBinaryResourceAsBase64String(RetrieveResource.retrieveResource(connection, "/home/ftp-user/dir-with-rights/test.txt"));
 
 		Disconnect.disconnect(connection);
 
-		String expectedResult = "image-with-rights.gif";
+		String expectedResult = getBinaryResourceAsBase64String("../test.txt");
 
-		Assert.assertTrue(actualResult.contains(expectedResult));
+		Assert.assertTrue(expectedResult.equals(actualResult));
 	}
 }

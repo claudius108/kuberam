@@ -6,11 +6,11 @@ import org.junit.Test;
 
 import ro.kuberam.libs.java.ftclient.Disconnect;
 import ro.kuberam.libs.java.ftclient.FTClientAbstractTest;
-import ro.kuberam.libs.java.ftclient.RetrieveResource;
+import ro.kuberam.libs.java.ftclient.ListResources;
 
 import com.jcraft.jsch.Session;
 
-public class RetrieveBinaryResourceWithoutRightsFromSftpServer extends FTClientAbstractTest {
+public class StoreNonExistingDirectoryTest extends FTClientAbstractTest {
 
 	@Test
 	public void listResourcesFromSftpServer() throws Exception {
@@ -18,13 +18,13 @@ public class RetrieveBinaryResourceWithoutRightsFromSftpServer extends FTClientA
 		Session remoteConnection = initializeSftpConnection(
 				connectionProperties.getProperty("sftp-server-connection-url"),
 				IOUtils.toString(getClass().getResourceAsStream("../Open-Private-Key")));
-		String remoteResourcePath = "/home/ftp-user/dir-with-rights/image-no-rights.gif";
+		String remoteResourcePath = "/non-existing-directory";
 		try {
-			RetrieveResource.retrieveResource(remoteConnection, remoteResourcePath);
+			ListResources.listResources(remoteConnection, remoteResourcePath);
 			Assert.assertTrue(false);
 		} catch (Exception e) {
-			Assert.assertTrue(e.getLocalizedMessage().equals(
-					"err:FTC004: The user has no rights to access the remote resource."));
+			Assert.assertTrue(e.getLocalizedMessage(),
+					e.getLocalizedMessage().equals("err:FTC003: The remote resource does not exist."));
 		} finally {
 			Disconnect.disconnect(remoteConnection);
 		}
