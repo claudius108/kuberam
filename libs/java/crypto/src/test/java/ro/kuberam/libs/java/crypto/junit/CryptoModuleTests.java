@@ -22,9 +22,9 @@ public class CryptoModuleTests extends BaseTest {
 	@Test
 	public void test01() throws Exception {
 		InputStream document = getClass().getResourceAsStream(
-				"../resources/doc-1.xml");
+				"../doc-1.xml");
 		InputStream digitalCertificate = getClass().getResourceAsStream(
-				"../resources/digital-certificate.xml");
+				"../digital-certificate.xml");
 
 		System.out.println(IOUtils.toString(digitalCertificate));
 	}
@@ -52,7 +52,7 @@ public class CryptoModuleTests extends BaseTest {
 	@Test
 	public void pipedStreams2Test() throws Exception {
 		InputStream document = getClass().getResourceAsStream(
-				"../resources/doc-1.xml");
+				"../doc-1.xml");
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();
 		int next = document.read();
 		while (next > -1) {
@@ -86,7 +86,7 @@ public class CryptoModuleTests extends BaseTest {
 	@Test
 	public void digestOutputStreamTest() throws Exception {
 		try {
-			FileOutputStream fos = new FileOutputStream("/home/claudius/workspace-claudius/expath-crypto/src/org/expath/crypto/tests/resources/string.txt");
+			FileOutputStream fos = new FileOutputStream("/home/claudius/workspace-claudius/expath-crypto/src/org/expath/crypto/tests/string.txt");
 			MessageDigest md = MessageDigest.getInstance("SHA-512");
 			DigestOutputStream dos = new DigestOutputStream(fos, md);
 			ObjectOutputStream oos = new ObjectOutputStream(dos);
