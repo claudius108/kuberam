@@ -1,6 +1,6 @@
 <package xmlns="http://expath.org/ns/pkg" xmlns:dc="http://dublincore.org/documents/dces/"
-	xmlns:pkg="http://cxan.org/ns/package" name="${package-name}" abbrev="${package-abbrev}"
-	version="${project.version}" spec="1.0">
+	xmlns:pkg="http://cxan.org/ns/package" name="${package-name}" abbrev="${package-abbrev}" version="${project.version}"
+	spec="1.0">
 	<title>${package-title}</title>
 	<dependency processor="http://exist-db.org/" />
 	<dependency package="http://expath.org/lib/${module-prefix}" />
@@ -22,12 +22,12 @@
 		<dependencySet>
 			<groupId>org.expath.libs</groupId>
 			<artifactId>ft-client</artifactId>
-			<version>1.0</version>
+			<version>1.1.0</version>
 		</dependencySet>
 		<dependencySet>
 			<groupId>com.jcraft</groupId>
 			<artifactId>jsch</artifactId>
-			<version>0.1.50</version>
+			<version>0.1.51</version>
 		</dependencySet>
 	</dependencySets>
 </package>
