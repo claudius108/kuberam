@@ -12,6 +12,15 @@
 	<artifactId>ft-client</artifactId>
 	<version>1.1.3</version>
 	<packaging>pom</packaging>
+	<url>http://kuberam.ro/specs/expath/ft-client/ft-client.html</url>
+
+	<prerequisites>
+		<maven>${mavenVersion}</maven>
+	</prerequisites>
+
+	<properties>
+		<package-title>EXPath File Transfer Client Module Implementation</package-title>
+	</properties>
 
 	<build>
 		<plugins>
