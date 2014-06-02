@@ -81,9 +81,6 @@ public class FTClientAbstractTest extends BaseTest {
 	}
 
 	public static String getBinaryResourceAsString(String resourcePath) throws Exception {
-		System.out.println("resourcePath: " + resourcePath.substring(3));
-		System.out.println("resourcePath: "
-				+ FTClientAbstractTest.class.getResource(resourcePath.substring(3)));
 		return new String(InputStream2ByteArray.convert((InputStream) FTClientAbstractTest.class
 				.getResourceAsStream(resourcePath.substring(3))));
 	}

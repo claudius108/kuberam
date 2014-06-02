@@ -20,7 +20,7 @@ public class RetrieveTextResourceTest extends FTClientAbstractTest {
 		Session connection = Connect.connect(new URI(connectionProperties.getProperty("sftp-server-connection-url")),
 				getBinaryResourceAsString("../sftp-private-key"));
 
-		String actualResult = getBinaryResourceAsBase64String(RetrieveResource.retrieveResource(connection, "/home/ftp-user/dir-with-rights/test.txt"));
+		String actualResult = getBinaryResourceAsBase64String(RetrieveResource.retrieveResource(connection, sftpHomeDirPath + "/test.txt"));
 
 		Disconnect.disconnect(connection);
 

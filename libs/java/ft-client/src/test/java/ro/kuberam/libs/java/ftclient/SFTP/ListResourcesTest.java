@@ -17,10 +17,12 @@ public class ListResourcesTest extends FTClientAbstractTest {
 	@Test
 	public void listResourcesFromSftpServer() throws Exception {
 
-		Session connection = Connect.connect(new URI(connectionProperties.getProperty("sftp-server-connection-url")),
+		Session connection = Connect.connect(
+				new URI(connectionProperties.getProperty("sftp-server-connection-url")),
 				getBinaryResourceAsString("../sftp-private-key"));
 
-		String actualResult = serializeToString(ListResources.listResources(connection, "/home/ftp-user/dir-with-rights"));
+		String actualResult = serializeToString(ListResources.listResources(connection, sftpHomeDirPath
+				+ "/"));
 
 		Disconnect.disconnect(connection);
 

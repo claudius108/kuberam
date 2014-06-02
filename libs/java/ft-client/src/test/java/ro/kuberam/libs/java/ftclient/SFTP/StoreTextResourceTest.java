@@ -20,13 +20,17 @@ public class StoreTextResourceTest extends FTClientAbstractTest {
 		Session remoteConnection = initializeSftpConnection(
 				connectionProperties.getProperty("sftp-server-connection-url"),
 				IOUtils.toString(getClass().getResourceAsStream("../sftp-private-key")));
-		String remoteResourcePath = "/home/ftp-user/dir-with-rights/tmp/test" + System.currentTimeMillis()
-				+ ".txt";
-		InputStream resourceInputStream = getClass().getResourceAsStream("test.txt");
+
+		String remoteResourcePath = sftpTmpDirPath + "/test" + System.currentTimeMillis() + ".txt";
+
+		InputStream resourceInputStream = getClass().getResourceAsStream("../test.txt");
+
 		Boolean stored = StoreResource.storeResource(remoteConnection, remoteResourcePath,
 				resourceInputStream);
+
 		Disconnect.disconnect(remoteConnection);
+
 		Assert.assertTrue(stored);
-		
+
 	}
 }

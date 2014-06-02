@@ -23,13 +23,18 @@ public class StoreBinaryResourceTest extends FTClientAbstractTest {
 		Session remoteConnection = initializeSftpConnection(
 				connectionProperties.getProperty("sftp-server-connection-url"),
 				IOUtils.toString(getClass().getResourceAsStream("../sftp-private-key")));
-		String remoteResourcePath = "/home/ftp-user/dir-with-rights/tmp/image-with-rights"
-				+ System.currentTimeMillis() + ".gif";
-		InputStream resourceInputStream = getClass().getResourceAsStream("image-with-rights.gif");
+
+		String remoteResourcePath = sftpTmpDirPath + "/image-with-rights" + System.currentTimeMillis()
+				+ ".gif";
+
+		InputStream resourceInputStream = getClass().getResourceAsStream("../image-with-rights.gif");
+
 		Boolean stored = StoreResource.storeResource(remoteConnection, remoteResourcePath,
 				resourceInputStream);
+
 		Disconnect.disconnect(remoteConnection);
+
 		Assert.assertTrue(stored);
-		
+
 	}
 }

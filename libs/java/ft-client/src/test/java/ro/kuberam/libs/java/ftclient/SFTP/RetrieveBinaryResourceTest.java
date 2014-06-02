@@ -17,10 +17,12 @@ public class RetrieveBinaryResourceTest extends FTClientAbstractTest {
 	@Test
 	public void retrieveBinaryResourceFromSftpServer() throws Exception {
 
-		Session connection = Connect.connect(new URI(connectionProperties.getProperty("sftp-server-connection-url")),
+		Session connection = Connect.connect(
+				new URI(connectionProperties.getProperty("sftp-server-connection-url")),
 				getBinaryResourceAsString("../sftp-private-key"));
 
-		String actualResult = getBinaryResourceAsBase64String(RetrieveResource.retrieveResource(connection, "/home/ftp-user/dir-with-rights/image-with-rights.gif"));
+		String actualResult = getBinaryResourceAsBase64String(RetrieveResource.retrieveResource(connection,
+				sftpHomeDirPath + "/image-with-rights.gif"));
 
 		Disconnect.disconnect(connection);
 

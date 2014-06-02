@@ -76,7 +76,7 @@ public class SFTP extends AbstractConnection {
 		long startTime = new Date().getTime();
 		X abstractConnection = null;
 		remotePort = (remotePort == -1) ? (int) 22 : remotePort;
-		//JSch.setLogger(new MyLogger());
+		// JSch.setLogger(new MyLogger());
 		JSch jSch = new JSch();
 		Session sftpConnection = null;
 
@@ -128,6 +128,8 @@ public class SFTP extends AbstractConnection {
 	public StreamResult listResources(Object abstractConnection, String remoteResourcePath)
 			throws Exception {
 		long startTime = new Date().getTime();
+		log.info("The SFTP sub-module is preparing to retrieve the list of resources for '"
+				+ remoteResourcePath + "'.");
 
 		if (!checkIsDirectory(remoteResourcePath)) {
 			throw new Exception(ErrorMessages.err_FTC008);
@@ -148,7 +150,7 @@ public class SFTP extends AbstractConnection {
 		} catch (JSchException ex) {
 			log.error(ex.getMessage(), ex);
 		}
-		
+
 		List<Object> connectionObject = _checkResourcePath(connection, remoteResourcePath, false);
 		connection = (ChannelSftp) connectionObject.get(1);
 		Vector<LsEntry> resources = (Vector<LsEntry>) connectionObject.get(2);
@@ -264,7 +266,7 @@ public class SFTP extends AbstractConnection {
 
 	public boolean deleteResource(Object abstractConnection, String remoteResourcePath) throws Exception {
 		long startTime = new Date().getTime();
-		//JSch.setLogger(new MyLogger());
+		// JSch.setLogger(new MyLogger());
 		Session session = (Session) abstractConnection;
 		if (!session.isConnected()) {
 			throw new Exception(ErrorMessages.err_FTC002);

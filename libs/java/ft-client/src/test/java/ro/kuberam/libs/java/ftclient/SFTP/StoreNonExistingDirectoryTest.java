@@ -28,6 +28,6 @@ public class StoreNonExistingDirectoryTest extends FTClientAbstractTest {
 		} finally {
 			Disconnect.disconnect(remoteConnection);
 		}
-		
+
 	}
 }
