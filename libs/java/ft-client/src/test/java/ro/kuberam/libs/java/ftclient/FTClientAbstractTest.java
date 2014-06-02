@@ -14,9 +14,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.stream.StreamResult;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.net.ftp.FTPClient;
-import org.junit.After;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.w3c.dom.Document;
@@ -31,10 +29,8 @@ import com.jcraft.jsch.Session;
 public class FTClientAbstractTest extends BaseTest {
 
 	public static Properties connectionProperties = new Properties();
-	public static String ftpHomeDirPath = "/dir-with-rights";
-	public static String ftpTmpDirPath = ftpHomeDirPath + "/tmp";
-	public static String sftpHomeDirPath = "/home/claudius/ftp/ftp-user" + ftpHomeDirPath;
-	public static String sftpTmpDirPath = sftpHomeDirPath + "/tmp";
+	public static String ftpHomeDirPath = File.separator + "dir-with-rights";
+	public static String ftpTmpDirPath = ftpHomeDirPath + File.separator + "tmp";
 	static {
 		try {
 			connectionProperties.load(FTClientAbstractTest.class
@@ -44,16 +40,19 @@ public class FTClientAbstractTest extends BaseTest {
 			e.printStackTrace();
 		}
 	}
+	public static String sftpHomeDirPath = connectionProperties.getProperty("server-home-folder")
+			+ ftpHomeDirPath;
+	public static String sftpTmpDirPath = sftpHomeDirPath + File.separator + "tmp";
 
-//	@After
-//	public void cleanup() {
-//		try {
-//			// clean the ftp temp directory
-//			FileUtils.cleanDirectory(new File(sftpTmpDirPath));
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
-//	}
+	// @After
+	// public void cleanup() {
+	// try {
+	// // clean the ftp temp directory
+	// FileUtils.cleanDirectory(new File(sftpTmpDirPath));
+	// } catch (IOException e) {
+	// e.printStackTrace();
+	// }
+	// }
 
 	public static FTPClient initializeFtpConnection(String URIstring) throws URISyntaxException, Exception {
 		FTPClient remoteConnection = Connect.connect(new URI(URIstring), "");
