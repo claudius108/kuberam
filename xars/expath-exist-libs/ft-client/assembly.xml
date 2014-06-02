@@ -1,26 +1,27 @@
-<package xmlns="http://expath.org/ns/pkg" xmlns:dc="http://dublincore.org/documents/dces/"
-	xmlns:pkg="http://cxan.org/ns/package" name="${package-name}" abbrev="${package-abbrev}" version="${project.version}"
+<package xmlns="http://expath.org/ns/pkg" name="${package-name}" abbrev="${package-abbrev}" version="${project.version}"
 	spec="1.0">
 	<title>${package-title}</title>
+	<author id="cteodorescu">Claudius Teodorescu</author>
+	<website>${project.url}</website>
+	<license>GNU-LGPL</license>
+	<copyright>true</copyright>
+	<type>library</type>
+	<status>stable</status>
+	<tag>${module-prefix}</tag>
+	<tag>expath</tag>
+	<tag>library</tag>
+	<tag>exist</tag>
+	<category id="libs">Libraries</category>
+	<category id="exist">eXist extensions</category>
 	<dependency processor="http://exist-db.org/" />
-	<dependency package="http://expath.org/lib/${module-prefix}" />
-	<dc:creator id="cteodorescu">Claudius Teodorescu</dc:creator>
-	<dc:identifier></dc:identifier>
-	<dc:rights>GNU-LGPL</dc:rights>
-	<dc:type>library</dc:type>
-	<pkg:module-prefix>${module-prefix}</pkg:module-prefix>
-	<module-namespace>${module-namespace}</module-namespace>
-	<pkg:cxan-tags>${module-prefix},expath,${package-type},exist
-	</pkg:cxan-tags>
-	<pkg:cxan-category id="libs">Libraries</pkg:cxan-category>
-	<pkg:cxan-category id="exist">eXist extensions
-	</pkg:cxan-category>
-	<status xmlns="http://exist-db.org/xquery/repo">stable</status>
-	<copyright xmlns="http://exist-db.org/xquery/repo">true</copyright>
-	<target xmlns="http://exist-db.org/xquery/repo">expath-${module-prefix}</target>
 	<dependencySets>
 		<dependencySet>
-			<groupId>org.expath.libs</groupId>
+			<groupId>org.expath.exist</groupId>
+			<artifactId>ft-client</artifactId>
+			<version>1.1.4</version>
+		</dependencySet>
+		<dependencySet>
+			<groupId>ro.kuberam.libs.java</groupId>
 			<artifactId>ft-client</artifactId>
 			<version>1.1.0</version>
 		</dependencySet>
