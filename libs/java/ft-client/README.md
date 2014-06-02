@@ -1,4 +1,4 @@
-Java File Transfer Client
+File Transfer Client
 =======
 
 ## Testing
