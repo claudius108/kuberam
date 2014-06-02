@@ -148,6 +148,7 @@ public class SFTP extends AbstractConnection {
 		} catch (JSchException ex) {
 			log.error(ex.getMessage(), ex);
 		}
+		
 		List<Object> connectionObject = _checkResourcePath(connection, remoteResourcePath, false);
 		connection = (ChannelSftp) connectionObject.get(1);
 		Vector<LsEntry> resources = (Vector<LsEntry>) connectionObject.get(2);
