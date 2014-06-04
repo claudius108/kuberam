@@ -16,9 +16,4 @@
 	<name>EXPath libs</name>
 	<url>http://expath.org</url>
 
-	<modules>
-		<module>java</module>
-		<module>js</module>
-	</modules>
-
 </project>
