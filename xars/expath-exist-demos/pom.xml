@@ -18,7 +18,56 @@
 		<package-name>http://expath.org/demos/exist/${project.artifactId}</package-name>
 		<package-abbrev>expath-${project.artifactId}-exist-demos</package-abbrev>
 		<package-type>application</package-type>
-		<unit-tests-dir-path>/home/claudius/workspaces/repositories/git/expath-exist/${project.artifactId}/src/test</unit-tests-dir-path>
+		<unit-tests-dir-path>/home/claudius/workspaces/repositories/git/expath-exist/${project.artifactId}</unit-tests-dir-path>
+		<lib-dir-path>/home/claudius/workspaces/repositories/git/kuberam/libs/java/${project.artifactId}</lib-dir-path>
 	</properties>
+
+	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>com.google.code.maven-replacer-plugin</groupId>
+					<artifactId>replacer</artifactId>
+					<version>1.5.2</version>
+					<executions>
+						<execution>
+							<id>filter-page.html</id>
+							<phase>generate-resources</phase>
+							<goals>
+								<goal>replace</goal>
+							</goals>
+							<configuration>
+								<file>${unit-tests-dir-path}/README.md</file>
+								<outputFile>${project.build.directory}/index.xml</outputFile>
+								<replacements>
+									<replacement>
+										<token>html</token>
+										<value>html</value>
+									</replacement>
+								</replacements>
+							</configuration>
+						</execution>
+					</executions>
+				</plugin>
+				<plugin>
+					<groupId>ro.kuberam.maven.plugins</groupId>
+					<artifactId>kuberam-expath-plugin</artifactId>
+					<executions>
+						<execution>
+							<id>create-xar</id>
+							<phase>package</phase>
+							<goals>
+								<goal>make-xar</goal>
+							</goals>
+							<configuration>
+								<descriptor>assembly.xml</descriptor>
+								<finalName>expath-${project.artifactId}-exist-demos-${project.version}</finalName>
+							</configuration>
+						</execution>
+					</executions>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
 
 </project>
