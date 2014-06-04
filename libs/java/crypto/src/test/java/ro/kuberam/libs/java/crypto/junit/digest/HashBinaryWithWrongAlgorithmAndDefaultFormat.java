@@ -13,7 +13,7 @@ public class HashBinaryWithWrongAlgorithmAndDefaultFormat extends BaseTest {
 
 	@Test
 	public void hashBinaryWithWrongAlgorithm() throws Exception {
-		InputStream input = getClass().getResourceAsStream("../../keystore");
+		InputStream input = getClass().getResourceAsStream("../../keystore.ks");
 		
 		try {
 			String result = Hash.hashBinary(input, "SHA-17");

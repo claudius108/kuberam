@@ -23,7 +23,7 @@ import org.w3c.dom.*;
  */
 public class SignFileExample {
     private static final String KEY_STORE_TYPE = "JKS";
-    private static final String KEY_STORE_NAME = "/home/claudius/mykeystoreEXist";
+    private static final String KEY_STORE_NAME = "/home/claudius/mykeystoreEXist.ks";
     private static final String KEY_STORE_PASS = "ab987c";
     private static final String PRIVATE_KEY_PASS = "kpi135";
     private static final String KEY_ALIAS = "eXist";

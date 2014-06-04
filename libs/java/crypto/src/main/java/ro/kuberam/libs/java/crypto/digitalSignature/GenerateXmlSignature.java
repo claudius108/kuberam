@@ -221,7 +221,7 @@ public class GenerateXmlSignature {
 	// CanonicalizationMethod.EXCLUSIVE, DigestMethod.SHA1,
 	// SignatureMethod.DSA_SHA1, "DSA", "ds", "enveloped", "//b",
 	// certificateDetails, getClass().getResourceAsStream(
-	// "../tests/resources/mykeystoreEXist"));
+	// "../tests/resources/mykeystoreEXist.ks"));
 	// System.out.print(domString + "\n");
 	// }
 

@@ -362,7 +362,7 @@
    &lt;keystore-password&gt;ab987c&lt;/keystore-password&gt;
    &lt;key-alias&gt;eXist&lt;/key-alias&gt;
    &lt;private-key-password&gt;kpi135&lt;/private-key-password&gt;
-   &lt;keystore-uri&gt;/db/mykeystoreEXist&lt;/keystore-uri&gt;
+   &lt;keystore-uri&gt;/db/mykeystoreEXist.ks&lt;/keystore-uri&gt;
 &lt;/digital-certificate&gt;</eg>
                   <p>The following errors can be raised relative to the structure and content of
                      $digital-certificate parameter: <bibref ref="errCX05" />, <bibref ref="errCX07" />, <bibref ref="errCX08" />,

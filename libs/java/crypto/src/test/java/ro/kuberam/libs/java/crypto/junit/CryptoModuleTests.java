@@ -11,6 +11,7 @@ import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.security.DigestOutputStream;
 import java.security.MessageDigest;
+import java.util.UUID;
 
 import org.apache.commons.io.IOUtils;
 import org.junit.Test;
@@ -132,7 +133,48 @@ public class CryptoModuleTests extends BaseTest {
 
 		return in;
 	}
+	
+	@Test
+	public void uuid5Test() throws Exception {
+//		UUID uuid = new UUID();
 
+//		System.out.println("result: " + UUID.nameUUIDFromString("http://heidicon.ub.uni-heidelberg.de//priya_paul/11880_w", UUID.fromString("6ba7b810-9dad-11d1-80b4-00c04fd430c8"), UUID.SHA1_ENCODING));
+	}	
+	
+	@Test
+	public void uuid5NewTest() throws Exception {
+	String NameSpace_OID_string = "6ba7b812-9dad-11d1-80b4-00c04fd430c8";
+	UUID NameSpace_OID_uuid = UUID.fromString(NameSpace_OID_string);
+
+	long msb = NameSpace_OID_uuid.getMostSignificantBits();
+	long lsb = NameSpace_OID_uuid.getLeastSignificantBits();
+
+	    byte[] NameSpace_OID_buffer = new byte[16];
+
+	    for (int i = 0; i < 8; i++) {
+	        NameSpace_OID_buffer[i] = (byte) (msb >>> 8 * (7 - i));
+	    }
+	    for (int i = 8; i < 16; i++) {
+	        NameSpace_OID_buffer[i] = (byte) (lsb >>> 8 * (7 - i));
+	    }
+
+	    String name = "user123";
+	    byte[] name_buffer = name.getBytes();
+
+	ByteArrayOutputStream outputStream = new ByteArrayOutputStream( );
+	try {
+	    outputStream.write( NameSpace_OID_buffer);
+	    outputStream.write( name_buffer );
+	} catch (IOException e) {
+	        // TODO Auto-generated catch block
+	    e.printStackTrace();
+	}
+
+
+	byte byteArray[] = outputStream.toByteArray();
+
+	System.out.println(UUID.nameUUIDFromBytes(byteArray).toString());
+}
 	public static void main(String[] args) throws Exception {
 
 	}

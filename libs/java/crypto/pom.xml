@@ -10,6 +10,15 @@
 		<version>0.0.1</version>
 	</parent>
 
+	<dependencies>
+		<dependency>
+			<groupId>org.littleshoot</groupId>
+			<artifactId>littleshoot-commons-id</artifactId>
+			<version>1.0.3</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
 	<artifactId>crypto</artifactId>
 	<version>1.2.1</version>
 	<name>Library for EXPath Cryptographic Module</name>

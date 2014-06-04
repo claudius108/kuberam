@@ -25,21 +25,12 @@
 	<build>
 		<plugins>
 			<plugin>
+				<groupId>com.google.code.maven-replacer-plugin</groupId>
+				<artifactId>replacer</artifactId>
+			</plugin>
+			<plugin>
 				<groupId>ro.kuberam.maven.plugins</groupId>
 				<artifactId>kuberam-expath-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>create-xar</id>
-						<phase>package</phase>
-						<goals>
-							<goal>make-xar</goal>
-						</goals>
-						<configuration>
-							<descriptor>../${project.artifactId}/assembly.xml</descriptor>
-							<finalName>expath-${project.artifactId}-exist-demos-${project.version}</finalName>
-						</configuration>
-					</execution>
-				</executions>
 			</plugin>
 		</plugins>
 	</build>

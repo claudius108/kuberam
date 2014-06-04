@@ -243,7 +243,7 @@ public class GenerateSignature {
 				CanonicalizationMethod.EXCLUSIVE, DigestMethod.SHA1,
 				SignatureMethod.DSA_SHA1, "DSA", "ds", "enveloped", "//b",
 				certificateDetails, new FileInputStream(
-						"/home/claudius/mykeystoreEXist"));
+						"/home/claudius/mykeystoreEXist.ks"));
 		System.out.print(domString + "\n");
 	}
 }

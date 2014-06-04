@@ -73,5 +73,5 @@ public class ExpathCryptoModule {
 			+ "<keystore-password>ab987c</keystore-password>"
 			+ "<key-alias>eXist</key-alias>"
 			+ "<private-key-password>kpi135</private-key-password>"
-			+ "<keystore-uri>/db/mykeystoreEXist</keystore-uri>" + "</digital-certificate>.";	
+			+ "<keystore-uri>/db/mykeystoreEXist.ks</keystore-uri>" + "</digital-certificate>.";	
 }

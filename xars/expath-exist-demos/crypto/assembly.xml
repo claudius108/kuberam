@@ -38,28 +38,35 @@
 				<include>test-plan.xq</include>
 			</includes>
 			<outputDirectory>tests</outputDirectory>
-		</fileSet>		
+		</fileSet>
 		<fileSet>
-			<directory>${unit-tests-dir-path}/java/org/expath/exist/${project.artifactId}/xquery</directory>
+			<directory>${unit-tests-dir-path}/src/test/java/org/expath/exist/${project.artifactId}/xquery</directory>
 			<includes>
 				<include>*.*</include>
 			</includes>
 			<outputDirectory>tests/unit-tests</outputDirectory>
 		</fileSet>
 		<fileSet>
-			<directory>${unit-tests-dir-path}/java/org/expath/exist/${project.artifactId}</directory>
+			<directory>${unit-tests-dir-path}/src/test/java/org/expath/exist/${project.artifactId}</directory>
 			<includes>
 				<include>test-plan.xml</include>
 			</includes>
 			<outputDirectory>tests</outputDirectory>
 		</fileSet>
 		<fileSet>
-			<directory>${unit-tests-dir-path}/resources/org/expath/exist/${project.artifactId}</directory>
+			<directory>${lib-dir-path}/src/test/resources/ro/kuberam/libs/java/${project.artifactId}</directory>
 			<includes>
 				<include>*.*</include>
 			</includes>
 			<outputDirectory>tests/resources</outputDirectory>
-		</fileSet>		
+		</fileSet>
+		<fileSet>
+			<directory>${project.build.directory}</directory>
+			<includes>
+				<include>index.xml</include>
+			</includes>
+			<outputDirectory>/</outputDirectory>
+		</fileSet>
 	</fileSets>
 </package>
 
