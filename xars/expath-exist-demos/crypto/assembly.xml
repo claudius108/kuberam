@@ -35,8 +35,7 @@
 		<fileSet>
 			<directory>..</directory>
 			<includes>
-				<include>test-plan.xql</include>
-				<include>generate-tests-presentation.xsl</include>
+				<include>test-plan.xq</include>
 			</includes>
 			<outputDirectory>tests</outputDirectory>
 		</fileSet>		
