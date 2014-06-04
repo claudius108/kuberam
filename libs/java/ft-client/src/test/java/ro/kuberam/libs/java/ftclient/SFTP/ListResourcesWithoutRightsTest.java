@@ -17,7 +17,7 @@ public class ListResourcesWithoutRightsTest extends FTClientAbstractTest {
 
 		Session remoteConnection = initializeSftpConnection(
 				connectionProperties.getProperty("sftp-server-connection-url"),
-				IOUtils.toString(getClass().getResourceAsStream("../sftp-private-key")));
+				IOUtils.toString(getClass().getResourceAsStream("../sftp-private.key")));
 		String remoteResourcePath = sftpHomeDirPath + "/dir-without-rights/";
 		try {
 			ListResources.listResources(remoteConnection, remoteResourcePath);

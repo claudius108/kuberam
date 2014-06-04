@@ -22,5 +22,5 @@ In order to run the SFTP unit tests, one has to install a SFTP server at the add
 In case when the server used is openssh, the needed configuration file is at "src/test/resources/ro/kuberam/libs/java/ftclient/ssdh_config".
 
 The configuration provided by this library already has a pair of keys to be used. The private key is used by default by the unit tests. while the other
-one, located at "src/test/resources/ro/kuberam/libs/java/ftclient/sftp-public-key", has to be copied to the file that is stated in the server's configuration
+one, located at "src/test/resources/ro/kuberam/libs/java/ftclient/sftp-public.key", has to be copied to the file that is stated in the server's configuration
 file, under the AuthorizedKeysFile instruction. 

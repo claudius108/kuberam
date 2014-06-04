@@ -17,7 +17,7 @@ public class CreateDirectoryTest extends FTClientAbstractTest {
 
 		Session remoteConnection = initializeSftpConnection(
 				connectionProperties.getProperty("sftp-server-connection-url"),
-				IOUtils.toString(getClass().getResourceAsStream("../sftp-private-key")));
+				IOUtils.toString(getClass().getResourceAsStream("../sftp-private.key")));
 		String remoteResourcePath = sftpTmpDirPath + "/tempFolder" + System.currentTimeMillis() + "/";
 		Boolean stored = StoreResource.storeResource(remoteConnection, remoteResourcePath, null);
 		Disconnect.disconnect(remoteConnection);

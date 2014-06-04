@@ -17,7 +17,7 @@ public class RetrieveNonExistingBinaryResourceTest extends FTClientAbstractTest 
 
 		Session remoteConnection = initializeSftpConnection(
 				connectionProperties.getProperty("sftp-server-connection-url"),
-				IOUtils.toString(getClass().getResourceAsStream("../sftp-private-key")));
+				IOUtils.toString(getClass().getResourceAsStream("../sftp-private.key")));
 		String remoteResourcePath = sftpHomeDirPath + "/non-existing-image.gif";
 		try {
 			RetrieveResource.retrieveResource(remoteConnection, remoteResourcePath);

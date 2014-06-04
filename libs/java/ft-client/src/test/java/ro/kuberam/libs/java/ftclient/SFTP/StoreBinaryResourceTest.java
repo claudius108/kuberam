@@ -22,7 +22,7 @@ public class StoreBinaryResourceTest extends FTClientAbstractTest {
 
 		Session remoteConnection = initializeSftpConnection(
 				connectionProperties.getProperty("sftp-server-connection-url"),
-				IOUtils.toString(getClass().getResourceAsStream("../sftp-private-key")));
+				IOUtils.toString(getClass().getResourceAsStream("../sftp-private.key")));
 
 		String remoteResourcePath = sftpTmpDirPath + "/image-with-rights" + System.currentTimeMillis()
 				+ ".gif";

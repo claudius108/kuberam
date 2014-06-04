@@ -19,7 +19,7 @@ public class ListResourcesTest extends FTClientAbstractTest {
 
 		Session connection = Connect.connect(
 				new URI(connectionProperties.getProperty("sftp-server-connection-url")),
-				getBinaryResourceAsString("../sftp-private-key"));
+				getBinaryResourceAsString("../sftp-private.key"));
 
 		String actualResult = serializeToString(ListResources.listResources(connection, sftpHomeDirPath
 				+ "/"));

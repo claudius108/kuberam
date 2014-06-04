@@ -20,7 +20,7 @@ public class DeleteBinaryResourceTest extends FTClientAbstractTest {
 
 		Session remoteConnection = initializeSftpConnection(
 				connectionProperties.getProperty("sftp-server-connection-url"),
-				IOUtils.toString(getClass().getResourceAsStream("../sftp-private-key")));
+				IOUtils.toString(getClass().getResourceAsStream("../sftp-private.key")));
 		String remoteResourcePath = sftpTmpDirPath + "/tempFile" + System.currentTimeMillis() + ".txt";
 
 		InputStream resourceInputStream = getClass().getResourceAsStream("../image-with-rights.gif");
