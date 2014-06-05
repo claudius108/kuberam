@@ -10,13 +10,14 @@
 	</parent>
 
 	<artifactId>pdf</artifactId>
+	<version>0.1.1</version>
 
 	<dependencies>
 		<dependency>
 			<groupId>org.apache.pdfbox</groupId>
 			<artifactId>pdfbox</artifactId>
-			<version>1.8.2</version>
-			<scope>test</scope>
+			<version>1.8.5</version>
+			<scope>provided</scope>
 		</dependency>
 	</dependencies>
 
