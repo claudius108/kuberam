@@ -16,6 +16,9 @@ import java.util.UUID;
 import org.apache.commons.io.IOUtils;
 import org.junit.Test;
 
+import com.fasterxml.uuid.Generators;
+import com.fasterxml.uuid.impl.NameBasedGenerator;
+
 import ro.kuberam.tests.junit.BaseTest;
 
 public class CryptoModuleTests extends BaseTest {
@@ -136,9 +139,25 @@ public class CryptoModuleTests extends BaseTest {
 	
 	@Test
 	public void uuid5Test() throws Exception {
-//		UUID uuid = new UUID();
-
-//		System.out.println("result: " + UUID.nameUUIDFromString("http://heidicon.ub.uni-heidelberg.de//priya_paul/11880_w", UUID.fromString("6ba7b810-9dad-11d1-80b4-00c04fd430c8"), UUID.SHA1_ENCODING));
+		
+		String seed = "www.widgets.com";
+		
+		NameBasedGenerator uuid_gen_dns = Generators.nameBasedGenerator(NameBasedGenerator.NAMESPACE_DNS);
+		UUID uuid_dns = uuid_gen_dns.generate(seed);
+		System.out.println("uuid_dns: " + uuid_dns);
+	
+		NameBasedGenerator uuid_gen_oid = Generators.nameBasedGenerator(NameBasedGenerator.NAMESPACE_OID);
+		UUID uuid_oid = uuid_gen_oid.generate(seed);
+		System.out.println("uuid_oid: " + uuid_oid);
+		
+		NameBasedGenerator uuid_gen_url = Generators.nameBasedGenerator(NameBasedGenerator.NAMESPACE_URL);
+		UUID uuid_url = uuid_gen_url.generate(seed);
+		System.out.println("uuid_url: " + uuid_url);
+		
+		NameBasedGenerator uuid_gen_x500 = Generators.nameBasedGenerator(NameBasedGenerator.NAMESPACE_X500);
+		UUID uuid_x500 = uuid_gen_x500.generate(seed);
+		System.out.println("uuid_x500: " + uuid_x500);		
+		
 	}	
 	
 	@Test
