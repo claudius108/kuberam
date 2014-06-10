@@ -18,13 +18,6 @@
 	<dependency package="http://expath.org/lib/crypto" />
 	<fileSets>
 		<fileSet>
-			<directory>${basedir}</directory>
-			<includes>
-				<include>index.xml</include>
-			</includes>
-			<outputDirectory>/</outputDirectory>
-		</fileSet>
-		<fileSet>
 			<directory>..</directory>
 			<includes>
 				<include>controller.xql</include>

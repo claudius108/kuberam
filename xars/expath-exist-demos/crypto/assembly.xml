@@ -21,7 +21,6 @@
 			<directory>${basedir}</directory>
 			<includes>
 				<include>icon.png</include>
-				<include>index.xml</include>
 			</includes>
 			<outputDirectory>/</outputDirectory>
 		</fileSet>
