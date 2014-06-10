@@ -12,6 +12,7 @@ import javax.imageio.ImageIO;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class PdfToImageTest {
@@ -19,6 +20,7 @@ public class PdfToImageTest {
 	private Image image;
 	private String targetDirPath = "/home/claudius/workspaces/institutul-de-lingvistica/backup/DEX var 2012 pdf/";
 
+	@Ignore
 	@Test
 	public void test1() throws IOException {
 		InputStream is = new FileInputStream(targetDirPath + "G.pdf");
