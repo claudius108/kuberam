@@ -1,0 +1,44 @@
+<package xmlns="http://expath.org/ns/pkg" name="${package-name}" abbrev="${package-abbrev}" version="${project.version}"
+	spec="1.0">
+	<title>${package-title}</title>
+	<author id="cteodorescu">Claudius Teodorescu</author>
+	<website>${project.url}</website>
+	<license>GNU-LGPL</license>
+	<copyright>true</copyright>
+	<type>library</type>
+	<status>stable</status>
+	<tag>${module-prefix}</tag>
+	<tag>expath</tag>
+	<tag>library</tag>
+	<tag>exist</tag>
+	<category id="libs">Libraries</category>
+	<category id="exist">eXist extensions</category>
+	<dependency processor="http://exist-db.org/" />
+	<dependencySets>
+		<dependencySet>
+			<groupId>org.expath.exist</groupId>
+			<artifactId>pdf</artifactId>
+			<version>0.0.2</version>
+		</dependencySet>
+		<dependencySet>
+			<groupId>ro.kuberam.libs.java</groupId>
+			<artifactId>pdf</artifactId>
+			<version>0.1.1</version>
+		</dependencySet>
+		<dependencySet>
+			<groupId>org.apache.pdfbox</groupId>
+			<artifactId>pdfbox</artifactId>
+			<version>1.8.5</version>
+		</dependencySet>
+		<dependencySet>
+			<groupId>org.apache.pdfbox</groupId>
+			<artifactId>fontbox</artifactId>
+			<version>1.8.5</version>
+		</dependencySet>
+		<dependencySet>
+			<groupId>org.apache.pdfbox</groupId>
+			<artifactId>jempbox</artifactId>
+			<version>1.8.5</version>
+		</dependencySet>
+	</dependencySets>
+</package>
