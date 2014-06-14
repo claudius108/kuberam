@@ -15,7 +15,7 @@ import org.apache.pdfbox.pdmodel.PDPage;
 import org.junit.Ignore;
 import org.junit.Test;
 
-public class PdfToImageTest {
+public class ToImageTest {
 	
 	private Image image;
 	private String targetDirPath = "/home/claudius/workspaces/institutul-de-lingvistica/backup/DEX var 2012 pdf/";
