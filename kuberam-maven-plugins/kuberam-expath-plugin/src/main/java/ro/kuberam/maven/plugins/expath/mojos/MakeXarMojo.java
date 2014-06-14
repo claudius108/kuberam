@@ -5,11 +5,11 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.net.JarURLConnection;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.jar.Attributes;
 
+import net.sf.saxon.Configuration;
+import net.sf.saxon.s9api.*;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.Component;
@@ -19,7 +19,6 @@ import org.codehaus.plexus.archiver.ArchiveEntry;
 import org.codehaus.plexus.archiver.ArchiverException;
 import org.codehaus.plexus.archiver.ResourceIterator;
 import org.codehaus.plexus.archiver.zip.ZipArchiver;
-import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.xml.Xpp3DomBuilder;
 import org.eclipse.aether.RepositorySystem;
 import org.eclipse.aether.artifact.Artifact;
@@ -27,7 +26,8 @@ import org.eclipse.aether.artifact.DefaultArtifact;
 import org.eclipse.aether.resolution.ArtifactRequest;
 import org.eclipse.aether.resolution.ArtifactResolutionException;
 import org.eclipse.aether.resolution.ArtifactResult;
-
+import org.xml.sax.SAXException;
+import org.xml.sax.helpers.AttributesImpl;
 import ro.kuberam.maven.plugins.expath.DefaultFileSet;
 import ro.kuberam.maven.plugins.expath.DependencySet;
 import ro.kuberam.maven.plugins.expath.DescriptorConfiguration;
@@ -45,7 +45,7 @@ import ro.kuberam.maven.plugins.mojos.NameValuePair;
 @Mojo(name = "make-xar")
 public class MakeXarMojo extends KuberamAbstractMojo {
 
-	@Parameter(required = true)
+    @Parameter(required = true)
 	private File descriptor;
 
 	@Parameter(defaultValue = "${project.build.directory}")
@@ -57,8 +57,9 @@ public class MakeXarMojo extends KuberamAbstractMojo {
 	@Component
 	private RepositorySystem repoSystem;
 
-	private static String componentsTemplateFileContent = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
-			+ "<package xmlns=\"http://exist-db.org/ns/expath-pkg\">${components}</package>";
+    private final static String NS_EXPATH_PKG = "http://exist-db.org/ns/expath-pkg";
+    final Processor processor = new Processor(new Configuration());
+
 
 	public void execute() throws MojoExecutionException, MojoFailureException {
 
@@ -72,7 +73,7 @@ public class MakeXarMojo extends KuberamAbstractMojo {
 		String outputDirectoryPath = outputDir.getAbsolutePath();
 		String assemblyDescriptorName = descriptor.getName();
 		String archiveTmpDirectoryPath = projectBuildDirectory + File.separator + "make-xar-tmp";
-		String components = "";
+
 		String descriptorsDirectoryPath = outputDirectoryPath + File.separator + "expath-descriptors-"
 				+ UUID.randomUUID();
 
@@ -105,6 +106,8 @@ public class MakeXarMojo extends KuberamAbstractMojo {
 		zipArchiver.setCompress(true);
 		zipArchiver.setDestFile(new File(outputDirectoryPath + File.separator + finalName + ".xar"));
 		zipArchiver.setForced(true);
+
+        final Set<ComponentResource> componentResources = new HashSet<ComponentResource>();
 
 		// process the maven type dependencies
 		for (int i = 0, il = dependencySets.size(); i < il; i++) {
@@ -156,10 +159,8 @@ public class MakeXarMojo extends KuberamAbstractMojo {
 
 			// collect metadata about module's java main class for exist.xml
 			if (i == 0 && artifactIdentifier.contains(":jar:")) {
-				components += "<resource><public-uri>http://exist-db.org/ns/expath-pkg/module-main-class</public-uri><file>"
-						+ getMainClass(artifactFileAbsolutePath).get(0) + "</file></resource>";
-				components += "<resource><public-uri>http://exist-db.org/ns/expath-pkg/module-namespace</public-uri><file>"
-						+ getMainClass(artifactFileAbsolutePath).get(1) + "</file></resource>";				
+                componentResources.add(new ComponentResource("http://exist-db.org/ns/expath-pkg/module-main-class", getMainClass(artifactFileAbsolutePath).get(0)));
+                componentResources.add(new ComponentResource("http://exist-db.org/ns/expath-pkg/module-namespace", getMainClass(artifactFileAbsolutePath).get(1)));
 			}
 		}
 
@@ -173,24 +174,32 @@ public class MakeXarMojo extends KuberamAbstractMojo {
 			ArchiveEntry entry = itr.next();
 			String entryPath = entry.getName();
 			if (entryPath.endsWith(".jar")) {
-				components += "<resource><public-uri>" + moduleNamespace + "</public-uri><file>"
-						+ entryPath.substring(8) + "</file></resource>";
+                componentResources.add(new ComponentResource(moduleNamespace, entryPath.substring(8)));
 			}
 		}
 
-		project.getModel().addProperty("components", components);
-
 		// create and filter the components descriptor
-		File componentsTemplateFile = new File(archiveTmpDirectoryPath + File.separator + "components.xml");
+		final File componentsTemplateFile = new File(archiveTmpDirectoryPath + File.separator + "components.xml");
 		try {
-			FileUtils.fileWrite(componentsTemplateFile, "UTF-8", componentsTemplateFileContent);
-		} catch (IOException e2) {
-			e2.printStackTrace();
-		}
-		filterResource(archiveTmpDirectoryPath, "components.xml", descriptorsDirectoryPath, outputDir);
+            //write the components descriptor document
+            final XdmNode componentsDoc = getComponentsDoc(componentResources);
+            final Serializer serializer = processor.newSerializer(componentsTemplateFile);
+            serializer.setOutputProperty(Serializer.Property.ENCODING, "UTF-8");
+            serializer.setOutputProperty(Serializer.Property.OMIT_XML_DECLARATION, "no");
+            serializer.setOutputProperty(Serializer.Property.INDENT, "yes");
+            serializer.serializeNode(componentsDoc);
+            serializer.close();
+
+            //filter the components descriptor
+            filterResource(archiveTmpDirectoryPath, "components.xml", descriptorsDirectoryPath, outputDir);
+
+		} catch (final SaxonApiException sae) {
+			sae.printStackTrace();
+        } catch (final SAXException saxe) {
+            saxe.printStackTrace();
+        }
 
 		// generate the expath descriptors
-
 		NameValuePair[] parameters = new NameValuePair[] { new NameValuePair("package-dir",
 				descriptorsDirectoryPath) };
 
@@ -212,9 +221,73 @@ public class MakeXarMojo extends KuberamAbstractMojo {
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
-
-		project.getModel().addProperty("components", "");
 	}
+
+    /**
+     * Programatically constructs an XML Document in memory
+     * using Saxon to represent a components document.
+     *
+     * @param resources The resources to place in the component
+     *                  document, or the empty set.
+     *
+     * @return The component document
+     */
+    private XdmNode getComponentsDoc(final Set<ComponentResource> resources) throws SaxonApiException, SAXException {
+        final DocumentBuilder builder = processor.newDocumentBuilder();
+        final BuildingContentHandler handler = builder.newBuildingContentHandler();
+
+        final org.xml.sax.Attributes emptyAttributes = new AttributesImpl();
+
+        handler.startDocument();
+        handler.startPrefixMapping("", NS_EXPATH_PKG);
+        handler.startElement(NS_EXPATH_PKG, "package", "package", emptyAttributes);
+
+        for(final ComponentResource resource : resources) {
+            handler.startElement(NS_EXPATH_PKG, "resource", "resource", emptyAttributes);
+
+                //<public-uri>...</public-uri>
+                handler.startElement(NS_EXPATH_PKG, "public-uri", "public-uri", emptyAttributes);
+                final char[] publicUri = resource.getPublicUri().toCharArray();
+                handler.characters(publicUri, 0, publicUri.length);
+                handler.endElement(NS_EXPATH_PKG, "public-uri", "public-uri");
+
+                //<resource>...</resource>
+                handler.startElement(NS_EXPATH_PKG, "file", "file", emptyAttributes);
+                final char[] file = resource.getFile().toCharArray();
+                handler.characters(file, 0, file.length);
+                handler.endElement(NS_EXPATH_PKG, "file", "file");
+
+            handler.endElement(NS_EXPATH_PKG, "resource", "resource");
+        }
+
+        handler.endElement(NS_EXPATH_PKG, "package", "package");
+        handler.endPrefixMapping("");
+        handler.endDocument();
+
+        return handler.getDocumentNode();
+    }
+
+    /**
+     * Tuple class
+     * for use with Component Resources
+     */
+    private class ComponentResource {
+        final String publicUri;
+        final String file;
+
+        public ComponentResource(final String publicUri, final String file) {
+            this.publicUri = publicUri;
+            this.file = file;
+        }
+
+        public final String getPublicUri() {
+            return publicUri;
+        }
+
+        public final String getFile() {
+            return file;
+        }
+    }
 
 	private static List<String> getMainClass(String firstDependencyAbsolutePath) {
 		List<String> result = new ArrayList<String>();
