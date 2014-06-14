@@ -1,10 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet xmlns="http://expath.org/ns/pkg" xmlns:pkg="http://expath.org/ns/pkg"
-	xmlns:xsl="http://www.w3.org/1999/XSL/Transform" exclude-result-prefixes="pkg" version="2.0">
+<xsl:stylesheet
+    xmlns="http://expath.org/ns/pkg"
+    xmlns:pkg="http://expath.org/ns/pkg"
+	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    exclude-result-prefixes="pkg xs" version="2.0">
 
-	<xsl:output method="xml" />
+	<xsl:output method="xml" indent="yes" encoding="UTF-8" omit-xml-declaration="no"/>
 
-	<xsl:param name="package-dir" />
+	<xsl:param name="package-dir" required="yes" as="xs:string"/>
+
 	<xsl:variable name="package-type" select="/*/pkg:type" />
 	<xsl:variable name="package-version" select="/*/@version" />
 
@@ -81,7 +86,7 @@
 
 		<!-- generate repo.xml -->
 		<xsl:result-document href="{concat($package-dir, '/repo.xml')}">
-			<meta xmlns="http://exist-db.org/xquery/repo" xmlns:repo="http://exist-db.org/xquery/repo">
+			<meta xmlns="http://exist-db.org/xquery/repo">
 				<description>
 					<xsl:value-of select="$title" />
 				</description>
