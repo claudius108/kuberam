@@ -1,4 +1,4 @@
-package ro.kuberam.location;
+package ro.kuberam.libs.java.location;
       
 public class ErrorMessages {
       public static String err_LOC01 = "err:LOC01: The IP address is not valid.";

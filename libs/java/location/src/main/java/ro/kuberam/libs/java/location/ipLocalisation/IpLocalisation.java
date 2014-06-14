@@ -1,4 +1,4 @@
-package ro.kuberam.location.ipLocalisation;
+package ro.kuberam.libs.java.location.ipLocalisation;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -9,7 +9,7 @@ import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import ro.kuberam.location.ErrorMessages;
+import ro.kuberam.libs.java.location.ErrorMessages;
 
 public class IpLocalisation {
 

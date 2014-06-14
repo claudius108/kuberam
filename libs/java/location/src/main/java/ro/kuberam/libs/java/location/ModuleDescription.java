@@ -1,4 +1,4 @@
-package ro.kuberam.location;
+package ro.kuberam.libs.java.location;
 
 
 /**

@@ -1,4 +1,4 @@
-package ro.kuberam.location.ipLocalisation;
+package ro.kuberam.libs.java.location.ipLocalisation;
 
 public class GetAltitude {
 	

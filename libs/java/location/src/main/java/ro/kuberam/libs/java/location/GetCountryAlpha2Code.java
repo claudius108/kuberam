@@ -1,8 +1,8 @@
-package ro.kuberam.location;
+package ro.kuberam.libs.java.location;
 
 import java.util.Arrays;
 
-import ro.kuberam.location.ipLocalisation.IpLocalisation;
+import ro.kuberam.libs.java.location.ipLocalisation.IpLocalisation;
 
 public class GetCountryAlpha2Code {
 

@@ -1,11 +1,11 @@
-package ro.kuberam.location.ipLocalisation;
+package ro.kuberam.libs.java.location.ipLocalisation;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-import ro.kuberam.location.Functions;
+import ro.kuberam.libs.java.location.Functions;
 
 public class IpLocalisationTest {
 
