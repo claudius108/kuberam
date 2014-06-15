@@ -18,6 +18,7 @@ import org.apache.maven.plugins.annotations.Parameter;
 import org.codehaus.plexus.archiver.ArchiveEntry;
 import org.codehaus.plexus.archiver.ArchiverException;
 import org.codehaus.plexus.archiver.ResourceIterator;
+import org.codehaus.plexus.archiver.util.DefaultFileSet;
 import org.codehaus.plexus.archiver.zip.ZipArchiver;
 import org.codehaus.plexus.util.xml.Xpp3DomBuilder;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
@@ -29,7 +30,6 @@ import org.eclipse.aether.resolution.ArtifactResolutionException;
 import org.eclipse.aether.resolution.ArtifactResult;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.AttributesImpl;
-import ro.kuberam.maven.plugins.expath.DefaultFileSet;
 import ro.kuberam.maven.plugins.expath.DependencySet;
 import ro.kuberam.maven.plugins.expath.DescriptorConfiguration;
 import ro.kuberam.maven.plugins.mojos.KuberamAbstractMojo;
@@ -125,8 +125,8 @@ public class MakeXarMojo extends KuberamAbstractMojo {
 
             try {
 			    // define the artifact
-			    final Artifact artifactReference = new DefaultArtifact(dependencySet.groupId + ":"
-						+ dependencySet.artifactId + ":" + dependencySet.version);
+			    final Artifact artifactReference = new DefaultArtifact(dependencySet.getGroupId() + ":"
+						+ dependencySet.getArtifactId() + ":" + dependencySet.getVersion());
 
                 final String artifactIdentifier = artifactReference.toString();
                 getLog().info("Resolving artifact: " + artifactReference);
@@ -144,9 +144,9 @@ public class MakeXarMojo extends KuberamAbstractMojo {
                 final File artifactFile = artifact.getFile();
                 final String artifactFileAbsolutePath = artifactFile.getAbsolutePath();
                 final String artifactFileName = artifactFile.getName();
-                final String dependencySetOutputDirectory = dependencySet.outputDirectory;
+                final String dependencySetOutputDirectory = dependencySet.getOutputDirectory();
 
-                String archiveComponentPath = null;
+                String archiveComponentPath;
                 if(dependencySetOutputDirectory == null || dependencySetOutputDirectory.equals("/")) {
                     archiveComponentPath = artifactFileName;
                 } else {
@@ -313,3 +313,4 @@ public class MakeXarMojo extends KuberamAbstractMojo {
 	}
 
 }
+
