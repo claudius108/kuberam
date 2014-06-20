@@ -12,12 +12,39 @@
 	<artifactId>pdf</artifactId>
 	<version>0.1.1</version>
 
+	<repositories>
+		<repository>
+			<id>clojars.org</id>
+			<url>http://clojars.org/repo</url>
+		</repository>
+		<repository>
+			<id>ice-maven-release</id>
+			<url>http://anonsvn.icesoft.org/repo/maven2/releases</url>
+		</repository>
+	</repositories>
+
 	<dependencies>
 		<dependency>
 			<groupId>org.apache.pdfbox</groupId>
 			<artifactId>pdfbox</artifactId>
 			<version>1.8.5</version>
 			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.pdfbox</groupId>
+			<artifactId>fontbox</artifactId>
+			<version>1.8.5</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.jpedal</groupId>
+			<artifactId>jpedal-lgpl</artifactId>
+			<version>4.74b27</version>
+		</dependency>
+		<dependency>
+			<groupId>org.icepdf</groupId>
+			<artifactId>icepdf-core</artifactId>
+			<version>4.4.0</version>
 		</dependency>
 	</dependencies>
 
