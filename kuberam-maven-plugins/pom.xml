@@ -10,8 +10,8 @@
 	</parent>
 
 	<groupId>ro.kuberam.maven.plugins</groupId>
-	<artifactId>parent-pom</artifactId>
-	<version>0.1.0</version>
+	<artifactId>base</artifactId>
+	<version>0.2.0</version>
 	<packaging>pom</packaging>
 	<name>Kuberam Maven Plugins</name>
 	<description>Framework for kuberam maven plugins</description>
