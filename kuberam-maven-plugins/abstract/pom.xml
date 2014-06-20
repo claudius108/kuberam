@@ -32,7 +32,7 @@
 
 	<scm>
 		<connection>scm:git:https://github.com/claudius108/kuberam.git</connection>
-		<url>http://github.com/claudius108/kuberam/tree/master/kuberam-expath-plugin</url>
+		<url>https://github.com/claudius108/kuberam/tree/master/kuberam-maven-plugins/abstract</url>
 	</scm>
 
 	<dependencies>
