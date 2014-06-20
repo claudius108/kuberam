@@ -32,7 +32,6 @@
 		<versionSurefirePlugin>2.16</versionSurefirePlugin>
 	</properties>
 
-
 	<organization>
 		<name>Teodorescu Claudius Marian PFA</name>
 		<url>http://kuberam.ro</url>

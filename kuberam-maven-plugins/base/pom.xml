@@ -12,6 +12,11 @@
 	<groupId>ro.kuberam.maven.plugins</groupId>
 	<artifactId>abstract</artifactId>
 	<version>0.1.3</version>
+	<packaging>jar</packaging>
+	<name>kuberam expath abstract plugin</name>
+	<description>Abstract plugin for kuberam maven plugins</description>
+	<url>http://kuberam.ro</url>
+	<inceptionYear>2013</inceptionYear>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -20,6 +25,16 @@
 		<aetherVersion>0.9.0.M3</aetherVersion>
 		<mavenPluginVersion>3.2</mavenPluginVersion>
 	</properties>
+
+	<prerequisites>
+		<maven>${mavenVersion}</maven>
+	</prerequisites>
+
+	<scm>
+		<connection>scm:git:https://github.com/claudius108/kuberam.git</connection>
+		<url>http://github.com/claudius108/kuberam/tree/master/kuberam-expath-plugin</url>
+	</scm>
+
 
 	<build>
 		<plugins>
