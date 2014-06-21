@@ -38,9 +38,9 @@
 	<!-- </scm> -->
 
 	<scm>
-		<connection>scm:git:git@github.com:claudius108/kuberam.git</connection>
+		<connection>scm:git:ssh@github.com:claudius108/kuberam.git</connection>
 		<url>scm:git:git@github.com:claudius108/kuberam.git</url>
-		<developerConnection>scm:git:git@github.com:claudius108/kuberam.git</developerConnection>
+		<developerConnection>scm:git:ssh@github.com:claudius108/kuberam.git</developerConnection>
 	</scm>
 
 	<dependencies>
