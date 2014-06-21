@@ -7,6 +7,7 @@
 		<groupId>ro.kuberam.maven.plugins</groupId>
 		<artifactId>base</artifactId>
 		<version>0.2.0</version>
+		<relativePath></relativePath>
 	</parent>
 
 	<artifactId>kuberam-expath-plugin</artifactId>
