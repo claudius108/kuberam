@@ -29,7 +29,7 @@ public class ToImageTest {
 	private File targetDirPath = new File("/home/claudius/");
 
 	@Test
-	public void test1() throws IOException {
+	public void testPdfbox() throws IOException {
 		InputStream pdfIs = this.getClass().getResourceAsStream("../frus1969-76v19p1.pdf");
 
 		PDDocument pdf = PDDocument.load(pdfIs, true);
@@ -47,7 +47,7 @@ public class ToImageTest {
 	}
 
 	@Test
-	public void test2() throws IOException {
+	public void testJpedal() throws IOException {
 		/** instance of PdfDecoder to convert PDF into image */
 		PdfDecoder decode_pdf = new PdfDecoder(true);
 
