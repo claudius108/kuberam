@@ -16,6 +16,8 @@
 	<packaging>pom</packaging>
 	<name>Kuberam Maven Plugins</name>
 	<description>Framework for kuberam maven plugins</description>
+	<url>http://kuberam.ro</url>
+	<inceptionYear>2013</inceptionYear>
 	<licenses>
 		<license>
 			<name>GNU Lesser General Public License</name>
@@ -23,15 +25,6 @@
 			<distribution>repo</distribution>
 		</license>
 	</licenses>
-
-	<properties>
-		<mavenVersion>3.1.1</mavenVersion>
-		<mavenPluginPluginVersion>3.2</mavenPluginPluginVersion>
-		<aetherVersion>0.9.0.M3</aetherVersion>
-		<versionProjectInfoReportsPlugin>2.7</versionProjectInfoReportsPlugin>
-		<versionJavadocPlugin>2.9.1</versionJavadocPlugin>
-		<versionSurefirePlugin>2.16</versionSurefirePlugin>
-	</properties>
 
 	<organization>
 		<name>Teodorescu Claudius Marian PFA</name>
@@ -45,6 +38,26 @@
 			<email>claudius.teodorescu@gmail.com</email>
 		</developer>
 	</developers>
+
+	<scm>
+		<connection>scm:git:ssh@github.com:claudius108/kuberam.git</connection>
+		<developerConnection>scm:git:ssh@github.com:claudius108/kuberam.git</developerConnection>
+		<url>https://github.com/claudius108/kuberam/tree/master/kuberam-maven-plugins</url>
+	</scm>
+
+	<prerequisites>
+		<maven>${mavenVersion}</maven>
+	</prerequisites>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<mavenVersion>3.1.1</mavenVersion>
+		<mavenPluginPluginVersion>3.2</mavenPluginPluginVersion>
+		<aetherVersion>0.9.0.M3</aetherVersion>
+		<versionProjectInfoReportsPlugin>2.7</versionProjectInfoReportsPlugin>
+		<versionJavadocPlugin>2.9.1</versionJavadocPlugin>
+		<versionSurefirePlugin>2.16</versionSurefirePlugin>
+	</properties>
 
 	<dependencies>
 		<!-- maven -->
@@ -178,6 +191,48 @@
 				</plugin>
 			</plugins>
 		</pluginManagement>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<version>2.2.1</version>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>2.9.1</version>
+				<executions>
+					<execution>
+						<id>attach-javadocs</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-gpg-plugin</artifactId>
+				<version>1.5</version>
+				<executions>
+					<execution>
+						<id>sign-artifacts</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>sign</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
 	</build>
 
 	<reporting>
