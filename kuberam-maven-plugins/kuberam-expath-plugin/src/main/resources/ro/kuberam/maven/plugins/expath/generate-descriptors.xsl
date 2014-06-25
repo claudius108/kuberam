@@ -75,6 +75,11 @@
 			<package xmlns="http://expath.org/ns/pkg" name="{$name}" abbrev="{$abbrev}" version="{$package-version}"
 				spec="1.0">
 				<xsl:copy-of select="$title" />
+				<xsl:if test="/*/pkg:website">
+					<home>
+						<xsl:value-of select="/*/pkg:website" />
+					</home>
+				</xsl:if>
 				<xsl:copy-of select="/*/pkg:dependency" />
 			</package>
 		</xsl:result-document>
