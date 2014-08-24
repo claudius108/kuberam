@@ -17,7 +17,7 @@ public class CreateDirectoryTest extends FTClientAbstractTest {
 				.getProperty("ftp-server-connection-url"));		
 		String remoteResourcePath = "/dir-with-rights/tmp/tempFolder" + System.currentTimeMillis() + "/";		
 		Boolean stored = StoreResource.storeResource(remoteConnection, remoteResourcePath, null);
-		Disconnect.disconnect(remoteConnection);		
+		Disconnect.disconnect(remoteConnection);
 		Assert.assertTrue(stored);
 
 	}

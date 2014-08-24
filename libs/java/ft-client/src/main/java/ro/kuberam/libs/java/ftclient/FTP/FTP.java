@@ -100,8 +100,10 @@ public class FTP extends AbstractConnection {
 	public StreamResult listResources(Object abstractConnection, String remoteResourcePath)
 			throws Exception {
 		long startTime = new Date().getTime();
+		
+		boolean isDirectory = checkIsDirectory(remoteResourcePath);
 
-		if (!checkIsDirectory(remoteResourcePath)) {
+		if (!isDirectory) {
 			throw new Exception(ErrorMessages.err_FTC008);
 		}
 
@@ -110,7 +112,7 @@ public class FTP extends AbstractConnection {
 			throw new Exception(ErrorMessages.err_FTC002);
 		}
 
-		List<Object> connectionObject = _checkResourcePath(connection, remoteResourcePath, "list-resources");
+		List<Object> connectionObject = _checkResourcePath(connection, remoteResourcePath, "list-resources", isDirectory);
 
 		System.out.println("resources: " + connectionObject.size());
 
@@ -147,12 +149,13 @@ public class FTP extends AbstractConnection {
 			throws Exception {
 		long startTime = new Date().getTime();
 		FTPClient FTPconnection = (FTPClient) abstractConnection;
+		
 		if (!FTPconnection.isConnected()) {
 			throw new Exception(ErrorMessages.err_FTC002);
 		}
 
 		List<Object> FTPconnectionObject = _checkResourcePath(FTPconnection, remoteResourcePath,
-				"get-resource-metadata");
+				"get-resource-metadata", checkIsDirectory(remoteResourcePath));
 
 		FTPFile[] resources = (FTPFile[]) FTPconnectionObject.get(1);
 
@@ -189,7 +192,7 @@ public class FTP extends AbstractConnection {
 			throw new Exception(ErrorMessages.err_FTC002);
 		}
 
-		_checkResourcePath(connection, remoteResourcePath, "retrieve-resource");
+		_checkResourcePath(connection, remoteResourcePath, "retrieve-resource", checkIsDirectory(remoteResourcePath));
 
 		InputStream is = connection.retrieveFileStream(remoteResourcePath);
 
@@ -213,10 +216,10 @@ public class FTP extends AbstractConnection {
 				resourceName = remoteDirectoryPath.substring(remoteDirectoryPath.lastIndexOf("/") + 1);
 				remoteDirectoryPath = remoteDirectoryPath
 						.substring(0, remoteDirectoryPath.lastIndexOf("/"));
-				_checkResourcePath(connection, remoteDirectoryPath, "store-resource");
+				_checkResourcePath(connection, remoteDirectoryPath, "store-resource", true);
 				result = connection.makeDirectory(resourceName);
 			} else {
-				_checkResourcePath(connection, remoteDirectoryPath, "store-resource");
+				_checkResourcePath(connection, remoteDirectoryPath, "store-resource", false);
 				result = connection.storeFile(resourceName, resourceInputStream);
 				resourceInputStream.close();
 			}
@@ -248,7 +251,7 @@ public class FTP extends AbstractConnection {
 
 		Boolean result = true;
 		List<Object> FTPconnectionObject = _checkResourcePath(FTPconnection, remoteResourcePath,
-				"delete-resource");
+				"delete-resource", checkIsDirectory(remoteResourcePath));
 
 		try {
 			if ((Boolean) FTPconnectionObject.get(0)) {
@@ -318,27 +321,32 @@ public class FTP extends AbstractConnection {
 	}
 
 	private static List<Object> _checkResourcePath(FTPClient connection, String remoteResourcePath,
-			String actionName) throws Exception {
+			String actionName, boolean isDirectory) throws Exception {
 		FTPFile[] resources = null;
 		List<Object> connectionObject = new LinkedList<Object>();
 
-		boolean remoteDirectoryExists = connection.changeWorkingDirectory(remoteResourcePath);
-		int returnCode = connection.getReplyCode();
-		connectionObject.add(remoteDirectoryExists);
+		boolean remoteDirectoryExists = false; 
+				
+		if (isDirectory) {
+			remoteDirectoryExists = connection.changeWorkingDirectory(remoteResourcePath);
+			int returnCode = connection.getReplyCode();
 
-		// check if the remote resource exists
-		if (returnCode == 550) {
-			throw new Exception(ErrorMessages.err_FTC003);
-		}
+			// check if the remote directory exists
+			if (returnCode == 550) {
+				throw new Exception(ErrorMessages.err_FTC003);
+			}			
+		}	
+
+		connectionObject.add(remoteDirectoryExists);
 
 		// check if the user has rights as to the resource
 		resources = connection.listFiles(remoteResourcePath);
 
-		if (!actionName.equals("list-resources") && !remoteDirectoryExists) {
-			// System.out.println("permissions; "
-			// + resources[0].hasPermission(FTPFile.USER_ACCESS,
-			// FTPFile.READ_PERMISSION));
-		}
+//		if (!actionName.equals("list-resources") && !remoteDirectoryExists) {
+//			// System.out.println("permissions; "
+//			// + resources[0].hasPermission(FTPFile.USER_ACCESS,
+//			// FTPFile.READ_PERMISSION));
+//		}
 
 		// if (!remoteDirectoryExists) {
 		// FTPconnection.setFileType(org.apache.commons.net.ftp.FTP.BINARY_FILE_TYPE);
