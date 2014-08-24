@@ -18,15 +18,11 @@ public class ListNonExistingDirectoryTest extends FTClientAbstractTest {
 		String remoteResourcePath = "/non-existing-directory/";
 		try {
 			ListResources.listResources(remoteConnection, remoteResourcePath);
-//			Assert.assertTrue(false);
+			Assert.assertTrue(false);
 		} catch (Exception e) {
 			System.out.println("e.getLocalizedMessage(): " + e.getLocalizedMessage());
-			Assert.assertTrue(
-					e.getLocalizedMessage(),
-					e.getLocalizedMessage().equals(
-							"err:FTC004: The user has no rights to access the remote resource."));
-			// TODO: add correct error message: err:FTC003: The remote resource
-			// does not exist.
+			Assert.assertTrue(e.getLocalizedMessage(),
+					e.getLocalizedMessage().equals("err:FTC003: The remote resource does not exist."));
 		} finally {
 			Disconnect.disconnect(remoteConnection);
 		}

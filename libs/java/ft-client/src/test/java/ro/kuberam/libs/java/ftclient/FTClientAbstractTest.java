@@ -204,9 +204,6 @@ public class FTClientAbstractTest extends BaseTest {
 				System.out.println("\n====================" + remoteResourcePath + "====================");
 				// System.out.println("FTPconnection.getReplyString(): "
 				// + FTPconnection.getReplyString());
-				// System.out
-				// .println("FTPconnection.getStatus(remoteResourcePath): "
-				// + FTPconnection.getStatus(remoteResourcePath));
 				System.out.println("FTPconnection.listFiles(remoteResourcePath): "
 						+ FTPconnection.listFiles("/").length);
 

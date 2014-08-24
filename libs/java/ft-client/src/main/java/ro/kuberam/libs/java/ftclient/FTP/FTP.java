@@ -172,7 +172,7 @@ public class FTP extends AbstractConnection {
 			throw new Exception(ex.getMessage());
 		}
 
-		//FTPconnection.completePendingCommand();
+		// FTPconnection.completePendingCommand();
 		StreamResult resultAsStreamResult = new StreamResult(writer);
 
 		log.info("The FTP sub-module retrieved the metadata for resource '" + remoteResourcePath + "' in "
@@ -189,13 +189,12 @@ public class FTP extends AbstractConnection {
 			throw new Exception(ErrorMessages.err_FTC002);
 		}
 
-		_checkResourcePath(connection, remoteResourcePath,
-				"retrieve-resource");
+		_checkResourcePath(connection, remoteResourcePath, "retrieve-resource");
 
 		InputStream is = connection.retrieveFileStream(remoteResourcePath);
-		
+
 		log.info("The FTP sub-module retrieved the resource '" + remoteResourcePath + "' in "
-				+ (new Date().getTime() - startTime) + " ms.");		
+				+ (new Date().getTime() - startTime) + " ms.");
 
 		return is;
 	}
@@ -323,23 +322,22 @@ public class FTP extends AbstractConnection {
 		FTPFile[] resources = null;
 		List<Object> connectionObject = new LinkedList<Object>();
 
-		// System.out.println("connection.listFiles(remoteResourcePath): "
-		// + connection.getStatus(remoteResourcePath));
+		boolean remoteDirectoryExists = connection.changeWorkingDirectory(remoteResourcePath);
+		int returnCode = connection.getReplyCode();
+		connectionObject.add(remoteDirectoryExists);
 
 		// check if the remote resource exists
-		if (connection.getStatus(remoteResourcePath) == null) {
+		if (returnCode == 550) {
 			throw new Exception(ErrorMessages.err_FTC003);
 		}
 
 		// check if the user has rights as to the resource
 		resources = connection.listFiles(remoteResourcePath);
 
-		boolean remoteDirectoryExists = connection.changeWorkingDirectory(remoteResourcePath);
-		connectionObject.add(remoteDirectoryExists);
-
 		if (!actionName.equals("list-resources") && !remoteDirectoryExists) {
-//			System.out.println("permissions; "
-//					+ resources[0].hasPermission(FTPFile.USER_ACCESS, FTPFile.READ_PERMISSION));
+			// System.out.println("permissions; "
+			// + resources[0].hasPermission(FTPFile.USER_ACCESS,
+			// FTPFile.READ_PERMISSION));
 		}
 
 		// if (!remoteDirectoryExists) {
