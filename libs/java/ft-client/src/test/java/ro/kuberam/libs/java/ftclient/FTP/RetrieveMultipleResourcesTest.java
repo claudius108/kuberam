@@ -6,6 +6,7 @@ import javax.xml.transform.stream.StreamResult;
 
 import org.apache.commons.net.ftp.FTPClient;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import ro.kuberam.libs.java.ftclient.Disconnect;
@@ -16,6 +17,7 @@ import ro.kuberam.libs.java.ftclient.RetrieveResource;
 public class RetrieveMultipleResourcesTest extends FTClientAbstractTest {
 
 	@Test
+	@Ignore
 	public void test() throws Exception {
 
 		FTPClient remoteConnection = initializeFtpConnection(connectionProperties
