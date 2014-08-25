@@ -325,10 +325,9 @@ public class FTP extends AbstractConnection {
 		FTPFile[] resources = null;
 		List<Object> connectionObject = new LinkedList<Object>();
 
-		boolean remoteDirectoryExists = false; 
+		boolean remoteDirectoryExists = connection.changeWorkingDirectory(remoteResourcePath); 
 				
 		if (isDirectory) {
-			remoteDirectoryExists = connection.changeWorkingDirectory(remoteResourcePath);
 			int returnCode = connection.getReplyCode();
 
 			// check if the remote directory exists
