@@ -23,7 +23,7 @@
 		<dependencySet>
 			<groupId>ro.kuberam.libs.java</groupId>
 			<artifactId>ft-client</artifactId>
-			<version>1.1.0</version>
+			<version>1.1.1</version>
 		</dependencySet>
 		<dependencySet>
 			<groupId>com.jcraft</groupId>
