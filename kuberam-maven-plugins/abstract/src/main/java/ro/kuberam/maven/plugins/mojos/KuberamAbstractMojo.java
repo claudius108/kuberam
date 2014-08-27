@@ -7,6 +7,8 @@ import java.util.Collections;
 import java.util.List;
 
 import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
@@ -137,21 +139,37 @@ public class KuberamAbstractMojo extends AbstractMojo {
 	}
 
 	public static void xsltTransform(File sourceFile, String xsltUrl, String resultDir,
-			NameValuePair[] parameters) {
+			NameValuePair[] parameters) throws MojoExecutionException, MojoFailureException {
 		System.setProperty("javax.xml.transform.TransformerFactory", "net.sf.saxon.TransformerFactoryImpl");
 
 		TransformerFactory tFactory = TransformerFactory.newInstance();
-		try {
-			Transformer transformer = tFactory.newTransformer(new StreamSource(xsltUrl));
+    try {
+      Transformer transformer = tFactory.newTransformer(new StreamSource(xsltUrl));
 
-			for (NameValuePair parameter : parameters) {
-				transformer.setParameter(parameter.getName(), parameter.getValue());
-			}
+      for (NameValuePair parameter : parameters) {
+        transformer.setParameter(parameter.getName(), parameter.getValue());
+      }
 
-			transformer.transform(new StreamSource(sourceFile), new StreamResult(new File(resultDir)));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+      transformer.transform(new StreamSource(sourceFile), new StreamResult(new File(resultDir)));
+    } catch(TransformerConfigurationException tce) {
+      throw new MojoExecutionException("An error occurred whilst configuring Saxon transformer", tce);
+    } catch(TransformerException te) {
+      throw new MojoFailureException("An error occurred whilst transforming: " + sourceFile.getAbsolutePath() + " with: " + xsltUrl + " using parameters [" + parametersToString(parameters) + "]", te);
+    }
 	}
+
+  private static String parametersToString(NameValuePair[] parameters) {
+    final StringBuilder builder = new StringBuilder();
+    for(final NameValuePair parameter : parameters) {
+      if(builder.length() > 0) {
+        builder.append(", ");
+      }
+      builder
+          .append(parameter.getName())
+          .append("=")
+          .append(parameter.getValue());
+    }
+    return builder.toString();
+  }
 
 }

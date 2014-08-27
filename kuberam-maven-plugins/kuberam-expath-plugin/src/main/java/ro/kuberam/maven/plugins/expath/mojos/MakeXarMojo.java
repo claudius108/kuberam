@@ -192,7 +192,7 @@ public class MakeXarMojo extends KuberamAbstractMojo {
 		// generate the expath descriptors
 
 		NameValuePair[] parameters = new NameValuePair[] { new NameValuePair("package-dir",
-				descriptorsDirectoryPath) };
+				new File(descriptorsDirectoryPath).toURI().toString()) };
 
 		xsltTransform(filteredDescriptor,
 				this.getClass().getResource("/ro/kuberam/maven/plugins/expath/generate-descriptors.xsl")
