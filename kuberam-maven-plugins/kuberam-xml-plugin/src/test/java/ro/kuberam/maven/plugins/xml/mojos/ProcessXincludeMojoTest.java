@@ -11,7 +11,7 @@ public class ProcessXincludeMojoTest extends KuberamAbstractMojoTestBase {
 	public void testNormalProcessing() throws Exception {
 		final ProcessXincludeMojo mojo = this.mojo();
 
-		setVariableValueToObject(mojo, "inputFile", new File(baseDir + File.separator + "src/test/resources/ro/kuberam/maven/plugins/xml/mojos/process-xinclude/document.xml"));
+		setVariableValueToObject(mojo, "inputFile", new File(baseDir + File.separator + "src/test/resources/ro/kuberam/maven/plugins/xml/mojos/process-xinclude/document-01.xml"));
 		setVariableValueToObject(mojo, "outputDir", new File(projectBuildDirectory + "/process-xinclude"));
 		mojo.execute();
 	}
@@ -19,7 +19,7 @@ public class ProcessXincludeMojoTest extends KuberamAbstractMojoTestBase {
 	public void testOmitXmlDeclaration() throws Exception {
 		final ProcessXincludeMojo mojo = this.mojo();
 		
-		setVariableValueToObject(mojo, "inputFile", new File(baseDir + File.separator + "src/test/resources/ro/kuberam/maven/plugins/xml/mojos/process-xinclude/document.xml"));
+		setVariableValueToObject(mojo, "inputFile", new File(baseDir + File.separator + "src/test/resources/ro/kuberam/maven/plugins/xml/mojos/process-xinclude/document-01.xml"));
 		setVariableValueToObject(mojo, "omitXmlDeclaration", "yes");
 		setVariableValueToObject(mojo, "outputDir", new File(projectBuildDirectory + "/process-xinclude"));
 		mojo.execute();

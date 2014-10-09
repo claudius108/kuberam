@@ -73,6 +73,15 @@ public class ProcessXincludeMojo extends KuberamAbstractMojo {
 	private String omitXmlDeclaration = "no";
 
 	/**
+	 * The parameter for setting the validation of the document.
+	 * 
+	 * @parameter
+	 * 
+	 */
+	@Parameter(defaultValue = "no")
+	private String validate = "false";
+
+	/**
 	 * Output directory.
 	 * 
 	 * @parameter
@@ -102,6 +111,9 @@ public class ProcessXincludeMojo extends KuberamAbstractMojo {
 		factory.setNamespaceAware(true);
 		try {
 			factory.setFeature("http://apache.org/xml/features/xinclude/fixup-base-uris", false);
+			if (Boolean.parseBoolean(validate)) {
+				factory.setFeature("http://xml.org/sax/features/validation", true);
+			}
 		} catch (ParserConfigurationException e3) {
 			e3.printStackTrace();
 		}
