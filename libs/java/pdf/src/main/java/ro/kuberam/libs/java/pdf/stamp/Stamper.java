@@ -1,6 +1,5 @@
 package ro.kuberam.libs.java.pdf.stamp;
 
-import java.io.FileInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
