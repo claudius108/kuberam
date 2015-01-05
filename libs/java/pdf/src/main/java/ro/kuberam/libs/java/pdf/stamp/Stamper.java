@@ -20,9 +20,8 @@ public class Stamper {
 
 	private static PDDocument pdfDocument;
 	private static int numPages;
-			// the x/y coords
 	private static Float xVal = null;
-	private staticFloat yVal = null;
+	private static Float yVal = null;
 	private static String fontFamily = null;
 	private static Float fontSize = null;
 	private static Color nonStrokingColor = null;
