@@ -49,12 +49,6 @@ public class Stamper {
 	    } else {
 	        System.err.println("You must specify a font size in the properties map.");
 	    }
-	    // make sure we have a font color
-	    if(fieldsMap.containsKey("fontColor")) {
-	        fontSize = Float.parseFloat(fieldsMap.get("fontColor"));
-	    } else {
-	        System.err.println("You must specify a font color in the properties map.");
-	    }
 	    
 	    if(fieldsMap.containsKey("color")) {
 	    	nonStrokingColor = Color.decode(fieldsMap.get("color"));
