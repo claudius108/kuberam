@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Properties;
 import java.util.Map;
 import java.awt.Color;
 import org.apache.pdfbox.Overlay;
@@ -21,14 +20,13 @@ public class Stamper {
 
     private static PDDocument pdfDocument;
     private static int numPages;
-    private static Properties config = new Properties();
     private static String fontFamily = null;
     private static Float fontSize = null;
     private static Color nonStrokingColor = null;
     private static Color strokingColor = null;
 
 	
-	public static ByteArrayOutputStream run(InputStream pdfIs, String stampString, Map<String, String> fieldsMap)
+	public static ByteArrayOutputStream run(InputStream pdfIs, String stampString, Map<String, String> propsMap)
 			throws IOException, COSVisitorException {
 	
 	
@@ -36,21 +34,21 @@ public class Stamper {
 		ByteArrayOutputStream output = new ByteArrayOutputStream();
 	
 	    // make sure we have a font
-	    if(fieldsMap.containsKey("fontFamily")) {
-	        fontFamily = fieldsMap.get("fontFamily");
+	    if(propsMap.containsKey("fontFamily")) {
+	        fontFamily = propsMap.get("fontFamily");
 	    } else {
 	        System.err.println("You must specify a font in the properties map.");
 	    }
 	
 	    // make sure we have a font size
-	    if(fieldsMap.containsKey("fontSize")) {
-	        fontSize = Float.parseFloat(fieldsMap.get("fontSize"));
+	    if(propsMap.containsKey("fontSize")) {
+	        fontSize = Float.parseFloat(propsMap.get("fontSize"));
 	    } else {
 	        System.err.println("You must specify a font size in the properties map.");
 	    }
 	    
-	    if(fieldsMap.containsKey("color")) {
-	    	nonStrokingColor = Color.decode(fieldsMap.get("color"));
+	    if(propsMap.containsKey("color")) {
+	    	nonStrokingColor = Color.decode(propsMap.get("color"));
 	    }
 	    
 	    
