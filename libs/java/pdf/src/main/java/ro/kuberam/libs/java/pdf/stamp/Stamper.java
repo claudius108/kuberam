@@ -89,7 +89,7 @@ public class Stamper {
 		numPages = pdfDocument.getPageCount();
 	
 		// do the overlay
-		doOverlay(pdfDocument, overlayDoc);
+		doOverlay(overlayDoc);
 	
 		// close
 		overlayDoc.close();
@@ -136,14 +136,13 @@ public class Stamper {
 	/**
 	 * Performs the overlay of the two documents.
 	 *
-	 * @param basePDF
 	 * @param overlayDoc
 	 * @throws IOException
 	 * @throws COSVisitorException
 	 */
-	private static void doOverlay(PDDocument basePDF, PDDocument overlayDoc) throws IOException, COSVisitorException {
+	private static void doOverlay(PDDocument overlayDoc) throws IOException, COSVisitorException {
 	
-		PDDocumentCatalog docCatalog = basePDF.getDocumentCatalog();
+		PDDocumentCatalog docCatalog = pdfDocument.getDocumentCatalog();
 	
 		// get the pages of the pdf
 		List pages = docCatalog.getAllPages();
@@ -154,11 +153,9 @@ public class Stamper {
 		}
 	
 		Overlay overlay = new Overlay();
-		PDDocument output = overlay.overlay(overlayDoc, basePDF);
-		//overlay.overlay(overlayDoc, basePDF);
+		overlay.overlay(overlayDoc, pdfDocument);
 	
 		// close, close
 		overlayDoc.close();
-		basePDF.close();
 	}
 }
