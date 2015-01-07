@@ -15,48 +15,32 @@ import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.edit.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
+import org.apache.pdfbox.cos.COSName;
+import org.apache.pdfbox.cos.COSDictionary;
+import com.steadystate.css.parser.CSSOMParser;
+import org.w3c.css.sac.InputSource;
+import org.w3c.dom.css.CSSStyleSheet;
+import org.w3c.dom.css.CSSRuleList;
+import org.w3c.dom.css.CSSRule;
+import org.w3c.dom.css.CSSStyleRule;
+import org.w3c.dom.css.CSSStyleDeclaration;
 
 public class Stamper {
-
 	private static PDDocument pdfDocument;
-	private static int numPages;
-	private static Float xVal = null;
-	private static Float yVal = null;
-	private static String fontFamily = null;
-	private static Float fontSize = null;
-	private static Color nonStrokingColor = null;
-	private static Color strokingColor = null;
-
+	private static String selector;
+	private static Map<String, String> style;
 	
-	public static ByteArrayOutputStream run(InputStream pdfIs, String stampString, Map<String, String> propsMap)
+	public static ByteArrayOutputStream run(InputStream pdfIs, String stamp, String stampSelector, Map<String, String> stampStyling)
 			throws IOException, COSVisitorException {
-	
 	
 		pdfDocument = PDDocument.load(pdfIs, true);
 		ByteArrayOutputStream output = new ByteArrayOutputStream();
 		
-		if(propsMap.containsKey("x")) xVal = Float.parseFloat(config.getProperty("x"));
-		if(propsMap.containsKey("y")) yVal = Float.parseFloat(config.getProperty("y"));
-		// make sure we have a font
-		if(propsMap.containsKey("fontFamily")) {
-			fontFamily = propsMap.get("fontFamily");
-		} else {
-			System.err.println("You must specify a font in the properties map.");
-		}
-	
-		// make sure we have a font size
-		if(propsMap.containsKey("fontSize")) {
-			fontSize = Float.parseFloat(propsMap.get("fontSize"));
-		} else {
-			System.err.println("You must specify a font size in the properties map.");
-		}
 		
-		if(propsMap.containsKey("color")) {
-			nonStrokingColor = Color.decode(propsMap.get("color"));
-		}
+		if(stampStyling.containsKey("selector")) selector = stampStyling.get("selector");
+		style = stampStyling;
 		
-		
-		stampPdf(stampString);
+		stampPdf(stamp);
 		
 		pdfDocument.save(output);
 		pdfDocument.close();
@@ -68,7 +52,7 @@ public class Stamper {
 	 * Coordinate the stamping procedure.
 	 *
 	 */
-	public static void stampPdf(String stampString) throws IOException, COSVisitorException {
+	public static void stampPdf(String stamp) throws IOException, COSVisitorException {
 	
 		/*if (pdfDocument.isEncrypted()) {
 			try {
@@ -83,10 +67,7 @@ public class Stamper {
 			}
 		}*/
 		// create the overlay page with the text to be stamped
-		PDDocument overlayDoc = createOverlay(stampString);
-	
-		// update the number of pages we have in the incoming pdf
-		numPages = pdfDocument.getPageCount();
+		PDDocument overlayDoc = createOverlayFromString(stamp);
 	
 		// do the overlay
 		doOverlay(overlayDoc);
@@ -103,7 +84,30 @@ public class Stamper {
 	 * @throws IOException
 	 * @throws COSVisitorException
 	 */
-	public static PDDocument createOverlay(String text) throws IOException, COSVisitorException {
+	public static PDDocument createOverlayFromString(String text) throws IOException, COSVisitorException {
+		float x = 0, y = 0, fontSize = 0;
+		String fontFamily = "";
+		Color nonStrokingColor = null;
+		
+		if(style.containsKey("x")) x = Float.parseFloat(style.get("x"));
+		if(style.containsKey("y")) y = Float.parseFloat(style.get("y"));
+		// make sure we have a font
+		if(style.containsKey("fontFamily")) {
+			fontFamily = style.get("fontFamily");
+		} else {
+			System.err.println("You must specify a font in the properties map.");
+		}
+	
+		// make sure we have a font size
+		if(style.containsKey("fontSize")) {
+			fontSize = Float.parseFloat(style.get("fontSize"));
+		} else {
+			System.err.println("You must specify a font size in the properties map.");
+		}
+		
+		if(style.containsKey("color")) {
+			nonStrokingColor = Color.decode(style.get("color"));
+		}
 	
 		// Create a document and add a page to it
 		PDDocument document = new PDDocument();
@@ -122,7 +126,7 @@ public class Stamper {
 		if(nonStrokingColor != null) {
 			contentStream.setNonStrokingColor(nonStrokingColor);
 		}
-		contentStream.moveTextPositionByAmount(xVal, yVal);
+		contentStream.moveTextPositionByAmount(x, y);
 		contentStream.drawString(text);
 		contentStream.endText();
 	
@@ -142,20 +146,34 @@ public class Stamper {
 	 */
 	private static void doOverlay(PDDocument overlayDoc) throws IOException, COSVisitorException {
 	
-		PDDocumentCatalog docCatalog = pdfDocument.getDocumentCatalog();
-	
 		// get the pages of the pdf
-		List pages = docCatalog.getAllPages();
-		Iterator pageIter = pages.iterator();
-	
-		while (pageIter.hasNext()) {
-			PDPage page = (PDPage) pageIter.next();
+		List<PDPage> allPages = pdfDocument.getDocumentCatalog().getAllPages();
+		String page;
+		if(selector.matches("@page\\s*:")) {
+			page = selector.replace("@page\\s*:(\\w)","$1");
+		} else {
+			page = "all";
 		}
-	
+		// default=stamp all
+		if(page != "first") {
+			clonePages(overlayDoc,allPages.size());
+		}
 		Overlay overlay = new Overlay();
 		overlay.overlay(overlayDoc, pdfDocument);
+	}
 	
-		// close, close
-		overlayDoc.close();
+	private static void clonePages(PDDocument doc, int count) throws COSVisitorException {
+		List<PDPage> allPages = doc.getDocumentCatalog().getAllPages();
+
+		PDPage page = allPages.get(0);
+		COSDictionary pageDict = page.getCOSDictionary();
+		COSDictionary newPageDict = pageDict; new COSDictionary(pageDict);
+
+		newPageDict.removeItem(COSName.ANNOTS);
+
+		PDPage newPage = new PDPage(newPageDict);
+		for(int i = 0; i < count; i++) {
+			doc.addPage(newPage);
+		}
 	}
 }
