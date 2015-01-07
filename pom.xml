@@ -3,10 +3,51 @@
 
 	<modelVersion>4.0.0</modelVersion>
 
+	<parent>
+		<groupId>org.sonatype.oss</groupId>
+		<artifactId>oss-parent</artifactId>
+		<version>9</version>
+		<relativePath></relativePath>
+	</parent>
+
 	<groupId>ro.kuberam</groupId>
 	<artifactId>base</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
+	<name>Kuberam</name>
+	<description>Framework for kuberam projects</description>
+	<url>http://kuberam.ro</url>
+	<inceptionYear>2012</inceptionYear>
+	<licenses>
+		<license>
+			<name>GNU Lesser General Public License</name>
+			<url>http://gnu.org/copyleft/lesser.html</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+
+	<organization>
+		<name>Teodorescu Claudius Marian PFA</name>
+		<url>http://kuberam.ro</url>
+	</organization>
+
+	<developers>
+		<developer>
+			<id>claudius</id>
+			<name>Claudius Teodorescu</name>
+			<email>claudius.teodorescu@gmail.com</email>
+		</developer>
+	</developers>
+
+	<scm>
+		<connection>scm:git:ssh@github.com:claudius108/kuberam.git</connection>
+		<developerConnection>scm:git:ssh@github.com:claudius108/kuberam.git</developerConnection>
+		<url>https://github.com/claudius108/kuberam/</url>
+	</scm>
+
+	<prerequisites>
+		<maven>${mavenVersion}</maven>
+	</prerequisites>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -19,13 +60,6 @@
 		<sourceforge-user-web-htdocs-path>/home/user-web/${sourceforge-username}/htdocs</sourceforge-user-web-htdocs-path>
 		<sourceforge-username>claudius108</sourceforge-username>
 	</properties>
-
-	<distributionManagement>
-		<repository>
-			<id>sourceforge</id>
-			<url>sftp://${sourceforge-frs-host}${sourceforge-user-web-htdocs-path}/repos/maven</url>
-		</repository>
-	</distributionManagement>
 
 	<dependencies>
 		<dependency>
