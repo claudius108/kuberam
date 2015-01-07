@@ -14,6 +14,11 @@
 
 	<repositories>
 		<repository>
+			<id>osgeo</id>
+			<name>Open Source Geospatial Foundation Repository</name>
+			<url>http://download.osgeo.org/webdav/geotools/</url>
+		</repository>
+		<repository>
 			<id>clojars.org</id>
 			<url>http://clojars.org/repo</url>
 		</repository>
@@ -35,6 +40,11 @@
 			<artifactId>fontbox</artifactId>
 			<version>1.8.6</version>
 			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>net.sourceforge.cssparser</groupId>
+			<artifactId>cssparser</artifactId>
+			<version>0.9.4</version>
 		</dependency>
 		<dependency>
 			<groupId>org.jpedal</groupId>
