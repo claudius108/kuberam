@@ -3,8 +3,11 @@ package ro.kuberam.libs.java.pdf.stamp;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Reader;
+import java.io.StringReader;
 import java.util.Iterator;
 import java.util.List;
+import java.util.ArrayList;
 import java.util.Map;
 import java.awt.Color;
 import org.apache.pdfbox.Overlay;
@@ -28,9 +31,8 @@ import org.w3c.dom.css.CSSStyleDeclaration;
 public class Stamper {
 	private static PDDocument pdfDocument;
 	private static String selector;
-	private static Map<String, String> style;
 	
-	public static ByteArrayOutputStream run(InputStream pdfIs, String stamp, String stampSelector, Map<String, String> stampStyling)
+	/*public static ByteArrayOutputStream run(InputStream pdfIs, String stamp, String stampSelector, Map<String, String> stampStyling)
 			throws IOException, COSVisitorException {
 	
 		pdfDocument = PDDocument.load(pdfIs, true);
@@ -46,13 +48,41 @@ public class Stamper {
 		pdfDocument.close();
 	
 		return output;
+	}*/
+	
+	public static ByteArrayOutputStream run(InputStream pdfIs, String stamp, String stampSelector, String stampStyling)
+			throws IOException, COSVisitorException {
+	
+		pdfDocument = PDDocument.load(pdfIs, true);
+		ByteArrayOutputStream output = new ByteArrayOutputStream();
+		
+		CSSOMParser parser = new CSSOMParser();
+		InputSource inputSource = new InputSource();
+		Reader characterStream = new StringReader(stampStyling);
+		inputSource.setCharacterStream(characterStream);
+		CSSStyleSheet stylesheet = parser.parseStyleSheet(inputSource);
+		CSSRuleList ruleList = stylesheet.getCssRules();
+		List<CSSStyleRule> rules = new ArrayList();
+		for (int i=0; i < ruleList.getLength(); i++) {
+			CSSRule rule = ruleList.item(i);
+            if(rule instanceof CSSStyleRule) {
+            	CSSStyleRule styleRule=(CSSStyleRule)rule;
+            	rules.add(styleRule);
+            }
+	    }
+		stampPdf(stamp,rules);
+		
+		pdfDocument.save(output);
+		pdfDocument.close();
+	
+		return output;
 	}
 	
 	/**
 	 * Coordinate the stamping procedure.
 	 *
 	 */
-	public static void stampPdf(String stamp) throws IOException, COSVisitorException {
+	public static void stampPdf(String stamp, List<CSSStyleRule> rules) throws IOException, COSVisitorException {
 	
 		/*if (pdfDocument.isEncrypted()) {
 			try {
@@ -66,8 +96,12 @@ public class Stamper {
 				System.exit(1);
 			}
 		}*/
+		// for now just use single rule
+		CSSStyleRule rule = rules.get(0);
+		selector = rule.getSelectorText();
+		CSSStyleDeclaration style = rule.getStyle();
 		// create the overlay page with the text to be stamped
-		PDDocument overlayDoc = createOverlayFromString(stamp);
+		PDDocument overlayDoc = createOverlayFromString(stamp, style);
 	
 		// do the overlay
 		doOverlay(overlayDoc);
@@ -80,34 +114,17 @@ public class Stamper {
 	 * Creates the overlay PDF.
 	 *
 	 * @param text
+	 * @param ruleList
 	 * @return PDDocument
 	 * @throws IOException
 	 * @throws COSVisitorException
 	 */
-	public static PDDocument createOverlayFromString(String text) throws IOException, COSVisitorException {
-		float x = 0, y = 0, fontSize = 0;
-		String fontFamily = "";
-		Color nonStrokingColor = null;
-		
-		if(style.containsKey("x")) x = Float.parseFloat(style.get("x"));
-		if(style.containsKey("y")) y = Float.parseFloat(style.get("y"));
-		// make sure we have a font
-		if(style.containsKey("fontFamily")) {
-			fontFamily = style.get("fontFamily");
-		} else {
-			System.err.println("You must specify a font in the properties map.");
-		}
-	
-		// make sure we have a font size
-		if(style.containsKey("fontSize")) {
-			fontSize = Float.parseFloat(style.get("fontSize"));
-		} else {
-			System.err.println("You must specify a font size in the properties map.");
-		}
-		
-		if(style.containsKey("color")) {
-			nonStrokingColor = Color.decode(style.get("color"));
-		}
+	public static PDDocument createOverlayFromString(String text, CSSStyleDeclaration style) throws IOException, COSVisitorException {
+		float x = Float.parseFloat(style.getPropertyValue("left"));
+		float y = Float.parseFloat(style.getPropertyValue("top"));
+		String fontFamily = style.getPropertyValue("font-family");
+		float fontSize = Float.parseFloat(style.getPropertyValue("font-size"));
+		Color nonStrokingColor = Color.decode(style.getPropertyValue("color"));
 	
 		// Create a document and add a page to it
 		PDDocument document = new PDDocument();
