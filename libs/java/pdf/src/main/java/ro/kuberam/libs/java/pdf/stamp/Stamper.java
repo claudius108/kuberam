@@ -32,24 +32,6 @@ public class Stamper {
 	private static PDDocument pdfDocument;
 	private static String selector;
 	
-	/*public static ByteArrayOutputStream run(InputStream pdfIs, String stamp, String stampSelector, Map<String, String> stampStyling)
-			throws IOException, COSVisitorException {
-	
-		pdfDocument = PDDocument.load(pdfIs, true);
-		ByteArrayOutputStream output = new ByteArrayOutputStream();
-		
-		
-		if(stampStyling.containsKey("selector")) selector = stampStyling.get("selector");
-		style = stampStyling;
-		
-		stampPdf(stamp);
-		
-		pdfDocument.save(output);
-		pdfDocument.close();
-	
-		return output;
-	}*/
-	
 	public static ByteArrayOutputStream run(InputStream pdfIs, String stamp, String stampSelector, String stampStyling)
 			throws IOException, COSVisitorException {
 	
@@ -57,10 +39,8 @@ public class Stamper {
 		ByteArrayOutputStream output = new ByteArrayOutputStream();
 		
 		CSSOMParser parser = new CSSOMParser();
-		InputSource inputSource = new InputSource();
-		Reader characterStream = new StringReader(stampStyling);
-		inputSource.setCharacterStream(characterStream);
-		CSSStyleSheet stylesheet = parser.parseStyleSheet(inputSource);
+		InputSource inputSource = new InputSource(new StringReader(stampStyling));
+		CSSStyleSheet stylesheet = parser.parseStyleSheet(inputSource,null,null);
 		CSSRuleList ruleList = stylesheet.getCssRules();
 		List<CSSStyleRule> rules = new ArrayList();
 		for (int i=0; i < ruleList.getLength(); i++) {
@@ -102,10 +82,8 @@ public class Stamper {
 		CSSStyleDeclaration style = rule.getStyle();
 		// create the overlay page with the text to be stamped
 		PDDocument overlayDoc = createOverlayFromString(stamp, style);
-	
 		// do the overlay
 		doOverlay(overlayDoc);
-	
 		// close
 		overlayDoc.close();
 	}
@@ -124,7 +102,18 @@ public class Stamper {
 		float y = Float.parseFloat(style.getPropertyValue("top"));
 		String fontFamily = style.getPropertyValue("font-family");
 		float fontSize = Float.parseFloat(style.getPropertyValue("font-size"));
-		Color nonStrokingColor = Color.decode(style.getPropertyValue("color"));
+		String color = style.getPropertyValue("color").toString();
+		Color nonStrokingColor = new Color(0,0,0);
+		if(color.matches("^rgb")) {
+			String[] parts = color.replace("^rgba?\\(([0-9,\\s]+)\\)$","$1").split(",");
+			float r = Float.parseFloat(parts[0]);
+			float g = Float.parseFloat(parts[1]);
+			float b = Float.parseFloat(parts[2]);
+			float a = parts.length > 3 ? Float.parseFloat(parts[3]) : 1;
+			nonStrokingColor = new Color(r,g,b,a);
+		} else {
+			System.err.println("Only HEX and RGB(A) colors are allowed. "+color);
+		}
 	
 		// Create a document and add a page to it
 		PDDocument document = new PDDocument();
