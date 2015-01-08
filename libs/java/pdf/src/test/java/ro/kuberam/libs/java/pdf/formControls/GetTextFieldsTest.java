@@ -15,7 +15,7 @@ public class GetTextFieldsTest {
 	@Test
 	public void test1() throws IOException, XMLStreamException {
 
-		InputStream pdfIs = this.getClass().getResourceAsStream("../SF.pdf");
+		InputStream pdfIs = getClass().getResourceAsStream("../SF.pdf");
 
 		Map<String, String> result = GetTextFields.run(pdfIs);
 

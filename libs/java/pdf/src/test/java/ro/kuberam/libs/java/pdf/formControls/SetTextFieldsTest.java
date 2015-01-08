@@ -20,7 +20,7 @@ public class SetTextFieldsTest {
 	@Test
 	public void test1() throws IOException, XMLStreamException, COSVisitorException {
 
-		InputStream pdfIs = this.getClass().getResourceAsStream("../SF.pdf");
+		InputStream pdfIs = getClass().getResourceAsStream("../SF.pdf");
 		
 		ObjectInputStream ois = new ObjectInputStream(this.getClass().getResourceAsStream("../fields.ser"));
 		Map<String, String> fieldsMap = null;
