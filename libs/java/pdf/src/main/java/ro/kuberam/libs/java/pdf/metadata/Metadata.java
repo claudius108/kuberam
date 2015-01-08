@@ -1,4 +1,4 @@
-package ro.kuberam.libs.java.pdf.formControls;
+package ro.kuberam.libs.java.pdf.metadata;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
