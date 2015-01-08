@@ -1,32 +1,30 @@
 package ro.kuberam.libs.java.pdf.stamp;
 
+import java.awt.Color;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.Reader;
 import java.io.StringReader;
-import java.util.Iterator;
-import java.util.List;
 import java.util.ArrayList;
-import java.util.Map;
-import java.awt.Color;
+import java.util.List;
+
 import org.apache.pdfbox.Overlay;
+import org.apache.pdfbox.cos.COSDictionary;
+import org.apache.pdfbox.cos.COSName;
 import org.apache.pdfbox.exceptions.COSVisitorException;
 import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.pdmodel.PDDocumentCatalog;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.edit.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
-import org.apache.pdfbox.cos.COSName;
-import org.apache.pdfbox.cos.COSDictionary;
-import com.steadystate.css.parser.CSSOMParser;
 import org.w3c.css.sac.InputSource;
-import org.w3c.dom.css.CSSStyleSheet;
-import org.w3c.dom.css.CSSRuleList;
 import org.w3c.dom.css.CSSRule;
-import org.w3c.dom.css.CSSStyleRule;
+import org.w3c.dom.css.CSSRuleList;
 import org.w3c.dom.css.CSSStyleDeclaration;
+import org.w3c.dom.css.CSSStyleRule;
+import org.w3c.dom.css.CSSStyleSheet;
+
+import com.steadystate.css.parser.CSSOMParser;
 
 public class Stamper {
 	private static PDDocument pdfDocument;
