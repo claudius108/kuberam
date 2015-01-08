@@ -12,14 +12,14 @@ import org.apache.pdfbox.pdmodel.common.PDMetadata;
 
 public class Metadata {
 
-	public static StreamResult run(InputStream pdfIs)
+	public static String run(InputStream pdfIs)
 			throws IOException, COSVisitorException {
 
 		PDDocument pdfDocument = PDDocument.load(pdfIs, true);
 		PDDocumentCatalog catalog = pdfDocument.getDocumentCatalog();
 		PDMetadata metadata = catalog.getMetadata();
-		StreamResult result=new StreamResult(metadata.createOutputStream());
-		
+		//StreamResult result=new StreamResult(metadata.createOutputStream());
+		String result = metadata.getInputStreamAsString();
 		pdfDocument.close();
 		
 		return result;
