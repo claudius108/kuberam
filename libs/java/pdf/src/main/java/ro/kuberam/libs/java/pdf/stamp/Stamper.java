@@ -32,6 +32,29 @@ public class Stamper {
 	private static PDDocument pdfDocument;
 	private static String selector;
 	
+	public static ByteArrayOutputStream run(InputStream pdfIs, String stamp, String stampStyleDeclaration)
+			throws IOException, COSVisitorException {
+	
+		pdfDocument = PDDocument.load(pdfIs, true);
+		ByteArrayOutputStream output = new ByteArrayOutputStream();
+		
+		CSSOMParser parser = new CSSOMParser();
+		InputSource inputSource = new InputSource(new StringReader(stampStyleDeclaration));
+		CSSStyleDeclaration style = parser.parseStyleDeclaration(inputSource);
+
+		// create the overlay page with the text to be stamped
+		PDDocument overlayDoc = createOverlayFromString(stamp, style);
+		// do the overlay
+		doOverlay(overlayDoc);
+		// close
+		overlayDoc.close();
+		
+		pdfDocument.save(output);
+		pdfDocument.close();
+	
+		return output;
+	}
+	
 	public static ByteArrayOutputStream run(InputStream pdfIs, String stamp, String stampSelector, String stampStyling)
 			throws IOException, COSVisitorException {
 	
@@ -50,42 +73,19 @@ public class Stamper {
             	rules.add(styleRule);
             }
 	    }
-		stampPdf(stamp,rules);
-		
-		pdfDocument.save(output);
-		pdfDocument.close();
-	
-		return output;
-	}
-	
-	/**
-	 * Coordinate the stamping procedure.
-	 *
-	 */
-	public static void stampPdf(String stamp, List<CSSStyleRule> rules) throws IOException, COSVisitorException {
-	
-		/*if (pdfDocument.isEncrypted()) {
-			try {
-				// try to open the encrypted PDF
-				pdfDocument.decrypt("");
-	
-			} catch (InvalidPasswordException e) {
-	
-				// This error message dictates that the document is encrypted and we have no password
-				System.err.println("The document is encrypted or otherwise has prohibitive security settings..");
-				System.exit(1);
-			}
-		}*/
 		// for now just use single rule
-		CSSStyleRule rule = rules.get(0);
-		selector = rule.getSelectorText();
-		CSSStyleDeclaration style = rule.getStyle();
+		CSSStyleDeclaration style = rules.get(0).getStyle();
 		// create the overlay page with the text to be stamped
 		PDDocument overlayDoc = createOverlayFromString(stamp, style);
 		// do the overlay
 		doOverlay(overlayDoc);
 		// close
 		overlayDoc.close();
+		
+		pdfDocument.save(output);
+		pdfDocument.close();
+	
+		return output;
 	}
 	
 	/**
@@ -132,6 +132,7 @@ public class Stamper {
 		if(nonStrokingColor != null) {
 			contentStream.setNonStrokingColor(nonStrokingColor);
 		}
+		
 		contentStream.moveTextPositionByAmount(x, y);
 		contentStream.drawString(text);
 		contentStream.endText();
@@ -154,12 +155,10 @@ public class Stamper {
 	
 		// get the pages of the pdf
 		List<PDPage> allPages = pdfDocument.getDocumentCatalog().getAllPages();
-		String page;
-		if(selector.matches("@page\\s*:")) {
-			page = selector.replace("@page\\s*:(\\w)","$1");
-		} else {
-			page = "all";
-		}
+		String page = "all";
+		//if(selector.matches("@page\\s*:")) {
+		//	page = selector.replace("@page\\s*:(\\w)","$1");
+		//}
 		// default=stamp all
 		if(page != "first") {
 			clonePages(overlayDoc,allPages.size());
