@@ -9,10 +9,12 @@ import javax.xml.stream.XMLStreamException;
 import net.sourceforge.tess4j.Tesseract;
 import net.sourceforge.tess4j.TesseractException;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class OcrTest {
 
+	@Ignore
 	@Test
 	public void test1() throws IOException, XMLStreamException {
 

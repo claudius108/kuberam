@@ -4,8 +4,8 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
+		<groupId>ro.kuberam.libs.java</groupId>	
 		<artifactId>base</artifactId>
-		<groupId>ro.kuberam.libs.java</groupId>
 		<version>0.0.1</version>
 	</parent>
 
