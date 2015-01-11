@@ -42,11 +42,6 @@
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
-			<groupId>net.sourceforge.cssparser</groupId>
-			<artifactId>cssparser</artifactId>
-			<version>0.9.14</version>
-		</dependency>
-		<dependency>
 			<groupId>org.jpedal</groupId>
 			<artifactId>jpedal-lgpl</artifactId>
 			<version>4.74b27</version>
