@@ -29,8 +29,8 @@ public class StampTest {
 		ByteArrayOutputStream output = null;
 
 		StringStamper app = null;
-		app = new StringStamper(pdfIs, "Stamped!", "#stamp-1",
-				"#stamp-1 {a: 17pt; left: 70; top: 70; font-family: Helvetica; font-size: 22; color: rgb(144,144,0);}");
+		app = new StringStamper(pdfIs, "Stamped!",
+				"left: 70pt; top: 70pt; font-family: Helvetica; font-size: 22pt; color: rgb(144,144,0);");
 
 		try {
 			output = app.stamp();
