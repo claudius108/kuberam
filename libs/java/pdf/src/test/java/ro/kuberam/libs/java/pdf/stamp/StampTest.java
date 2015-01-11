@@ -8,7 +8,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URISyntaxException;
 
-import org.apache.pdfbox.exceptions.COSVisitorException;
 import org.junit.Test;
 
 public class StampTest {
@@ -24,19 +23,20 @@ public class StampTest {
 	}
 
 	@Test
-	public void testPdfbox() throws IOException {
+	public void testStampSignature2() throws IOException {
 		InputStream pdfIs = new FileInputStream(pdfFilePath);
 
 		ByteArrayOutputStream output = null;
 
+		StringStamper app = null;
+		app = new StringStamper(pdfIs, "Stamped!", "#stamp-1",
+				"#stamp-1 {a: 17pt; left: 70; top: 70; font-family: Helvetica; font-size: 22; color: rgb(144,144,0);}");
+
 		try {
-			output = Stamper.run(pdfIs, "Stamped!", "#stamp-1",
-					"#stamp-1 {left: 100px; top: 100px; font-family: Arial; font-size: 14px; color: #ff8000;}");
+			output = app.stamp();
 			FileOutputStream fos = new FileOutputStream(new File("target/stamped-document.pdf"));
 			output.writeTo(fos);
-		} catch (IOException ioe) {
-			ioe.printStackTrace();
-		} catch (COSVisitorException e) {
+		} catch (IllegalArgumentException e) {
 			e.printStackTrace();
 		} finally {
 			output.close();

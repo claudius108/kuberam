@@ -52,7 +52,7 @@ public class ExpathCryptoModule {
 	public final static String MODULE_DESCRIPTION = "A module for providing cryptographic services.";
 	public final static String MODULE_NAME = "EXPath Cryptographic";
 	
-	public final static HashMap<String, String>javaStandardAlgorithmNames = new HashMap<String, String>();
+	public final static HashMap<String, String> javaStandardAlgorithmNames = new HashMap<String, String>();
 	static {
 		javaStandardAlgorithmNames.put("HMAC-MD5", "HmacMD5");
 		javaStandardAlgorithmNames.put("HMAC-SHA-1", "HmacSHA1");
