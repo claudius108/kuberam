@@ -49,8 +49,7 @@
 	</prerequisites>
 
 	<properties>
-		<java-version>1.6</java-version>
-		<mavenVersion>3.1.1</mavenVersion>
+		<java-version>1.7</java-version>
 		<aetherVersion>0.9.0.M3</aetherVersion>
 		<mavenPluginVersion>3.2</mavenPluginVersion>
 	</properties>
