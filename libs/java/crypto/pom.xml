@@ -10,6 +10,11 @@
 		<version>0.0.1</version>
 	</parent>
 
+	<artifactId>crypto</artifactId>
+	<version>1.2.1</version>
+	<name>Library for EXPath Cryptographic Module</name>
+	<url>http://kuberam.ro/specs/expath/crypto/crypto.html</url>
+
 	<dependencies>
 		<dependency>
 			<groupId>com.fasterxml.uuid</groupId>
@@ -18,10 +23,5 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
-
-	<artifactId>crypto</artifactId>
-	<version>1.2.1</version>
-	<name>Library for EXPath Cryptographic Module</name>
-	<url>http://kuberam.ro/specs/expath/crypto/crypto.html</url>
 
 </project>

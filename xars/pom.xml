@@ -4,9 +4,9 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<artifactId>base</artifactId>
 		<groupId>ro.kuberam</groupId>
-		<version>0.0.1-SNAPSHOT</version>
+		<artifactId>base</artifactId>
+		<version>0.1</version>
 	</parent>
 
 	<artifactId>base</artifactId>
@@ -20,7 +20,7 @@
 				<plugin>
 					<groupId>ro.kuberam.maven.plugins</groupId>
 					<artifactId>kuberam-expath-plugin</artifactId>
-					<version>0.4.0</version>
+					<version>0.4.1</version>
 				</plugin>
 			</plugins>
 		</pluginManagement>

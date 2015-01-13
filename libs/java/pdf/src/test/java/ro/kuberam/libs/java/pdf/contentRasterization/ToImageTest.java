@@ -3,9 +3,11 @@ package ro.kuberam.libs.java.pdf.contentRasterization;
 import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URISyntaxException;
 import java.util.List;
 
 import javax.imageio.ImageIO;
@@ -24,13 +26,20 @@ import org.junit.Test;
 
 public class ToImageTest {
 
-	private File pdfFilePath = new File(
-			"/home/claudius/workspaces/repositories/git/kuberam/libs/java/pdf/src/test/resources/ro/kuberam/libs/java/pdf/frus1969-76v19p1.pdf");
-	private File targetDirPath = new File("/home/claudius/");
+	private static File pdfFilePath;
+	private File targetDirPath = new File(System.getProperty("user.home"));
+	static {
+		try {
+			pdfFilePath = new File(ToImageTest.class.getResource("frus1969-76v19p1.pdf").toURI());
+
+		} catch (URISyntaxException e) {
+			e.printStackTrace();
+		}
+	}
 
 	@Test
 	public void testPdfbox() throws IOException {
-		InputStream pdfIs = this.getClass().getResourceAsStream("../frus1969-76v19p1.pdf");
+		InputStream pdfIs = new FileInputStream(pdfFilePath);
 
 		PDDocument pdf = PDDocument.load(pdfIs, true);
 		List<PDPage> pages = pdf.getDocumentCatalog().getAllPages();
@@ -56,12 +65,7 @@ public class ToImageTest {
 
 		/** open the PDF file - can also be a URL or a byte array */
 		try {
-			decode_pdf
-					.openPdfFile("/home/claudius/workspaces/repositories/git/kuberam/libs/java/pdf/src/test/resources/ro/kuberam/libs/java/pdf/frus1969-76v19p1.pdf"); // file
-			// decode_pdf.openPdfFile("C:/myPDF.pdf", "password"); //encrypted
-			// file
-			// decode_pdf.openPdfArray(bytes); //bytes is byte[] array with PDF
-			// decode_pdf.openPdfFileFromURL("http://www.mysite.com/myPDF.pdf",false);
+			decode_pdf.openPdfFile(pdfFilePath.getAbsolutePath());
 
 			/** get page 1 as an image */
 			// page range if you want to extract all pages with a loop
