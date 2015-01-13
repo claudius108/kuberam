@@ -81,7 +81,14 @@ public class Metadata {
 		ArrayList<String> result = new ArrayList<String>();
 		
 		for(String prop : properties) {
-			if(Arrays.asList(availProps).contains(prop)) {
+			String custom = "";
+			String val = null;
+			if(prop.matches("^custom-.*")) {
+				custom = toCamelCase(prop.replaceAll("^custom-",""));
+			}
+			if(custom != "") {
+				val = information.getCustomMetadataValue(custom);
+			} else if(Arrays.asList(availProps).contains(prop)) {
 				Method method = null;
 				try {
 					method = PDDocumentInformation.class.getMethod("get" + toCamelCase(prop));
@@ -90,14 +97,12 @@ public class Metadata {
 				}
 				if(method != null) {
 					try {
-						String val = null;
 						if(prop == "creation-date" || prop == "modification-date") {
 							Calendar cal = (Calendar) method.invoke(information);
 							val = DatatypeConverter.printDateTime(cal);
 						} else {
 							val = (String) method.invoke(information);
 						}
-						result.add(val);
 					} catch(IllegalAccessException e) {
 						e.printStackTrace();
 					} catch(InvocationTargetException e) {
@@ -107,6 +112,7 @@ public class Metadata {
 			} else {
 				throw new IllegalArgumentException("Property not available!");
 			}
+			result.add(val);
 		}
 		pdfDocument.close();
 		return result;
@@ -123,13 +129,19 @@ public class Metadata {
 		for(int i = 0; i < properties.size(); i++) {
 			String prop = properties.get(i);
 			String val = null;
+			String custom = "";
+			if(prop.matches("^custom-.*")) {
+				custom = toCamelCase(prop.replaceAll("^custom-",""));
+			}
 			try {
 				val = values.get(i);
 			} catch(IndexOutOfBoundsException e) {
 				e.printStackTrace();
 			}
 			if(val != null) {
-				if(Arrays.asList(availProps).contains(prop)) {
+				if(custom != "") {
+					information.setCustomMetadataValue(custom,val);
+				} else if(Arrays.asList(availProps).contains(prop)) {
 					Method method = null;
 					Class[] cls = null;
 					if(prop == "creation-date" || prop == "modification-date") {
