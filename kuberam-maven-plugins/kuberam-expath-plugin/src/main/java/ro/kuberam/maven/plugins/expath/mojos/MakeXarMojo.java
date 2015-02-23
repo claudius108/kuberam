@@ -172,6 +172,7 @@ public class MakeXarMojo extends KuberamAbstractMojo {
 		while (itr.hasNext()) {
 			ArchiveEntry entry = itr.next();
 			String entryPath = entry.getName();
+			System.out.println("entryPath " + entryPath);
 			if (entryPath.endsWith(".jar")) {
 				components += "<resource><public-uri>" + moduleNamespace + "</public-uri><file>"
 						+ entryPath.substring(8) + "</file></resource>";
