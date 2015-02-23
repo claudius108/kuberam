@@ -1,9 +1,11 @@
 package ro.kuberam.libs.java.pdf.metadata;
 
 import java.io.ByteArrayOutputStream;
+import java.io.ByteArrayInputStream;
 import java.io.OutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Map;
@@ -20,6 +22,7 @@ import org.apache.pdfbox.pdmodel.PDDocumentInformation;
 import org.apache.pdfbox.pdmodel.PDDocumentCatalog;
 import org.apache.pdfbox.pdmodel.common.PDMetadata;
 import org.apache.pdfbox.pdmodel.common.PDStream;
+import org.apache.pdfbox.cos.COSName; 
 
 public class Metadata {
 	
@@ -121,8 +124,6 @@ public class Metadata {
 	public static ByteArrayOutputStream setDocumentInfo(InputStream pdfIs, ArrayList<String> properties, ArrayList<String> values)
 			throws IOException, COSVisitorException {
 		
-		ByteArrayOutputStream output = new ByteArrayOutputStream();
-		
 		PDDocument pdfDocument = PDDocument.load(pdfIs, true);
 		PDDocumentInformation information = pdfDocument.getDocumentInformation();
 		
@@ -177,8 +178,20 @@ public class Metadata {
 			}
 		}
 		pdfDocument.setDocumentInformation(information);
+		ByteArrayOutputStream output = new ByteArrayOutputStream();
 		pdfDocument.save(output);
 		pdfDocument.close();
-		return output;
+		// start postprocessing
+		PDStream stream=new PDStream(new PDDocument(), new ByteArrayInputStream( output.toByteArray() ));
+        stream.addCompression();
+		byte[] bytes = new byte[0];
+		try {
+			bytes = stream.getByteArray();
+		} catch(IOException e) {
+			e.printStackTrace();
+		}
+		ByteArrayOutputStream out = new ByteArrayOutputStream(bytes.length);
+		out.write(bytes, 0, bytes.length);
+		return out;
 	}
 }
