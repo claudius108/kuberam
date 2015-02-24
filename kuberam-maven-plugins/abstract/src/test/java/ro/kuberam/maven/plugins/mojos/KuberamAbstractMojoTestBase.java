@@ -1,4 +1,4 @@
-package ro.kuberam.maven.plugins.utils;
+package ro.kuberam.maven.plugins.mojos;
 
 import java.io.File;
 import java.lang.reflect.Field;
