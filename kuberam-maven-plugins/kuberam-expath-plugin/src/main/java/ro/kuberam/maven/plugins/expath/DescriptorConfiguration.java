@@ -25,14 +25,8 @@ public class DescriptorConfiguration extends Xpp3Dom {
 			for (Xpp3Dom fileSetChild : fileSetChildren) {
 				DefaultFileSet fileSet = new DefaultFileSet();
 				fileSet.setDirectory(new File(fileSetChild.getChild("directory").getValue()));
-				Xpp3Dom outputDirectoryElement = fileSetChild.getChild("outputDirectory");
 
-				String outputDirectory = "";
-				if (null != outputDirectoryElement) {
-					outputDirectory = outputDirectoryElement.getValue();
-				}
-
-				outputDirectory = Utils.processOutputDirectory(outputDirectory);
+				String outputDirectory = Utils.getOutputDirectory(fileSetChild);
 
 				fileSet.setPrefix(outputDirectory);
 
@@ -70,9 +64,7 @@ public class DescriptorConfiguration extends Xpp3Dom {
 			Xpp3Dom[] dependencySetChildren = dependencySetsElement.getChildren("dependencySet");
 			for (Xpp3Dom dependencySetChild : dependencySetChildren) {
 
-				String outputDirectory = (null != dependencySetChild.getChild("outputDirectory")) ? dependencySetChild
-						.getChild("outputDirectory").getValue() : "/";
-				outputDirectory = Utils.processOutputDirectory(outputDirectory);
+				String outputDirectory = Utils.getOutputDirectory(dependencySetChild);
 
 				dependencySets.add(new DependencySet(dependencySetChild.getChild("groupId").getValue(),
 						dependencySetChild.getChild("artifactId").getValue(), dependencySetChild.getChild(
