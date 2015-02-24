@@ -69,8 +69,11 @@ public class DescriptorConfiguration extends Xpp3Dom {
 		if (null != dependencySetsElement) {
 			Xpp3Dom[] dependencySetChildren = dependencySetsElement.getChildren("dependencySet");
 			for (Xpp3Dom dependencySetChild : dependencySetChildren) {
+
 				String outputDirectory = (null != dependencySetChild.getChild("outputDirectory")) ? dependencySetChild
 						.getChild("outputDirectory").getValue() : "/";
+				outputDirectory = Utils.processOutputDirectory(outputDirectory);
+
 				dependencySets.add(new DependencySet(dependencySetChild.getChild("groupId").getValue(),
 						dependencySetChild.getChild("artifactId").getValue(), dependencySetChild.getChild(
 								"version").getValue(), outputDirectory));

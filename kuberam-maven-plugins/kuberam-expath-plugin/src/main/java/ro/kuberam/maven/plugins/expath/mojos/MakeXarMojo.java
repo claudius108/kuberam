@@ -146,7 +146,7 @@ public class MakeXarMojo extends KuberamAbstractMojo {
 			String dependencySetOutputDirectory = dependencySet.outputDirectory;
 			String archiveComponentPath = artifactFileName;
 			
-			dependencySetOutputDirectory = Utils.processOutputDirectory(dependencySetOutputDirectory) + artifactFileName;
+			dependencySetOutputDirectory = dependencySetOutputDirectory + artifactFileName;
 
 			// add file to archive
 			if (artifactFileAbsolutePath.endsWith(".jar")) {
