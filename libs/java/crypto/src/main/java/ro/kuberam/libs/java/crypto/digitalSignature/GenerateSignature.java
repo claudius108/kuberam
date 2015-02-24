@@ -54,26 +54,23 @@ import org.xml.sax.SAXException;
 
 public class GenerateSignature {
 
-	public static byte[] generateSignature(byte[] data, PrivateKey key,
-			String algorithm, String provider) throws Exception {
+	public static byte[] generateSignature(byte[] data, PrivateKey key, String algorithm, String provider)
+			throws Exception {
 		Signature signer = Signature.getInstance(algorithm);
 		signer.initSign(key);
 		signer.update(data);
 		return signer.sign();
 	}
 
-	public static String GenerateDigitalSignature(
-			org.w3c.dom.Document inputDoc, String canonicalizationAlgorithmURI,
-			String digestAlgorithmURI, String signatureAlgorithmURI,
-			String keyPairAlgorithm, String signatureNamespacePrefix,
-			String signatureType, final String xpathExprString,
-			String[] certificateDetails, InputStream keyStoreInputStream)
+	public static String GenerateDigitalSignature(org.w3c.dom.Document inputDoc,
+			String canonicalizationAlgorithmURI, String digestAlgorithmURI, String signatureAlgorithmURI,
+			String keyPairAlgorithm, String signatureNamespacePrefix, String signatureType,
+			final String xpathExprString, String[] certificateDetails, InputStream keyStoreInputStream)
 			throws Exception {
 		// Create a DOM XMLSignatureFactory
 		String providerName = System.getProperty("jsr105Provider",
 				"org.jcp.xml.dsig.internal.dom.XMLDSigRI");
-		final XMLSignatureFactory sigFactory = XMLSignatureFactory
-				.getInstance("DOM");
+		final XMLSignatureFactory sigFactory = XMLSignatureFactory.getInstance("DOM");
 
 		// Create a Reference to the signed element
 		Node sigParent = null;
@@ -81,19 +78,16 @@ public class GenerateSignature {
 
 		if (xpathExprString == null) {
 			sigParent = inputDoc.getDocumentElement();
-			transforms = Collections.singletonList(sigFactory.newTransform(
-					Transform.ENVELOPED, (TransformParameterSpec) null));
+			transforms = Collections.singletonList(sigFactory.newTransform(Transform.ENVELOPED,
+					(TransformParameterSpec) null));
 		} else {
 			XPathFactory factory = XPathFactory.newInstance();
 			XPath xpath = factory.newXPath();
 			// Find the node to be signed by PATH
 			XPathExpression expr = xpath.compile(xpathExprString);
-			NodeList nodes = (NodeList) expr.evaluate(inputDoc,
-					XPathConstants.NODESET);
+			NodeList nodes = (NodeList) expr.evaluate(inputDoc, XPathConstants.NODESET);
 			if (nodes.getLength() < 1) {
-				throw new Exception(
-						"Can't find node by this XPath expression: "
-								+ xpathExprString);
+				throw new Exception("Can't find node by this XPath expression: " + xpathExprString);
 			}
 
 			// Node nodeToSign = nodes.item(0);
@@ -105,24 +99,22 @@ public class GenerateSignature {
 			 */
 			transforms = new ArrayList<Transform>() {
 				{
-					add(sigFactory.newTransform(Transform.XPATH,
-							new XPathFilterParameterSpec(xpathExprString)));
-					add(sigFactory.newTransform(Transform.ENVELOPED,
-							(TransformParameterSpec) null));
+					add(sigFactory.newTransform(Transform.XPATH, new XPathFilterParameterSpec(
+							xpathExprString)));
+					add(sigFactory.newTransform(Transform.ENVELOPED, (TransformParameterSpec) null));
 				}
 			};
 		}
 
-		Reference ref = sigFactory.newReference("",
-				sigFactory.newDigestMethod(digestAlgorithmURI, null),
+		Reference ref = sigFactory.newReference("", sigFactory.newDigestMethod(digestAlgorithmURI, null),
 				transforms, null, null);
 
+		// http://www.massapi.com/source/xml-security-1_4_4/src/org/jcp/xml/dsig/internal/dom/DOMXPathFilter2Transform.java.html
+
 		// Create the SignedInfo
-		SignedInfo si = sigFactory.newSignedInfo(sigFactory
-				.newCanonicalizationMethod(canonicalizationAlgorithmURI,
-						(C14NMethodParameterSpec) null), sigFactory
-				.newSignatureMethod(signatureAlgorithmURI, null), Collections
-				.singletonList(ref));
+		SignedInfo si = sigFactory.newSignedInfo(sigFactory.newCanonicalizationMethod(
+				canonicalizationAlgorithmURI, (C14NMethodParameterSpec) null), sigFactory
+				.newSignatureMethod(signatureAlgorithmURI, null), Collections.singletonList(ref));
 
 		// generate key pair
 		KeyInfo ki = null;
@@ -132,29 +124,23 @@ public class GenerateSignature {
 			try {
 				keyStore = KeyStore.getInstance(certificateDetails[0]);
 			} catch (Exception ex) {
-				throw new Exception("The keystore type '"
-						+ certificateDetails[0] + "' is not supported!.");
+				throw new Exception("The keystore type '" + certificateDetails[0] + "' is not supported!.");
 			}
-			keyStore.load(keyStoreInputStream,
-					certificateDetails[1].toCharArray());
+			keyStore.load(keyStoreInputStream, certificateDetails[1].toCharArray());
 			String alias = certificateDetails[2];
 			if (!keyStore.containsAlias(alias)) {
-				throw new Exception("Cannot find key for alias '" + alias
-						+ "' in given keystore!.");
+				throw new Exception("Cannot find key for alias '" + alias + "' in given keystore!.");
 			}
-			privateKey = (PrivateKey) keyStore.getKey(alias,
-					certificateDetails[3].toCharArray());
-			X509Certificate cert = (X509Certificate) keyStore
-					.getCertificate(alias);
+			privateKey = (PrivateKey) keyStore.getKey(alias, certificateDetails[3].toCharArray());
+			X509Certificate cert = (X509Certificate) keyStore.getCertificate(alias);
 			PublicKey publicKey = cert.getPublicKey();
 			KeyInfoFactory kif = sigFactory.getKeyInfoFactory();
 			Vector<Object> kiContent = new Vector<Object>();
 			KeyValue keyValue = kif.newKeyValue(publicKey);
 			kiContent.add(keyValue);
 			List x509Content = new ArrayList();
-			X509IssuerSerial issuer = kif
-					.newX509IssuerSerial(cert.getIssuerX500Principal()
-							.getName(), cert.getSerialNumber());
+			X509IssuerSerial issuer = kif.newX509IssuerSerial(cert.getIssuerX500Principal().getName(),
+					cert.getSerialNumber());
 			x509Content.add(cert.getSubjectX500Principal().getName());
 			x509Content.add(issuer);
 			x509Content.add(cert);
@@ -162,8 +148,7 @@ public class GenerateSignature {
 			kiContent.add(x509Data);
 			ki = kif.newKeyInfo(kiContent);
 		} else {
-			KeyPairGenerator kpg = KeyPairGenerator
-					.getInstance(keyPairAlgorithm);
+			KeyPairGenerator kpg = KeyPairGenerator.getInstance(keyPairAlgorithm);
 			kpg.initialize(512);
 			KeyPair kp = kpg.generateKeyPair();
 			KeyInfoFactory kif = sigFactory.getKeyInfoFactory();
@@ -202,21 +187,18 @@ public class GenerateSignature {
 			dbf.setNamespaceAware(true);
 			signatureDoc = dbf.newDocumentBuilder().newDocument();
 			XMLStructure content = new DOMStructure(sigParent);
-			XMLObject xmlobj = sigFactory.newXMLObject(
-					Collections.singletonList(content), "object", null, null);
+			XMLObject xmlobj = sigFactory.newXMLObject(Collections.singletonList(content), "object", null,
+					null);
 			dsc = new DOMSignContext(privateKey, signatureDoc);
-			signature = sigFactory.newXMLSignature(si, ki,
-					Collections.singletonList(xmlobj), null, null);
+			signature = sigFactory.newXMLSignature(si, ki, Collections.singletonList(xmlobj), null, null);
 		}
 		dsc.setDefaultNamespacePrefix(signatureNamespacePrefix);
 
 		// Marshal, generate and sign
 		signature.sign(dsc);
 
-		DOMImplementationRegistry registry = DOMImplementationRegistry
-				.newInstance();
-		DOMImplementationLS impl = (DOMImplementationLS) registry
-				.getDOMImplementation("LS");
+		DOMImplementationRegistry registry = DOMImplementationRegistry.newInstance();
+		DOMImplementationLS impl = (DOMImplementationLS) registry.getDOMImplementation("LS");
 		LSSerializer serializer = impl.createLSSerializer();
 		if (signatureType.equals("enveloping")) {
 			return serializer.writeToString(signatureDoc);
@@ -225,13 +207,12 @@ public class GenerateSignature {
 		}
 	}
 
-	public static void main(String[] args) throws ParserConfigurationException,
-			SAXException, IOException, Exception {
+	public static void main(String[] args) throws ParserConfigurationException, SAXException, IOException,
+			Exception {
 		String docString = "<data><a xml:id=\"type\"><b>23</b><c><d/></c></a></data>";
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 		dbf.setNamespaceAware(true);
-		Document inputDoc = dbf.newDocumentBuilder().parse(
-				new InputSource(new StringReader(docString)));
+		Document inputDoc = dbf.newDocumentBuilder().parse(new InputSource(new StringReader(docString)));
 
 		String[] certificateDetails = new String[5];
 		certificateDetails[0] = "JKS";
@@ -239,11 +220,9 @@ public class GenerateSignature {
 		certificateDetails[2] = "eXist";
 		certificateDetails[3] = "kpi135";
 
-		String domString = GenerateDigitalSignature(inputDoc,
-				CanonicalizationMethod.EXCLUSIVE, DigestMethod.SHA1,
-				SignatureMethod.DSA_SHA1, "DSA", "ds", "enveloped", "//b",
-				certificateDetails, new FileInputStream(
-						"/home/claudius/mykeystoreEXist.ks"));
+		String domString = GenerateDigitalSignature(inputDoc, CanonicalizationMethod.EXCLUSIVE,
+				DigestMethod.SHA1, SignatureMethod.DSA_SHA1, "DSA", "ds", "enveloped", "//b",
+				certificateDetails, new FileInputStream("/home/claudius/mykeystoreEXist.ks"));
 		System.out.print(domString + "\n");
 	}
 }
