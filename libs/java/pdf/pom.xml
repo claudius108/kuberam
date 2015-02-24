@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<groupId>ro.kuberam.libs.java</groupId>	
+		<groupId>ro.kuberam.libs.java</groupId>
 		<artifactId>base</artifactId>
 		<version>0.0.1</version>
 	</parent>
@@ -32,13 +32,13 @@
 		<dependency>
 			<groupId>org.apache.pdfbox</groupId>
 			<artifactId>pdfbox</artifactId>
-			<version>1.8.6</version>
+			<version>1.8.8</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.pdfbox</groupId>
 			<artifactId>fontbox</artifactId>
-			<version>1.8.6</version>
+			<version>1.8.8</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
@@ -60,6 +60,23 @@
 			<groupId>com.helger</groupId>
 			<artifactId>ph-css</artifactId>
 			<version>3.8.2</version>
+		</dependency>
+
+
+
+		<dependency>
+			<groupId>org.pdfclown</groupId>
+			<artifactId>pdfclown</artifactId>
+			<version>0.1.8</version>
+			<scope>system</scope>
+			<systemPath>/home/claudius/PDFClown/java/pdfclown.lib/build/package/pdfclown.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>org.pdfclown</groupId>
+			<artifactId>pdfclown-samples</artifactId>
+			<version>0.1.8</version>
+			<scope>system</scope>
+			<systemPath>/home/claudius/PDFClown/java/pdfclown.samples.cli/build/package/pdfclown-samples-cli.jar</systemPath>
 		</dependency>
 	</dependencies>
 
