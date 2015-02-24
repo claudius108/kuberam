@@ -3,23 +3,23 @@ package ro.kuberam.maven.plugins.expath.mojos.makeXarMojo;
 import static org.mockito.Mockito.mock;
 
 import java.io.File;
-import java.net.JarURLConnection;
-import java.net.URL;
-import java.util.jar.Attributes;
 
 import org.apache.maven.execution.MavenSession;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.shared.filtering.MavenResourcesFiltering;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import ro.kuberam.maven.plugins.expath.mojos.MakeXarMojo;
-import ro.kuberam.maven.plugins.utils.KuberamAbstractMojoTestBase;
+import ro.kuberam.maven.plugins.mojos.KuberamAbstractMojoTestBase;
 
 public class MakeXarMojoTest extends KuberamAbstractMojoTestBase {
 
 	@Test
 	public void testApplicationXar() throws Exception {
+		
+		String a = "/";
+		
+		System.out.println("result: " + a.replaceAll("^/", ""));
 //		final MakeXarMojo mojo = this.mojo();
 //		setVariableValueToObject(
 //				mojo,

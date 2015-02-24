@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.jar.Attributes;
 
+import org.apache.maven.model.FileSet;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.Component;
@@ -19,6 +20,7 @@ import org.codehaus.plexus.archiver.ArchiveEntry;
 import org.codehaus.plexus.archiver.ArchiverException;
 import org.codehaus.plexus.archiver.ResourceIterator;
 import org.codehaus.plexus.archiver.zip.ZipArchiver;
+import org.codehaus.plexus.components.io.fileselectors.FileSelector;
 import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.xml.Xpp3DomBuilder;
 import org.eclipse.aether.RepositorySystem;
@@ -31,6 +33,7 @@ import org.eclipse.aether.resolution.ArtifactResult;
 import ro.kuberam.maven.plugins.expath.DefaultFileSet;
 import ro.kuberam.maven.plugins.expath.DependencySet;
 import ro.kuberam.maven.plugins.expath.DescriptorConfiguration;
+import ro.kuberam.maven.plugins.expath.Utils;
 import ro.kuberam.maven.plugins.mojos.KuberamAbstractMojo;
 import ro.kuberam.maven.plugins.mojos.NameValuePair;
 
@@ -142,11 +145,8 @@ public class MakeXarMojo extends KuberamAbstractMojo {
 			String artifactFileName = artifactFile.getName();
 			String dependencySetOutputDirectory = dependencySet.outputDirectory;
 			String archiveComponentPath = artifactFileName;
-			if (dependencySetOutputDirectory == null || dependencySetOutputDirectory.equals("/")) {
-				dependencySetOutputDirectory = "";
-			} else {
-				archiveComponentPath = dependencySetOutputDirectory + File.separator + artifactFileName;
-			}
+			
+			dependencySetOutputDirectory = Utils.processOutputDirectory(dependencySetOutputDirectory) + artifactFileName;
 
 			// add file to archive
 			if (artifactFileAbsolutePath.endsWith(".jar")) {
@@ -159,10 +159,11 @@ public class MakeXarMojo extends KuberamAbstractMojo {
 				components += "<resource><public-uri>http://exist-db.org/ns/expath-pkg/module-main-class</public-uri><file>"
 						+ getMainClass(artifactFileAbsolutePath).get(0) + "</file></resource>";
 				components += "<resource><public-uri>http://exist-db.org/ns/expath-pkg/module-namespace</public-uri><file>"
-						+ getMainClass(artifactFileAbsolutePath).get(1) + "</file></resource>";				
+						+ getMainClass(artifactFileAbsolutePath).get(1) + "</file></resource>";
 			}
 		}
 
+		// process the file sets
 		for (DefaultFileSet fileSet : fileSets) {
 			zipArchiver.addFileSet(fileSet);
 		}
@@ -172,7 +173,8 @@ public class MakeXarMojo extends KuberamAbstractMojo {
 		while (itr.hasNext()) {
 			ArchiveEntry entry = itr.next();
 			String entryPath = entry.getName();
-			System.out.println("entryPath " + entryPath);
+
+			// resource files
 			if (entryPath.endsWith(".jar")) {
 				components += "<resource><public-uri>" + moduleNamespace + "</public-uri><file>"
 						+ entryPath.substring(8) + "</file></resource>";
@@ -192,8 +194,8 @@ public class MakeXarMojo extends KuberamAbstractMojo {
 
 		// generate the expath descriptors
 
-		NameValuePair[] parameters = new NameValuePair[] { new NameValuePair("package-dir",
-				new File(descriptorsDirectoryPath).toURI().toString()) };
+		NameValuePair[] parameters = new NameValuePair[] { new NameValuePair("package-dir", new File(
+				descriptorsDirectoryPath).toURI().toString()) };
 
 		xsltTransform(filteredDescriptor,
 				this.getClass().getResource("/ro/kuberam/maven/plugins/expath/generate-descriptors.xsl")
