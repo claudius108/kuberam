@@ -4,8 +4,6 @@ import org.codehaus.plexus.util.xml.Xpp3Dom;
 
 public class Utils {
 
-	private static String contentDir = "content/";
-
 	public static String getOutputDirectory(Xpp3Dom parentElement) {
 		Xpp3Dom outputDirectoryElement = parentElement.getChild("outputDirectory");
 
@@ -16,14 +14,12 @@ public class Utils {
 			
 		}
 
-		outputDirectory = outputDirectory.replaceAll("^/", "");
-
-		outputDirectory = contentDir + outputDirectory;
-
 		if (!outputDirectory.endsWith("/")) {
 			outputDirectory = outputDirectory + "/";
 		}
 
+		outputDirectory = outputDirectory.replaceAll("^/", "");
+		
 		return outputDirectory;
 	}
 

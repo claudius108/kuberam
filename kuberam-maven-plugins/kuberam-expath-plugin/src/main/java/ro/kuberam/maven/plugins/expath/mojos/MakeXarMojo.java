@@ -177,7 +177,7 @@ public class MakeXarMojo extends KuberamAbstractMojo {
 			// resource files
 			if (entryPath.endsWith(".jar")) {
 				components += "<resource><public-uri>" + moduleNamespace + "</public-uri><file>"
-						+ entryPath.substring(8) + "</file></resource>";
+						+ entryPath + "</file></resource>";
 			}
 		}
 

@@ -25,7 +25,7 @@ public class ProcessOutputDirectoryTest {
 		parentElement.removeChild(0);
 		
 		String processedOutputDirectory = Utils.getOutputDirectory(parentElement);
-		assertTrue(processedOutputDirectory.equals("content/"));
+		assertTrue(processedOutputDirectory.equals(""));
 	}
 
 	@Test
@@ -33,7 +33,7 @@ public class ProcessOutputDirectoryTest {
 		outputDirectoryElement.setValue(""); 		
 		
 		String processedOutputDirectory = Utils.getOutputDirectory(parentElement);
-		assertTrue(processedOutputDirectory.equals("content/"));
+		assertTrue(processedOutputDirectory.equals(""));
 	}
 
 	@Test
@@ -41,7 +41,7 @@ public class ProcessOutputDirectoryTest {
 		outputDirectoryElement.setValue("/"); 
 		
 		String processedOutputDirectory = Utils.getOutputDirectory(parentElement);
-		assertTrue(processedOutputDirectory.equals("content/"));
+		assertTrue(processedOutputDirectory.equals(""));
 	}
 
 	@Test
@@ -49,7 +49,7 @@ public class ProcessOutputDirectoryTest {
 		outputDirectoryElement.setValue("a"); 
 		
 		String processedOutputDirectory = Utils.getOutputDirectory(parentElement);
-		assertTrue(processedOutputDirectory.equals("content/a/"));
+		assertTrue(processedOutputDirectory.equals("a/"));
 	}
 
 	@Test
@@ -57,7 +57,7 @@ public class ProcessOutputDirectoryTest {
 		outputDirectoryElement.setValue("/a"); 
 		
 		String processedOutputDirectory = Utils.getOutputDirectory(parentElement);
-		assertTrue(processedOutputDirectory.equals("content/a/"));
+		assertTrue(processedOutputDirectory.equals("a/"));
 	}
 
 	@Test
@@ -65,7 +65,7 @@ public class ProcessOutputDirectoryTest {
 		outputDirectoryElement.setValue("/a/"); 
 		
 		String processedOutputDirectory = Utils.getOutputDirectory(parentElement);
-		assertTrue(processedOutputDirectory.equals("content/a/"));
+		assertTrue(processedOutputDirectory.equals("a/"));
 	}
 
 	@Test
@@ -73,7 +73,7 @@ public class ProcessOutputDirectoryTest {
 		outputDirectoryElement.setValue("a/b"); 
 		
 		String processedOutputDirectory = Utils.getOutputDirectory(parentElement);
-		assertTrue(processedOutputDirectory.equals("content/a/b/"));
+		assertTrue(processedOutputDirectory.equals("a/b/"));
 	}
 	
 	@Test
@@ -81,7 +81,7 @@ public class ProcessOutputDirectoryTest {
 		outputDirectoryElement.setValue("/a/b"); 
 		
 		String processedOutputDirectory = Utils.getOutputDirectory(parentElement);
-		assertTrue(processedOutputDirectory.equals("content/a/b/"));
+		assertTrue(processedOutputDirectory.equals("a/b/"));
 	}
 	
 	@Test
@@ -89,7 +89,7 @@ public class ProcessOutputDirectoryTest {
 		outputDirectoryElement.setValue("/a/b/"); 
 		
 		String processedOutputDirectory = Utils.getOutputDirectory(parentElement);
-		assertTrue(processedOutputDirectory.equals("content/a/b/"));
+		assertTrue(processedOutputDirectory.equals("a/b/"));
 	}	
 
 }
