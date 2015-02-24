@@ -134,7 +134,7 @@
 		<dependency>
 			<groupId>ro.kuberam.maven.plugins</groupId>
 			<artifactId>abstract</artifactId>
-			<version>0.1.3</version>
+			<version>0.1.4</version>
 			<type>test-jar</type>
 			<scope>test</scope>
 		</dependency>
