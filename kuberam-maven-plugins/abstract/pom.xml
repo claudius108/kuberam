@@ -10,7 +10,7 @@
 	</parent>
 
 	<artifactId>abstract</artifactId>
-	<version>0.1.3</version>
+	<version>0.1.4</version>
 	<packaging>jar</packaging>
 	<name>kuberam expath abstract plugin</name>
 	<description>Abstract plugin for kuberam maven plugins</description>
