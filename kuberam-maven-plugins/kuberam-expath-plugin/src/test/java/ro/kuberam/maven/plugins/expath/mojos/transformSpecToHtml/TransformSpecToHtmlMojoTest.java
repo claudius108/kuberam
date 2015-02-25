@@ -6,7 +6,7 @@ import org.apache.maven.project.MavenProject;
 import org.junit.Test;
 
 import ro.kuberam.maven.plugins.expath.mojos.TransformSpecToHtmlMojo;
-import ro.kuberam.maven.plugins.utils.KuberamAbstractMojoTestBase;
+import ro.kuberam.maven.plugins.mojos.KuberamAbstractMojoTestBase;
 
 public class TransformSpecToHtmlMojoTest extends KuberamAbstractMojoTestBase {
 

@@ -104,15 +104,15 @@ public class StringStamper {
 				float marginLeft = (mediabox.getWidth() - page.findCropBox().getWidth()) / 2;
 				float marginTop = (mediabox.getHeight() - page.findCropBox().getHeight()) / 2;
 
-				System.out.println("mediabox.getLowerLeftX() " + mediabox.getUpperRightX());
-				System.out.println("mediabox.getUpperRightY() " + mediabox.getUpperRightY());
-				System.out.println("mediabox.getHeight() " + mediabox.getHeight());
-				System.out.println("mediabox.getWidth() " + mediabox.getWidth());
-				System.out.println("page.findCropBox().getHeight() " + page.findCropBox().getHeight());
-				System.out.println("page.findCropBox().getWidth() " + page.findCropBox().getWidth());
-				System.out.println("marginLeft " + marginLeft);
-				System.out.println("marginTop " + marginTop);
-				System.out.println();
+//				System.out.println("mediabox.getLowerLeftX() " + mediabox.getUpperRightX());
+//				System.out.println("mediabox.getUpperRightY() " + mediabox.getUpperRightY());
+//				System.out.println("mediabox.getHeight() " + mediabox.getHeight());
+//				System.out.println("mediabox.getWidth() " + mediabox.getWidth());
+//				System.out.println("page.findCropBox().getHeight() " + page.findCropBox().getHeight());
+//				System.out.println("page.findCropBox().getWidth() " + page.findCropBox().getWidth());
+//				System.out.println("marginLeft " + marginLeft);
+//				System.out.println("marginTop " + marginTop);
+//				System.out.println();
 
 				marginTop = (marginTop == 0) ? fontSize : marginTop;
 				float top = mediabox.getHeight() - (stampTop + marginTop);
@@ -172,6 +172,7 @@ public class StringStamper {
 				contentStream.drawString(stampString);
 
 				contentStream.endText();
+
 				contentStream.close();
 			}
 

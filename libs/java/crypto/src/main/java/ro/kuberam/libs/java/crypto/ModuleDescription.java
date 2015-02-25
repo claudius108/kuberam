@@ -8,8 +8,8 @@ package ro.kuberam.libs.java.crypto;
  */      
 public class ModuleDescription {
       public final static String VERSION = "1.1";
-      public final static String NAMESPACE_URI = "http://expath.org/ns/crypto";
-      public final static String PREFIX = "crypto";
+      public final static String NAMESPACE_URI = "";
+      public final static String PREFIX = "";
       public final static String MODULE_NAME = "Library for EXPath Cryptographic Module";
-      public final static String MODULE_DESCRIPTION = "A module for providing cryptographic services";
+      public final static String MODULE_DESCRIPTION = "A ";
 }

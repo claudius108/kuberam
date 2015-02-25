@@ -25,15 +25,11 @@ public class DescriptorConfiguration extends Xpp3Dom {
 			for (Xpp3Dom fileSetChild : fileSetChildren) {
 				DefaultFileSet fileSet = new DefaultFileSet();
 				fileSet.setDirectory(new File(fileSetChild.getChild("directory").getValue()));
-				Xpp3Dom outputDirectoryElement = fileSetChild.getChild("outputDirectory");
-				String outputDirectory = "";
-				if (null != outputDirectoryElement) {
-					outputDirectory = outputDirectoryElement.getValue();
-				}
-				if ( !"".equals(outputDirectory) && !outputDirectory.endsWith( "/" ) ) {
-					outputDirectory += "/";
-		        }
+
+				String outputDirectory = Utils.getOutputDirectory(fileSetChild);
+
 				fileSet.setPrefix(outputDirectory);
+
 				fileSet.setIncludes("**/*.*");
 				Xpp3Dom includesElement = fileSetChild.getChild("includes");
 				if (null != includesElement) {
@@ -53,7 +49,7 @@ public class DescriptorConfiguration extends Xpp3Dom {
 						excludesString += excludeElement.getValue() + ",";
 					}
 					fileSet.setExcludes(excludesString + ".project/,.settings/");
-				}				
+				}
 				fileSets.add(fileSet);
 			}
 		}
@@ -67,16 +63,18 @@ public class DescriptorConfiguration extends Xpp3Dom {
 		if (null != dependencySetsElement) {
 			Xpp3Dom[] dependencySetChildren = dependencySetsElement.getChildren("dependencySet");
 			for (Xpp3Dom dependencySetChild : dependencySetChildren) {
-				String outputDirectory = (null != dependencySetChild.getChild("outputDirectory")) ? dependencySetChild.getChild("outputDirectory").getValue() : "/";
+
+				String outputDirectory = Utils.getOutputDirectory(dependencySetChild);
+
 				dependencySets.add(new DependencySet(dependencySetChild.getChild("groupId").getValue(),
-						dependencySetChild.getChild("artifactId").getValue(), dependencySetChild.getChild("version")
-								.getValue(), outputDirectory));
+						dependencySetChild.getChild("artifactId").getValue(), dependencySetChild.getChild(
+								"version").getValue(), outputDirectory));
 			}
 		}
 
 		return dependencySets;
 	}
-	
+
 	public String getModuleNamespace() {
 		Xpp3Dom moduleNamespaceElement = this.getChild("module-namespace");
 		if (null != moduleNamespaceElement) {
@@ -84,5 +82,5 @@ public class DescriptorConfiguration extends Xpp3Dom {
 		}
 		return "";
 	}
-	
+
 }
