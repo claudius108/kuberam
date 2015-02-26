@@ -26,8 +26,6 @@ import org.apache.pdfbox.cos.COSName;
 
 public class Metadata {
 	
-	private final static String[] availProps = { "author", "creator", "keywords", "producer", "subject", "title", "trapped", "creation-date", "modification-date" };
-	
 	private static String toCamelCase(String s){
 		String[] parts = s.split("-");
 		String camelCaseString = "";
@@ -43,14 +41,18 @@ public class Metadata {
 
 	public static String getDocumentXMP(InputStream pdfIs)
 			throws IOException, COSVisitorException {
-
+		String result = null;
 		PDDocument pdfDocument = PDDocument.load(pdfIs, true);
-		PDDocumentCatalog catalog = pdfDocument.getDocumentCatalog();
-		PDMetadata metadata = catalog.getMetadata();
-		byte[] bStream = metadata.getByteArray();
-		String result = new String(bStream, "UTF-8");
-		pdfDocument.close();
-		
+		try {
+			PDDocumentCatalog catalog = pdfDocument.getDocumentCatalog();
+			PDMetadata metadata = catalog.getMetadata();
+			byte[] bStream = metadata.getByteArray();
+			result = new String(bStream, "UTF-8");
+		} catch(Exception e){
+			e.printStackTrace();
+		} finally {
+			pdfDocument.close();
+		}
 		return result;
 	}
 	
@@ -60,18 +62,24 @@ public class Metadata {
 		ByteArrayOutputStream output = new ByteArrayOutputStream();
 		
 		PDDocument pdfDocument = PDDocument.load(pdfIs, true);
-		PDDocumentCatalog catalog = pdfDocument.getDocumentCatalog();
-		PDMetadata metadata = catalog.getMetadata();
-
-		// write new XML metadata
-		PDMetadata newMetadata = new PDMetadata(pdfDocument, xmlmetadata, true);
-		catalog.setMetadata( newMetadata );
 		
-		//PDStream stream=new PDStream(pdfDocument);
-		//stream.addCompression();
-		
-		pdfDocument.save(output);
-		pdfDocument.close();
+		try {
+			PDDocumentCatalog catalog = pdfDocument.getDocumentCatalog();
+			PDMetadata metadata = catalog.getMetadata();
+	
+			// write new XML metadata
+			PDMetadata newMetadata = new PDMetadata(pdfDocument, xmlmetadata, true);
+			catalog.setMetadata( newMetadata );
+			
+			//PDStream stream=new PDStream(pdfDocument);
+			//stream.addCompression();
+			
+			pdfDocument.save(output);
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			pdfDocument.close();
+		}
 		return output;
 	}
 	
@@ -83,41 +91,81 @@ public class Metadata {
 
 		ArrayList<String> result = new ArrayList<String>();
 		
-		for(String prop : properties) {
-			String custom = "";
-			String val = null;
-			if(prop.matches("^custom-.*")) {
-				custom = toCamelCase(prop.replaceAll("^custom-",""));
-			}
-			if(custom != "") {
-				val = information.getCustomMetadataValue(custom);
-			} else if(Arrays.asList(availProps).contains(prop)) {
-				Method method = null;
-				try {
-					method = PDDocumentInformation.class.getMethod("get" + toCamelCase(prop));
-				} catch(NoSuchMethodException e) {
-					e.printStackTrace();
+		Calendar cal = null;
+		
+		try {
+			for(String prop : properties) {
+				String custom = "";
+				String val = null;
+				if(prop.matches("^custom-.*")) {
+					custom = toCamelCase(prop.replaceAll("^custom-",""));
 				}
-				if(method != null) {
+				if(custom != "") {
+					val = information.getCustomMetadataValue(custom);
+				} else {
+					/*Method method = null;
 					try {
-						if(prop == "creation-date" || prop == "modification-date") {
-							Calendar cal = (Calendar) method.invoke(information);
-							val = DatatypeConverter.printDateTime(cal);
-						} else {
-							val = (String) method.invoke(information);
-						}
-					} catch(IllegalAccessException e) {
-						e.printStackTrace();
-					} catch(InvocationTargetException e) {
+						method = PDDocumentInformation.class.getMethod("get" + toCamelCase(prop));
+					} catch(NoSuchMethodException e) {
 						e.printStackTrace();
 					}
+					if(method != null) {
+						try {
+							if(prop == "creation-date" || prop == "modification-date") {
+								Calendar cal = (Calendar) method.invoke(information);
+								val = DatatypeConverter.printDateTime(cal);
+							} else {
+								val = (String) method.invoke(information);
+							}
+						} catch(IllegalAccessException e) {
+							e.printStackTrace();
+						} catch(InvocationTargetException e) {
+							e.printStackTrace();
+						}
+					}
+					private final static String[] availProps = { "author", "creator", "keywords", "producer", "subject", "title", "trapped", "creation-date", "modification-date" };
+					*/
+					switch(prop) {
+						case "author":
+							val = (String) information.getAuthor();
+						break;
+						case "creator":
+							val = (String) information.getCreator();
+						break;
+						case "keywords":
+							val = (String) information.getKeywords();
+						break;
+						case "producer":
+							val = (String) information.getProducer();
+						break;
+						case "subject":
+							val = (String) information.getSubject();
+						break;
+						case "title":
+							val = (String) information.getTitle();
+						break;
+						case "trapped":
+							val = (String) information.getTrapped();
+						break;
+						case "creation-date":
+							cal = (Calendar) information.getCreationDate();
+							val = (String) DatatypeConverter.printDateTime(cal);
+						break;
+						case "modification-date":
+							cal = (Calendar) information.getModificationDate();
+							val = (String) DatatypeConverter.printDateTime(cal);
+						break;
+						default:
+							throw new IllegalArgumentException("Property not available!");
+					}
 				}
-			} else {
-				throw new IllegalArgumentException("Property not available!");
+				result.add(val);
 			}
-			result.add(val);
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			pdfDocument.close();
 		}
-		pdfDocument.close();
 		return result;
 	}
 	
@@ -126,61 +174,90 @@ public class Metadata {
 		
 		PDDocument pdfDocument = PDDocument.load(pdfIs, true);
 		PDDocumentInformation information = pdfDocument.getDocumentInformation();
+		ByteArrayOutputStream output = new ByteArrayOutputStream();
 		
-		for(int i = 0; i < properties.size(); i++) {
-			String prop = properties.get(i);
-			String val = null;
-			String custom = "";
-			if(prop.matches("^custom-.*")) {
-				custom = toCamelCase(prop.replaceAll("^custom-",""));
-			}
-			try {
+		try {
+			for(int i = 0; i < properties.size(); i++) {
+				String prop = properties.get(i);
+				String val = null;
+				String custom = "";
+				if(prop.matches("^custom-.*")) {
+					custom = toCamelCase(prop.replaceAll("^custom-",""));
+				}
 				val = values.get(i);
-			} catch(IndexOutOfBoundsException e) {
-				e.printStackTrace();
-			}
-			if(val != null) {
-				if(custom != "") {
-					information.setCustomMetadataValue(custom,val);
-				} else if(Arrays.asList(availProps).contains(prop)) {
-					Method method = null;
-					Class[] cls = null;
-					if(prop == "creation-date" || prop == "modification-date") {
-						cls = new Class[]{Calendar.class};
+				if(val != null) {
+					if(custom != "") {
+						information.setCustomMetadataValue(custom,val);
 					} else {
-						cls = new Class[]{String.class};
-					}
-					try {
-						method = PDDocumentInformation.class.getMethod("set" + toCamelCase(prop), cls);
-					} catch(NoSuchMethodException e) {
-						e.printStackTrace();
-					}
-					if(method != null) {
+						/*Method method = null;
+						Class[] cls = null;
+						if(prop == "creation-date" || prop == "modification-date") {
+							cls = new Class[]{Calendar.class};
+						} else {
+							cls = new Class[]{String.class};
+						}
 						try {
-							if(prop == "creation-date" || prop == "modification-date") {
-								method.invoke(information, DatatypeConverter.parseDateTime(val));
-							} else {
-								method.invoke(information, val);
-							}
-						} catch(IllegalAccessException e) {
-							e.printStackTrace();
-						} catch(InvocationTargetException e) {
+							method = PDDocumentInformation.class.getMethod("set" + toCamelCase(prop), cls);
+						} catch(NoSuchMethodException e) {
 							e.printStackTrace();
 						}
-					} else {
-						throw new IllegalArgumentException("Method empty!");
+						if(method != null) {
+							try {
+								if(prop == "creation-date" || prop == "modification-date") {
+									method.invoke(information, DatatypeConverter.parseDateTime(val));
+								} else {
+									method.invoke(information, val);
+								}
+							} catch(IllegalAccessException e) {
+								e.printStackTrace();
+							} catch(InvocationTargetException e) {
+								e.printStackTrace();
+							}
+						} else {
+							throw new IllegalArgumentException("Method empty!");
+						}
+						*/
+						switch(prop) {
+							case "author":
+								information.setAuthor(val);
+							break;
+							case "creator":
+								information.setCreator(val);
+							break;
+							case "keywords":
+								information.setKeywords(val);
+							break;
+							case "producer":
+								information.setProducer(val);
+							break;
+							case "subject":
+								information.setSubject(val);
+							break;
+							case "title":
+								information.setTitle(val);
+							break;
+							case "trapped":
+								information.setTrapped(val);
+							break;
+							case "creation-date":
+								information.setCreationDate(DatatypeConverter.parseDateTime(val));
+							break;
+							case "modification-date":
+								information.setModificationDate(DatatypeConverter.parseDateTime(val));
+							break;
+							default:
+								throw new IllegalArgumentException("Property not available!");
+						}
 					}
-				} else {
-					throw new IllegalArgumentException("Property not available!");
 				}
-			} else {
-				throw new IllegalArgumentException("Value empty!");
 			}
+			pdfDocument.setDocumentInformation(information);
+			pdfDocument.save(output);
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			pdfDocument.close();
 		}
-		pdfDocument.setDocumentInformation(information);
-		ByteArrayOutputStream output = new ByteArrayOutputStream();
-		pdfDocument.save(output);
-		pdfDocument.close();
 		// start postprocessing
 		PDStream stream=new PDStream(new PDDocument(), new ByteArrayInputStream( output.toByteArray() ));
         stream.addCompression();
