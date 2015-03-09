@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>ro.kuberam</groupId>
 		<artifactId>base</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
+		<version>0.1</version>
 	</parent>
 
 	<artifactId>sourceforge</artifactId>
@@ -37,19 +37,20 @@
 		<synchronizing-project-web-url>${synchronizing-host}:${synchronizing-project-web-htdocs-path}</synchronizing-project-web-url>
 		<synchronizing-user-web-htdocs-path>/home/user-web/${sourceforge-username}/htdocs</synchronizing-user-web-htdocs-path>
 		<synchronizing-user-web-url>${synchronizing-host}:${synchronizing-user-web-htdocs-path}</synchronizing-user-web-url>
-		
-		
+
+
 		<synchronizing-excluded-resources>--exclude='.*' --exclude='pom.xml' --exclude='target/*/'</synchronizing-excluded-resources>
 		<synchronizing-ssh-argument>'ssh -t -i ${sourceforge-public-key-path}'</synchronizing-ssh-argument>
 		<synchronizing-source-dir>${basedir}/</synchronizing-source-dir>
-		
-		
-		
-		
-		
 
 
-		<sourceforge-shell-arg-line>-t -i ${sourceforge-public-key-path} ${sourceforge-web-credentials}@${sourceforge-shell-host}</sourceforge-shell-arg-line>
+
+
+
+
+
+		<sourceforge-shell-arg-line>-t -i ${sourceforge-public-key-path}
+			${sourceforge-web-credentials}@${sourceforge-shell-host}</sourceforge-shell-arg-line>
 		<resources-excluded-from-uploading>.*,pom.xml,target/,.*/</resources-excluded-from-uploading>
 	</properties>
 
