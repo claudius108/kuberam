@@ -18,7 +18,7 @@
 		<dependencySet>
 			<groupId>org.expath.exist</groupId>
 			<artifactId>crypto</artifactId>
-			<version>0.3.1</version>
+			<version>0.3.2</version>
 		</dependencySet>
 		<dependencySet>
 			<groupId>ro.kuberam.libs.java</groupId>
