@@ -13,7 +13,7 @@
 	<tag>exist</tag>
 	<category id="libs">Libraries</category>
 	<category id="exist">eXist extensions</category>
-	<dependency processor="http://exist-db.org/" />
+	<dependency processor="http://exist-db.org/" server-max="3.0.1" />
 	<dependencySets>
 		<dependencySet>
 			<groupId>org.expath.exist</groupId>
