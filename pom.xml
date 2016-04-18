@@ -27,7 +27,7 @@
 	</licenses>
 
 	<organization>
-		<name>Teodorescu Claudius Marian PFA</name>
+		<name>Teodorescu Claudius Marian, Software Developer</name>
 		<url>http://kuberam.ro</url>
 	</organization>
 
@@ -100,59 +100,6 @@
 					<version>2.6</version>
 				</plugin>
 				<plugin>
-					<groupId>org.eclipse.m2e</groupId>
-					<artifactId>lifecycle-mapping</artifactId>
-					<version>1.0.0</version>
-					<configuration>
-						<lifecycleMappingMetadata>
-							<pluginExecutions>
-								<!-- copy-dependency plugin -->
-<!-- 								<pluginExecution> -->
-<!-- 									<pluginExecutionFilter> -->
-<!-- 										<groupId>org.apache.maven.plugins</groupId> -->
-<!-- 										<artifactId>maven-dependency-plugin</artifactId> -->
-<!-- 										<versionRange>[1.0.0,)</versionRange> -->
-<!-- 										<goals> -->
-<!-- 											<goal>copy-dependencies</goal> -->
-<!-- 											<goal>list</goal> -->
-<!-- 										</goals> -->
-<!-- 									</pluginExecutionFilter> -->
-<!-- 									<action> -->
-<!-- 										<ignore /> -->
-<!-- 									</action> -->
-<!-- 								</pluginExecution> -->
-								<!-- kuberam-i18n-plugin plugin -->
-								<pluginExecution>
-									<pluginExecutionFilter>
-										<groupId>ro.kuberam.maven.plugins</groupId>
-										<artifactId>kuberam-i18n-plugin</artifactId>
-										<versionRange>[0.1.1,)</versionRange>
-										<goals>
-											<goal>generate-ip-l10n-data</goal>
-										</goals>
-									</pluginExecutionFilter>
-									<action>
-										<ignore />
-									</action>
-								</pluginExecution>
-								<pluginExecution>
-									<pluginExecutionFilter>
-										<groupId>org.apache.maven.plugins</groupId>
-										<artifactId>maven-enforcer-plugin</artifactId>
-										<versionRange>[1.0.0,)</versionRange>
-										<goals>
-											<goal>enforce</goal>
-										</goals>
-									</pluginExecutionFilter>
-									<action>
-										<ignore />
-									</action>
-								</pluginExecution>
-							</pluginExecutions>
-						</lifecycleMappingMetadata>
-					</configuration>
-				</plugin>
-				<plugin>
 					<groupId>org.codehaus.mojo</groupId>
 					<artifactId>xml-maven-plugin</artifactId>
 					<version>1.0</version>
@@ -186,65 +133,8 @@
 					<artifactId>replacer</artifactId>
 					<version>1.5.3</version>
 				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-source-plugin</artifactId>
-					<version>3.0.0</version>
-					<executions>
-						<execution>
-							<id>attach-sources</id>
-							<goals>
-								<goal>jar</goal>
-							</goals>
-						</execution>
-					</executions>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-javadoc-plugin</artifactId>
-					<version>2.10.3</version>
-					<executions>
-						<execution>
-							<id>attach-javadocs</id>
-							<goals>
-								<goal>jar</goal>
-							</goals>
-							<configuration>
-								<additionalparam>-Xdoclint:none</additionalparam>
-							</configuration>
-						</execution>
-					</executions>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-gpg-plugin</artifactId>
-					<version>1.6</version>
-					<executions>
-						<execution>
-							<id>sign-artifacts</id>
-							<phase>verify</phase>
-							<goals>
-								<goal>sign</goal>
-							</goals>
-						</execution>
-					</executions>
-				</plugin>
 			</plugins>
 		</pluginManagement>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-source-plugin</artifactId>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-javadoc-plugin</artifactId>
-			</plugin>
-<!-- 			<plugin> -->
-<!-- 				<groupId>org.apache.maven.plugins</groupId> -->
-<!-- 				<artifactId>maven-gpg-plugin</artifactId> -->
-<!-- 			</plugin> -->
-		</plugins>
 	</build>
 
 </project>
