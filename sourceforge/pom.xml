@@ -39,7 +39,8 @@
 		<synchronizing-user-web-url>${synchronizing-host}:${synchronizing-user-web-htdocs-path}</synchronizing-user-web-url>
 
 
-		<synchronizing-excluded-resources>--exclude='.*' --exclude='pom.xml' --exclude='target/*/'</synchronizing-excluded-resources>
+		<synchronizing-excluded-resources>--exclude='.*' --exclude='pom.xml'
+			--exclude='target/*/'</synchronizing-excluded-resources>
 		<synchronizing-ssh-argument>'ssh -t -i ${sourceforge-public-key-path}'</synchronizing-ssh-argument>
 		<synchronizing-source-dir>${basedir}/</synchronizing-source-dir>
 
