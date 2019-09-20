@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
@@ -12,7 +13,7 @@
 
 	<groupId>ro.kuberam</groupId>
 	<artifactId>base</artifactId>
-	<version>0.1</version>
+	<version>0.2.0</version>
 	<packaging>pom</packaging>
 	<name>Kuberam</name>
 	<description>Framework for kuberam projects</description>
@@ -51,14 +52,9 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<java-version>1.8</java-version>
-		<mavenVersion>3.3.3</mavenVersion>
-		<workspaces-dir-path>/home/claudius/workspaces</workspaces-dir-path>
-		<main.basedir>${workspaces-dir-path}/a-model/models</main.basedir>
-		<local-eXist-management-build-file>${main.basedir}/src/main/resources/local-eXist-management.xml</local-eXist-management-build-file>
-		<sourceforge-frs-host>frs.sourceforge.net</sourceforge-frs-host>
-		<sourceforge-user-web-htdocs-path>/home/user-web/${sourceforge-username}/htdocs</sourceforge-user-web-htdocs-path>
-		<sourceforge-username>claudius108</sourceforge-username>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
+		<maven.version>3.6.0</maven.version>
 	</properties>
 
 	<dependencies>
@@ -69,35 +65,156 @@
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>4.11</version>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-api</artifactId>
+			<version>5.5.2</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
 
 	<build>
-		<extensions>
-			<extension>
-				<groupId>org.apache.maven.wagon</groupId>
-				<artifactId>wagon-ssh</artifactId>
-				<version>2.5</version>
-			</extension>
-		</extensions>
 		<pluginManagement>
 			<plugins>
 				<plugin>
-					<artifactId>maven-compiler-plugin</artifactId>
-					<version>3.5.1</version>
-					<configuration>
-						<source>${java-version}</source>
-						<target>${java-version}</target>
-					</configuration>
+					<groupId>org.sonatype.plugins</groupId>
+					<artifactId>nexus-staging-maven-plugin</artifactId>
+					<version>1.6.8</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-enforcer-plugin</artifactId>
+					<version>3.0.0-M2</version>
+					<executions>
+						<execution>
+							<id>enforce-maven</id>
+							<goals>
+								<goal>enforce</goal>
+							</goals>
+							<configuration>
+								<rules>
+									<requireMavenVersion>
+										<version>${maven.version}</version>
+									</requireMavenVersion>
+								</rules>
+							</configuration>
+						</execution>
+					</executions>
+				</plugin>
+				<plugin>
+					<groupId>com.code54.mojo</groupId>
+					<artifactId>buildversion-plugin</artifactId>
+					<version>1.0.3</version>
+					<executions>
+						<execution>
+							<phase>validate</phase>
+							<goals>
+								<goal>set-properties</goal>
+							</goals>
+						</execution>
+					</executions>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-jar-plugin</artifactId>
-					<version>2.6</version>
+					<version>3.0.2</version>
+					<configuration>
+						<archive>
+							<manifest>
+								<addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
+								<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+							</manifest>
+							<manifestEntries>
+								<Build-Tag>${build-tag}</Build-Tag>
+								<Git-Commit>${build-commit}</Git-Commit>
+								<Git-Commit-Abbrev>${build-commit-abbrev}</Git-Commit-Abbrev>
+								<Build-Version>${build-version}</Build-Version>
+								<Build-Timestamp>${build-tstamp}</Build-Timestamp>
+								<Source-Repository>${project.scm.connection}</Source-Repository>
+								<Description>${project.description}</Description>
+								<Implementation-URL>${project.url}</Implementation-URL>
+							</manifestEntries>
+						</archive>
+					</configuration>
+				</plugin>
+				<plugin>
+					<!-- Attach source jars -->
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-source-plugin</artifactId>
+					<version>3.0.1</version>
+					<configuration>
+						<archive>
+							<manifest>
+								<addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
+								<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+							</manifest>
+							<manifestEntries>
+								<Build-Tag>${build-tag}</Build-Tag>
+								<Git-Commit>${build-commit}</Git-Commit>
+								<Git-Commit-Abbrev>${build-commit-abbrev}</Git-Commit-Abbrev>
+								<Build-Version>${build-version}</Build-Version>
+								<Build-Timestamp>${build-tstamp}</Build-Timestamp>
+								<Source-Repository>${project.scm.connection}</Source-Repository>
+								<Description>${project.description}</Description>
+								<Implementation-URL>${project.url}</Implementation-URL>
+							</manifestEntries>
+						</archive>
+					</configuration>
+					<executions>
+						<execution>
+							<id>attach-sources</id>
+							<phase>verify</phase>
+							<goals>
+								<goal>jar</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
+				<plugin>
+					<!-- Attach javadoc jars -->
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-javadoc-plugin</artifactId>
+					<version>3.0.0-M1</version>
+					<configuration>
+						<archive>
+							<manifest>
+								<addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
+								<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+							</manifest>
+							<manifestEntries>
+								<Build-Tag>${build-tag}</Build-Tag>
+								<Git-Commit>${build-commit}</Git-Commit>
+								<Git-Commit-Abbrev>${build-commit-abbrev}</Git-Commit-Abbrev>
+								<Build-Version>${build-version}</Build-Version>
+								<Build-Timestamp>${build-tstamp}</Build-Timestamp>
+								<Source-Repository>${project.scm.connection}</Source-Repository>
+								<Description>${project.description}</Description>
+								<Implementation-URL>${project.url}</Implementation-URL>
+							</manifestEntries>
+						</archive>
+					</configuration>
+					<executions>
+						<execution>
+							<id>attach-javadocs</id>
+							<phase>verify</phase>
+							<goals>
+								<goal>jar</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-gpg-plugin</artifactId>
+					<version>1.6</version>
+					<executions>
+						<execution>
+							<id>sign-artifacts</id>
+							<phase>verify</phase>
+							<goals>
+								<goal>sign</goal>
+							</goals>
+						</execution>
+					</executions>
 				</plugin>
 				<plugin>
 					<groupId>org.codehaus.mojo</groupId>
@@ -110,15 +227,6 @@
 							<version>9.5.1-3</version>
 						</dependency>
 					</dependencies>
-				</plugin>
-				<plugin>
-					<artifactId>maven-antrun-plugin</artifactId>
-					<version>1.7</version>
-				</plugin>
-				<plugin>
-					<groupId>org.codehaus.mojo</groupId>
-					<artifactId>wagon-maven-plugin</artifactId>
-					<version>1.0</version>
 				</plugin>
 				<plugin>
 					<artifactId>maven-assembly-plugin</artifactId>
@@ -135,6 +243,64 @@
 				</plugin>
 			</plugins>
 		</pluginManagement>
+		<plugins>
+			<plugin>
+				<groupId>com.code54.mojo</groupId>
+				<artifactId>buildversion-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-gpg-plugin</artifactId>
+			</plugin>
+		</plugins>
 	</build>
+
+	<profiles>
+		<profile>
+			<id>deploy-release</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.sonatype.plugins</groupId>
+						<artifactId>nexus-staging-maven-plugin</artifactId>
+						<extensions>true</extensions>
+						<configuration>
+							<serverId>ossrh-releases</serverId>
+							<nexusUrl>https://oss.sonatype.org/</nexusUrl>
+							<autoReleaseAfterClose>true</autoReleaseAfterClose>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		<profile>
+			<id>deploy-snapshot</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.sonatype.plugins</groupId>
+						<artifactId>nexus-staging-maven-plugin</artifactId>
+						<extensions>true</extensions>
+						<configuration>
+							<serverId>ossrh-snapshots</serverId>
+							<nexusUrl>https://oss.sonatype.org/</nexusUrl>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 
 </project>
