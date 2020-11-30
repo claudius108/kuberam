@@ -29,7 +29,6 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.rules.TestName;
 import org.junit.After;
-import org.junit.Test;
 
 public class BaseTest {
 
